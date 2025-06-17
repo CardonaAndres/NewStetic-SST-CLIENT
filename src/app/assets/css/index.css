@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-yellow-50: oklch(97.8% 0.02 102);
+  --color-yellow-100: oklch(95.5% 0.08 102);
+  --color-yellow-200: oklch(92.8% 0.14 102);
+  --color-yellow-300: oklch(90.2% 0.18 102);
+  --color-yellow-400: oklch(88.8% 0.20 102);
+  --color-yellow-500: oklch(80.5% 0.16 102);
+  --color-yellow-600: oklch(67.2% 0.12 102);
+  --color-yellow-700: oklch(54.8% 0.09 102);
+  --color-yellow-800: oklch(41.2% 0.06 102);
+  --color-yellow-900: oklch(27.8% 0.04 102);
+}
+
+* { font-family: Arial, sans-serif; }
+
+/* Para navegadores WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 3px;
+  background: transparent; /* Fondo del track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent; /* El "pulgarcito" (thumb) */
+  border-radius: 4px;
+}
