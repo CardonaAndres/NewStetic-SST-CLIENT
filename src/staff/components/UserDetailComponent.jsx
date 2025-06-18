@@ -45,7 +45,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
                   pictureURL 
                   ? 
                     <>
-                      <div className="w-24 h-24 rounded-3xl flex items-center justify-center font-bold text-2xl shadow-xl">
+                      <div className="w-52 h-52 rounded-3xl flex items-center justify-center font-bold shadow-xl">
                         <img src={pictureURL} className='rounded-2xl' alt='IMG PERSONA' loading='lazy' />
                       </div>
                     </>

@@ -69,7 +69,7 @@ export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch
                                 </div>
                                 <input 
                                     type="text" 
-                                    placeholder="Buscar por cédula, nombre, correo o..." 
+                                    placeholder="Buscar por cédula, nombre, correo o cargo ..." 
                                     className="flex-1 pl-10 pr-10 py-2.5 bg-transparent focus:outline-none text-slate-700 placeholder-slate-400" 
                                     {...register('property')}
                                 />
