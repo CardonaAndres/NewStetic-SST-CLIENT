@@ -90,7 +90,7 @@ export const LoadingScreen = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-white via-slate-50 to-blue-50 flex items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-white via-slate-50 to-teal-50 flex items-center justify-center overflow-hidden">
       {/* Animated Background Particles */}
       <div className="absolute inset-0">
         {[...Array(12)].map((_, i) => (
@@ -123,7 +123,7 @@ export const LoadingScreen = () => {
         }}
       />
       <motion.div
-        className="absolute bottom-20 right-20 w-40 h-40 rounded-full bg-gradient-to-r from-cyan-400/10 to-blue-500/10 blur-2xl"
+        className="absolute bottom-20 right-20 w-40 h-40 rounded-full bg-gradient-to-r from-cyan-400/10 to-teal-500/10 blur-2xl"
         animate={{
           x: [0, -40, 0],
           y: [0, 25, 0],
@@ -149,7 +149,7 @@ export const LoadingScreen = () => {
           <div className="relative">
             {/* Logo Background Glow */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 rounded-full blur-xl"
+              className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-teal-600/20 rounded-full blur-xl"
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.3, 0.6, 0.3]
@@ -222,7 +222,7 @@ export const LoadingScreen = () => {
           transition={{ delay: 0.5, duration: 0.8 }}
         >
           <h1 className="text-4xl font-bold mb-2">
-            <span className="bg-gradient-to-r from-gray-900 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-gray-600 via-teal-500 to-cyan-600 bg-clip-text text-transparent">
               New Stetic
             </span>
           </h1>
@@ -240,7 +240,7 @@ export const LoadingScreen = () => {
           <div className="relative h-3 bg-gray-200/50 rounded-full overflow-hidden backdrop-blur-sm border border-white/30">
             {/* Animated Progress Bar */}
             <motion.div
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 via-cyan-500 to-blue-600 rounded-full shadow-lg"
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 via-cyan-500 to-teal-600 rounded-full shadow-lg"
               variants={progressVariants}
               initial="initial"
               animate="animate"
@@ -273,7 +273,7 @@ export const LoadingScreen = () => {
               {loadingMessages[loadingStage]}
             </motion.span>
             <motion.span
-              className="text-sm font-bold text-blue-700"
+              className="text-sm font-bold text-teal-700"
               animate={{ scale: progress % 10 === 0 ? [1, 1.1, 1] : 1 }}
               transition={{ duration: 0.3 }}
             >
@@ -292,7 +292,7 @@ export const LoadingScreen = () => {
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              className="w-2 h-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full"
+              className="w-2 h-2 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-full"
               animate={{
                 scale: [1, 1.5, 1],
                 opacity: [0.5, 1, 0.5]
