@@ -5,11 +5,15 @@ import { LoadingScreen } from '../../app/components/LoadingScreen';
 import { Header } from '../components/Header';
 import { UserCard } from '../components/UserCard';
 import { Pagination } from '../../app/components/Pagination';
+import { toast } from 'react-toastify';
 
 export const StaffManager = () => {
-  const { loading, getAllUsers, users, meta } = useStaffHook();
+  const { loading, getAllUsers, getUserByProperty, users, meta } = useStaffHook();
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(30);
+  const [searchResults, setSearchResults] = useState(null);
+  const [isSearchMode, setIsSearchMode] = useState(false);
+  const [searchModeLoading, setSearchModeLoading] = useState(false);
 
   const handlePageChange = (newPage) => {
     if (newPage < 1 || (meta && newPage > meta.total_pages)) return;
@@ -21,34 +25,90 @@ export const StaffManager = () => {
     setCurrentPage(1);
   };
 
+  // Función para manejar la búsqueda desde el Header
+  const handleSearch = async (searchTerm) => {
+    if (!searchTerm || !searchTerm.trim()) {
+      setIsSearchMode(false);
+      setSearchResults(null);
+      return;
+    }
 
-  useEffect(() => { getAllUsers(currentPage, limit) }, [currentPage, limit]);
+    try {
+      setSearchModeLoading(true);
+      setIsSearchMode(true);
+      const results = await getUserByProperty(searchTerm);
+      setSearchResults(results);
+      setSearchModeLoading(false);
+    } catch (err) {
+      toast.error('Error en la búsqueda: ' + err.message)
+      setSearchResults([]);
+    }
+  };
 
-  if(loading) return <LoadingScreen />
+  const clearSearch = () => { setIsSearchMode(false); setSearchResults(null) };
 
+  useEffect(() => {
+    if (!isSearchMode) getAllUsers(currentPage, limit);
+  }, [currentPage, limit]);
+
+  if (loading) return <LoadingScreen />
+
+  const displayUsers = isSearchMode ? (searchResults || []) : users;
+  
   return (
     <NavigationLayout title="Gestión Del Personal">
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6 rounded-xl">  
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-indigo-100 p-6 rounded-xl">  
         <div className="max-w-7xl mx-auto">
-          <Header meta={meta} limit={limit} handleLimitChange={handleLimitChange } />
+          <Header 
+            meta={meta} 
+            limit={limit} 
+            handleLimitChange={handleLimitChange}
+            onSearch={handleSearch}
+            onClearSearch={clearSearch}
+            isSearchMode={isSearchMode}
+          />
+
+          {isSearchMode && (
+            <div className="mb-4 p-3 bg-teal-50 border border-teal-200 rounded-lg">
+              <div className="flex items-center justify-between">
+                <span className="text-teal-700 font-medium">
+                  Mostrando resultados de búsqueda ({searchResults?.length || 0} encontrados)
+                </span>
+                <button 
+                  onClick={clearSearch}
+                  className="text-teal-600 hover:text-teal-800 underline text-sm"
+                >
+                  Mostrar todos los usuarios
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-            {users.map((user) => (
+            {displayUsers.map((user) => (
               <UserCard
                 key={user.f200_nit} 
                 user={user} 
               />
             ))}
           </div>
+
+          {isSearchMode && !searchModeLoading && (!searchResults || searchResults.length === 0) && (
+            <div className="text-center py-8">
+              <p className="text-gray-500 text-lg">No se encontraron usuarios que coincidan con la búsqueda</p>
+            </div>
+          )}
          
-          <Pagination
-            meta={meta} 
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
+          {!isSearchMode && (
+            <Pagination
+              meta={meta} 
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          )}
 
         </div>
       </div>
     </NavigationLayout>
   );
-}
+};

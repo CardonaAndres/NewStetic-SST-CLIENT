@@ -1,6 +1,12 @@
 import { User, MapPin, Calendar, Mail, Building } from 'lucide-react';
+import { useState } from 'react';
+import { UserModal } from './UserModal';
+import { formatDate } from '../../app/assets/js/styles';
 
 export const UserCard = ({ user }) => {
+  const [ modal, setModal ] = useState(false);
+  const handleModal = () => setModal(!modal);
+
   const getStatusColor = (status) => {
     switch (status) {
       case 1:
@@ -12,17 +18,10 @@ export const UserCard = ({ user }) => {
     }
   };
 
-  const getStatusText = (status) => {
-    return status === 1 ? 'Activo' : 'Inactivo';
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    return `${dateString.substring(0, 4)}/${dateString.substring(4, 6)}/${dateString.substring(6, 8)}`;
-  };
+  const getStatusText = (status) => status === 1 ? 'Activo' : 'Inactivo';
 
   return (
-    <div className="group relative bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl rounded-3xl shadow-xl border border-white/50 p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden cursor-pointer">
+    <div onClick={handleModal} className="group relative bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl rounded-3xl shadow-xl border border-white/50 p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden cursor-pointer">
       {/* Background Decoration */}
       <div className="absolute -top-10 -right-10 w-20 h-20 rounded-full bg-gradient-to-br from-blue-400/10 to-indigo-600/10 blur-2xl transition-all duration-500 group-hover:scale-150" />
       
@@ -93,6 +92,8 @@ export const UserCard = ({ user }) => {
 
       {/* Hover Overlay */}
       <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
+
+      <UserModal open={modal} onClose={handleModal} user={user} />
     </div>
   );
 };
