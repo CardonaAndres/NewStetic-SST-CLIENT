@@ -10,10 +10,13 @@ import { toast } from 'react-toastify';
 export const StaffManager = () => {
   const { loading, getAllUsers, getUserByProperty, users, meta } = useStaffHook();
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit, setLimit] = useState(30);
   const [searchResults, setSearchResults] = useState(null);
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [searchModeLoading, setSearchModeLoading] = useState(false);
+  const [limit, setLimit] = useState(() => {
+    const storedLimit = sessionStorage.getItem('staff_limit');
+    return storedLimit ? parseInt(storedLimit, 10) : 30;
+  });
 
   const handlePageChange = (newPage) => {
     if (newPage < 1 || (meta && newPage > meta.total_pages)) return;
@@ -22,6 +25,7 @@ export const StaffManager = () => {
 
   const handleLimitChange = (newLimit) => {
     setLimit(newLimit);
+    sessionStorage.setItem('staff_limit', newLimit); 
     setCurrentPage(1);
   };
 
