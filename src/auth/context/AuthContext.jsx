@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
         setTimeout(() => {
            ['token', 'user'].forEach(name => Cookie.remove(name, { path: '/' }));
            window.location.href = '/'
-        }, 1200) 
+        }, 1000) 
     }
 
     useEffect(() => {

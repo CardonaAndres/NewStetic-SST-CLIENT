@@ -317,12 +317,9 @@ export const NavigationLayout = ({ children, title = '' }) => {
                             {user?.mail || 'No disponible'}
                           </p>
                         </div>
-                        <div className="py-1">
+                        <div className="py-1" onClick={logout}>
                           <hr className="my-1 border-gray-100/50" />
-                          <button 
-                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/50 flex items-center space-x-2 transition-colors"
-                            onClick={logout}
-                          >
+                          <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/50 flex items-center space-x-2 transition-colors">
                             <LogOut className="w-4 h-4 flex-shrink-0" />
                             <span className="truncate">Cerrar Sesión</span>
                           </button>

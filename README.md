@@ -1,60 +1,95 @@
-# Documentación Técnica del Proyecto SST - Frontend
+# 📘 Documentación Técnica – Proyecto SST (Frontend)
 
-## Descripción General
+## 🧩 Descripción General
 
-Este repositorio contiene el **frontend** del sistema de gestión de Seguridad y Salud en el Trabajo (SST). El proyecto adopta una arquitectura basada en microservicios, permitiendo cubrir los distintos dominios funcionales del área SST. Su objetivo es facilitar la gestión integral de procesos, el seguimiento del personal, la vigilancia epidemiológica, la administración de equipos de protección, la realización de inspecciones y el control de la accidentalidad.
+Este repositorio contiene el **frontend** del sistema de gestión de **Seguridad y Salud en el Trabajo (SST)**. La aplicación forma parte de una arquitectura basada en **microservicios**, diseñada para cubrir de forma modular y eficiente los distintos dominios funcionales del área SST.
 
----
-
-## Tecnologías Utilizadas
-
-- **Framework principal:** React.js
-- **Estilos:** Tailwind CSS
+Su propósito principal es **automatizar, centralizar y facilitar la gestión de procesos** relacionados con salud ocupacional, personal, equipos de protección, inspecciones y reporte de accidentes, entre otros.
 
 ---
 
-## Arquitectura General
+## 🚀 Tecnologías Utilizadas
 
-- **Microservicios independientes:** Cada dominio funcional cuenta con su propio microservicio y API RESTful.
-- **Comunicación entre servicios:** Basada en HTTP RESTful.
-- **Autenticación y autorización:** Centralizadas mediante JWT y gestionadas por un middleware compartido.
-- **Frontend desacoplado:** Este repositorio consume las APIs expuestas por los microservicios del backend, permitiendo flexibilidad y escalabilidad.
+* **Framework:** React.js
+* **Estilos:** Tailwind CSS
+* **Consumo de APIs:** Fetch
+* **Gestión de estado:** Context API
+* **Control de rutas:** React Router DOM
 
 ---
 
-## Microservicios y Módulos
+## 🏗️ Arquitectura del Sistema
+
+* **Frontend desacoplado:** Este repositorio actúa como consumidor de los microservicios backend mediante APIs RESTful.
+* **Microservicios independientes:** Cada módulo funcional (por ejemplo, Vigilancia Epidemiológica o Inspecciones) tiene su propio backend.
+* **Comunicación entre servicios:** HTTP con autenticación vía JWT.
+* **Seguridad:** Autenticación centralizada mediante un middleware de autorización compartido.
+
+---
+
+## 🧱 Módulos Funcionales y Microservicios
 
 ### 1. Ingreso y Seguimiento de Personal
-- **Ingreso de Personal:** Coordinación de exámenes médicos, registro de resultados, ingreso de colaboradores y almacenamiento de conceptos de personal retirado.
-- **Seguimiento Médico Programado:** Agenda de exámenes periódicos, registro de salud y seguimiento de condiciones médicas.
-- **Historial de Exámenes Médicos:** Consulta y visualización del historial de exámenes por colaborador.
+
+* Registro y edición de datos de ingreso.
+* Coordinación de exámenes médicos iniciales y periódicos.
+* Historial médico completo de cada colaborador.
 
 ### 2. Vigilancia y Epidemiología Ocupacional
-- **Sistema de Vigilancia Epidemiológica (SVE):** Agrupación y clasificación de personas según patologías y estados.
-- **Recomendaciones y Seguimiento:** Registro y seguimiento de recomendaciones, con notificaciones automáticas.
-- **Desactivación de Personas:** Gestión de bajas y preservación del historial médico.
+
+* Clasificación y agrupación por patologías.
+* Gestión de recomendaciones con alertas automáticas.
+* Desactivación controlada de personal con historial preservado.
 
 ### 3. Equipos de Protección Personal (EPP) y Ergonomía
-- **Gestión de EPP:** Registro y control de equipos, integración con sistemas externos y notificaciones de vencimiento.
-- **Herramientas Ergonómicas:** Control y seguimiento de elementos ergonómicos.
-- **Análisis de Consumo:** Visualización detallada del consumo de EPP y alertas de reemplazo.
+
+* Gestión de inventario y entregas de EPP.
+* Control de vencimientos y necesidades de reemplazo.
+* Integración con herramientas externas de ergonomía.
 
 ### 4. Inspecciones y Gestión de Seguridad
-- **Inspecciones de Seguridad:** Formularios, registro de hallazgos y generación de acciones de seguimiento.
-- **Plan de Acción:** Registro y gestión de planes de acción, con asignación de responsables.
+
+* Registro de inspecciones periódicas.
+* Identificación de hallazgos y generación de acciones correctivas.
+* Seguimiento de planes de acción y responsables.
 
 ### 5. Accidentalidad e Higiene Ocupacional
-- **Reporte y Matriz de Accidentabilidad:** Registro y consulta de incidentes y accidentes.
-- **Higiene Ocupacional:** Registro y análisis de mediciones higiénicas en el entorno laboral.
+
+* Reporte y seguimiento de incidentes y accidentes laborales.
+* Registro de condiciones higiénicas y mediciones ambientales.
 
 ---
 
-## Consideraciones
+## ⚙️ Variables de Entorno
 
-- El frontend está diseñado para ser **modular y escalable**, facilitando la integración de nuevos módulos y microservicios.
-- La autenticación y autorización se gestionan de manera centralizada, garantizando la seguridad y trazabilidad de las acciones.
-- Se promueve el uso de buenas prácticas de desarrollo, asegurando mantenibilidad y facilidad de pruebas.
+Para que el frontend se conecte correctamente con los microservicios, se deben configurar las variables de entorno en un archivo `.env` ubicado en la raíz del proyecto.
+
+### 📄 Ejemplo de `.env`:
+
+```env
+VITE_AUTH_SERVICE=http://localhost:3001/API/v1/auth
+VITE_STAFF_SERVICE=http://localhost:3002/API/v1/staff
+
+VITE_BUK_API_URL=https://dominio.buk.co/api/v1/colombia
+VITE_BUK_AUTH_TOKEN=
+```
+
+> 💡 Todas las variables deben comenzar con `VITE_` para que Vite (usado por defecto en proyectos React modernos) pueda exponerlas al entorno de ejecución.
 
 ---
+
+## 📌 Consideraciones Importantes
+
+* El frontend está construido con un enfoque **modular, reutilizable y escalable**.
+* Cada módulo funcional puede ser extendido o reemplazado sin afectar al sistema completo.
+* Se prioriza la **seguridad, trazabilidad y buenas prácticas de desarrollo**.
+* El sistema está preparado para operar en entornos corporativos con múltiples usuarios y roles.
+
+---
+
+## 👤 Autor
 
 **Andrés Cardona**
+Desarrollador – SST Project
+
+---
