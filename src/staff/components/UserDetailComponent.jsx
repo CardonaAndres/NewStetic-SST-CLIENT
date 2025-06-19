@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useStaffHook } from '../hooks/useStaffHook';
 import { toast } from 'react-toastify';
-import { ArrowLeft, Award, Edit, Download, Share2 } from 'lucide-react';
+import { ArrowLeft, Award } from 'lucide-react';
 import { LocalLoading } from './LocalLoading';
 
 export const UserDetailComponent = ({ user, onClose }) => {

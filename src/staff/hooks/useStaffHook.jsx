@@ -55,10 +55,11 @@ export const useStaffHook = () => {
             });
 
             const res = await StaffAPI.getUserByProperties(property);
+            toast.dismiss();
             if(!res.succes) throw new Error(res.message);
 
             toast.success(res.data.message, {
-                position: "top-left",
+                position: "top-center",
                 autoClose: 5000,
                 closeOnClick: true,
                 draggable: true,
@@ -68,7 +69,9 @@ export const useStaffHook = () => {
             return res.data.users;
 
         } catch (err) {
-            toast.error(err.message || 'Internal Server Error');
+            toast.error(err.message || 'Internal Server Error',{
+                position: "top-center"
+            });
         } 
     }
 
