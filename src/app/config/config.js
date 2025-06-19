@@ -5,7 +5,5 @@ export const router = {
     ppe : '/epp',
     safety : '/seguridad',
     hygiene : '/higiene',
-    staffSearch: '/personal/ingreso-personal'
+    staffIdle : '/personal/inactivo'
 }
-
-export const SERVER_URL = '';

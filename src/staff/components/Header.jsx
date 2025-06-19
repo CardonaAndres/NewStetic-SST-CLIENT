@@ -1,9 +1,14 @@
-import { Filter, Search, Sparkles, Loader2, X } from 'lucide-react';
+import { Filter, Search, Sparkles, Loader2, X, UserX } from 'lucide-react';
 import { useStaffHook } from '../hooks/useStaffHook';
 import { useForm } from 'react-hook-form';
 import { useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { router } from '../../app/config/config';
 
 export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch, isSearchMode }) => {
+    const location = useLocation();
+    // const path = location.pathname;
+
     const { register, handleSubmit, watch, reset } = useForm();
     const { loading } = useStaffHook();
 
@@ -16,21 +21,15 @@ export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch
         if (data.property && data.property.trim()) onSearch(data.property.trim());
     });
 
-    // Función para limpiar la búsqueda
     const handleClearSearch = () => { reset(); onClearSearch(); };
     
-    // Ejecutar búsqueda automática con debounce
     useEffect(() => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-        if (searchValue && searchValue.trim()) {
-            timeoutRef.current = setTimeout(() => { 
-                onSubmited() 
-            }, 1500); 
-        } else if (searchValue === '' || !searchValue) {
-            // Si el campo se vacía, limpiar la búsqueda
-            onClearSearch();
-        }
+        if (searchValue && searchValue.trim()) 
+            timeoutRef.current = setTimeout(() => { onSubmited() }, 1500)
+
+        if (searchValue === '' || !searchValue) onClearSearch();
         
         return () => {
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -93,7 +92,8 @@ export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch
 
                         {/* Compact Limit Selector - solo visible en modo normal */}
                         {!isSearchMode && (
-                            <div className="flex items-center gap-3 group">
+                           <>
+                                <div className="flex items-center gap-3 group">
                                 <div className="p-2 bg-gradient-to-br from-slate-100 to-slate-50 rounded-lg border border-slate-200/50 group-hover:shadow-sm transition-all duration-200">
                                     <Filter className="w-4 h-4 text-slate-500 group-hover:text-emerald-600 transition-colors" />
                                 </div>
@@ -106,7 +106,23 @@ export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch
                                         <option key={key} value={option}>{option} por página</option>
                                     ))}
                                 </select>
-                            </div>
+                                </div>
+                            
+                                <div className="flex items-center">
+                                    <Link to={router.staffIdle}
+                                        type="button"
+                                        className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-200 border border-slate-200/70 rounded-xl transition-all duration-300 hover:shadow-md hover:border-slate-300/60 focus:outline-none focus:ring-2 focus:ring-slate-400/30 focus:border-slate-400 backdrop-blur-sm group"
+                                        title="Mostrar personal inactivo"
+                                    >
+                                        <div className="p-1 bg-gradient-to-br from-slate-400 to-slate-500 rounded-md group-hover:from-slate-500 group-hover:to-slate-600 transition-all duration-200">
+                                            <UserX className="w-3 h-3 text-white" />
+                                        </div>
+                                        <span className="text-sm font-medium text-slate-600 group-hover:text-slate-700 transition-colors duration-200">
+                                            Mostrar Inactivos
+                                        </span>
+                                    </Link>
+                                </div> 
+                           </>
                         )}
                     </div>
 

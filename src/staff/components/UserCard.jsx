@@ -2,23 +2,13 @@ import { User, MapPin, Calendar, Mail, Building } from 'lucide-react';
 import { useState } from 'react';
 import { UserModal } from './UserModal';
 import { formatDate } from '../../app/assets/js/styles';
+import { useStaffHook } from '../hooks/useStaffHook';
 
 export const UserCard = ({ user }) => {
   const [ modal, setModal ] = useState(false);
   const handleModal = () => setModal(!modal);
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 1:
-        return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-      case 0:
-        return 'bg-red-100 text-red-700 border-red-200';
-      default:
-        return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
-  };
-
-  const getStatusText = (status) => status === 1 ? 'Activo' : 'Inactivo';
+  const { formatInfo } = useStaffHook();
+  const { getStatusText, getStatusColor } = formatInfo(user);
 
   return (
     <div onClick={handleModal} className="group relative bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl rounded-3xl shadow-xl border border-white/50 p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden cursor-pointer">
