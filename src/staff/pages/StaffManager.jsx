@@ -55,9 +55,9 @@ export const StaffManager = () => {
     if (!isSearchMode) getAllUsers(currentPage, limit);
   }, [currentPage, limit]);
 
-  if (loading) return <LoadingScreen />
-
   const displayUsers = isSearchMode ? (searchResults || []) : users;
+
+  if (loading) return <LoadingScreen />
   
   return (
     <NavigationLayout title="Gestión Del Personal">
@@ -103,7 +103,7 @@ export const StaffManager = () => {
             </div>
           )}
          
-          {!isSearchMode && (
+          {(!isSearchMode && meta?.totalUsers > 30) && (
             <Pagination
               meta={meta} 
               currentPage={currentPage}

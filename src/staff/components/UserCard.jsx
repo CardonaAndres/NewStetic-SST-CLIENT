@@ -23,7 +23,7 @@ export const UserCard = ({ user }) => {
               {user.Nombre}
             </h3>
             <p className="text-sm text-slate-500 font-medium">
-              {user["Tipo de indetificacion"]}: {user.f200_nit}
+              {user["Tipo de identificacion"]}: {user.f200_nit}
             </p>
           </div>
         </div>

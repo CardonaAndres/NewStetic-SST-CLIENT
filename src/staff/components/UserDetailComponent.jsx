@@ -68,7 +68,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
                       {user["Desc. Cargo"]}
                     </p>
                     <p className="text-slate-500">
-                      {user["Tipo de indetificacion"]}: {user.f200_nit}
+                      {user["Tipo de identificacion"]}: {user.f200_nit}
                     </p>
                   </div>
                   

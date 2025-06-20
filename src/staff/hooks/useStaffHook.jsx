@@ -16,6 +16,7 @@ import {
   Award, 
   Shield,
 } from 'lucide-react';
+import { formatDocumentNumber } from "../../app/assets/js/styles.js";
 
 const BUK_URL = String(import.meta.env.VITE_BUK_API_URL);
 const BUK_AUTH_TOKEN = String(import.meta.env.VITE_BUK_AUTH_TOKEN);
@@ -36,15 +37,30 @@ export const useStaffHook = () => {
            
         } catch (err) {
             toast.error(err.message || 'Internal Server Error');
-            setTimeout(() => {
-                window.location.href = router.home
-            }, 1000);
         } finally {
             setLoading(false);
         }
     }
 
-    const getUserByProperty = async property => {
+    const getAllUsersIdle = async (page = 1, limit = 30) => {
+        try {
+            setLoading(true);
+
+            setLoading(true);
+            const res = await StaffAPI.getUsersIdles(page, limit)
+            if(!res.succes) throw new Error(res.message);
+        
+            setUsers(res.data.users);
+            setMeta(res.data.meta)
+
+        } catch (err) {
+            toast.error(err.message || 'Internal Server Error');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const getUserByProperty = async (property, isStaffPageActive = true) => {
         try {
             toast.info('Cargando usuarios, espera..', {
                 position: "top-center",
@@ -54,7 +70,10 @@ export const useStaffHook = () => {
                 theme: "colored",
             });
 
-            const res = await StaffAPI.getUserByProperties(property);
+            const res = isStaffPageActive 
+            ? await StaffAPI.getUserByProperties(property)
+            : await StaffAPI.getUserIdlesByProperties(property)
+
             toast.dismiss();
             if(!res.succes) throw new Error(res.message);
 
@@ -75,11 +94,15 @@ export const useStaffHook = () => {
         } 
     }
 
-    const getUserFromBook = async (user) => {
+    const getUserFromBook = async user => {
         try {
             setLoading(true);
+            const FORMAT_BUK_URL = user.ESTADO === 'ACTIVO' 
+            ? `employees?status=activo&document_number=${user.f200_nit}` 
+            : `employees?status=inactivo&document_number=${formatDocumentNumber(parseInt(user.f200_nit))}`
+
             const res = await fetch(
-                `${BUK_URL}/employees?status=activo&document_number=${user.f200_nit}`, {
+                `${BUK_URL}/${FORMAT_BUK_URL}`, {
                     method : 'GET', headers : { 
                         'Content-Type': 'application/json',
                         'auth_token' : `${BUK_AUTH_TOKEN}` 
@@ -91,8 +114,6 @@ export const useStaffHook = () => {
 
             return result.data[0].picture_url
 
-        } catch (err) {
-            console.log(err);
         } finally {
             setLoading(false);
         }
@@ -152,7 +173,7 @@ export const useStaffHook = () => {
               color: 'from-blue-500 to-indigo-600',
               items: [
                 { label: 'Nombre Completo', value: user.Nombre, icon: <User className="w-4 h-4" /> },
-                { label: 'Tipo de Identificación', value: user["Tipo de indetificacion"] === 'C' ? 'Cédula de Ciudadanía' : user["Tipo de indetificacion"], icon: <CreditCard className="w-4 h-4" /> },
+                { label: 'Tipo de Identificación', value: user["Tipo de identificacion"] === 'C' ? 'Cédula de Ciudadanía' : user["Tipo de indetificacion"], icon: <CreditCard className="w-4 h-4" /> },
                 { label: 'Número de Identificación', value: user.f200_nit, icon: <CreditCard className="w-4 h-4" /> },
                 { label: 'Fecha de Nacimiento', value: formatDate(user["Fecha de nacimiento"]), icon: <Calendar className="w-4 h-4" /> },
                 { label: 'Edad', value: `${calculateAge(user["Fecha de nacimiento"])} años`, icon: <Clock className="w-4 h-4" /> },
@@ -184,7 +205,12 @@ export const useStaffHook = () => {
                 { label: 'Fecha de Ingreso', value: formatDate(user["Fecha de ingreso"]), icon: <Calendar className="w-4 h-4" /> },
                 { label: 'Período de Ingreso', value: user.PeriodoIngreso, icon: <Calendar className="w-4 h-4" /> },
                 { label: 'Estado del Empleado', value: getStatusText(user["Estado Empleado"]), icon: <Shield className="w-4 h-4" />, status: user["Estado Empleado"] },
-                { label: 'Fecha de Retiro', value: user.fechaRetiro ? formatDate(user.fechaRetiro) : 'Empleado activo', icon: <Calendar className="w-4 h-4" /> }
+                { 
+                    label: 'Fecha de Retiro', 
+                    value: user['Fecha de Retiro'] 
+                    ? user['Fecha de Retiro'].split('T')[0]
+                    : 'Empleado activo', icon: <Calendar className="w-4 h-4" /> 
+                }
               ]
             }
           ];
@@ -206,6 +232,7 @@ export const useStaffHook = () => {
         getAllUsers,
         getUserByProperty,
         getUserFromBook,
-        formatInfo
+        formatInfo,
+        getAllUsersIdle
     }
 }

@@ -2,14 +2,23 @@ import { Activity, BarChart3, FileText, Shield, Users } from "lucide-react";
 import { router } from "../config/config";
 
 export const useNavigationHook = (path = '/') => {
-  console.log(path)
+
+  const defineStaffPath = () => {
+    switch (path) {
+      case router.staffIdle:
+        return router.staffIdle;
+      default:
+        return router.staff;
+    }
+  };
+
   const sidebarItems = [
     { 
         label: 'Gestión de Personal', 
         icon: Users, 
         color: `${router.staff === path ? 'from-green-500 to-emerald-500' : 'from-red-500 to-red-500'}`,
         isActive : (router.staff === path || router.staffIdle === path),
-        path : router.staff
+        path : defineStaffPath()
     },
     { 
         label: 'Vigilancia Ocupacional', 
