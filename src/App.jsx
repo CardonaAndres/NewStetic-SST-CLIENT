@@ -19,6 +19,7 @@ export const App = () => {
       <Router>
         <ToastContainer 
           position="top-left"
+          limit={1}
           autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from 'react-toastify';
 import { StaffAPI } from "../API/staff";
-import { router } from '../../app/config/config.js';
+import { formatDocumentNumber } from "../../app/assets/js/styles.js";
 import { 
   User, 
   Calendar, 
@@ -16,7 +16,6 @@ import {
   Award, 
   Shield,
 } from 'lucide-react';
-import { formatDocumentNumber } from "../../app/assets/js/styles.js";
 
 const BUK_URL = String(import.meta.env.VITE_BUK_API_URL);
 const BUK_AUTH_TOKEN = String(import.meta.env.VITE_BUK_AUTH_TOKEN);
@@ -25,6 +24,7 @@ export const useStaffHook = () => {
     const [ loading, setLoading ] = useState(false);
     const [ meta, setMeta] = useState({});
     const [ users, setUsers ] = useState([]);
+    const [ userHistory, setUserHistory ] = useState([]);
 
     const getAllUsers = async (page = 1, limit = 30) => {
         try {
@@ -119,6 +119,24 @@ export const useStaffHook = () => {
         }
     }
 
+    const getUserWorkHistory = async user => {
+        try {
+            setLoading(true);
+            const res = await StaffAPI.getUserWorkHistory(user?.f200_nit);
+            if(!res.succes) throw new Error(err.message);
+
+            const userHistory = res.data.userWorkHistory;
+            const filteredHistory = userHistory.filter(user => user.ESTADO !== 'ACTIVO');
+     
+            setUserHistory(filteredHistory);
+
+        } catch (err) { 
+            toast.error(err.message ,{ position: "top-left" });
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const formatInfo = user => {
         const getGenderIcon = (gender) => gender === 'Mujer' ? '♀' : gender === 'Hombre' ? '♂' : '⚧';
 
@@ -194,7 +212,7 @@ export const useStaffHook = () => {
                 { label: 'Centro de Costos', value: user["Centro de costos"], icon: <Building className="w-4 h-4" /> },
                 { label: 'Código Jefe Inmediato', value: user.CodigoJefeImediato || 'No asignado', icon: <UserCheck className="w-4 h-4" /> },
                 { label: 'Tipo de Contrato', value: user["Tipo de contrato"], icon: <Briefcase className="w-4 h-4" /> },
-                { label: 'Tipo de Aprendiz', value: user.TipoAprendiz || 'N/A', icon: <Award className="w-4 h-4" /> }
+                { label: 'Empresa', value: user.Empresa, icon: <Award className="w-4 h-4" /> }
               ]
             },
             {
@@ -233,6 +251,8 @@ export const useStaffHook = () => {
         getUserByProperty,
         getUserFromBook,
         formatInfo,
-        getAllUsersIdle
+        getAllUsersIdle,
+        getUserWorkHistory,
+        userHistory
     }
 }

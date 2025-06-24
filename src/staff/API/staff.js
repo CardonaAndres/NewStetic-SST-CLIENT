@@ -8,19 +8,13 @@ export class StaffAPI {
             const token = Cookies.get('token');
             const res = await fetch(`${baseURL}/${property}`, { 
                 method : 'GET', credentials : 'include',
-                headers : {
-                    'Content-Type': 'application/json',
-                    "authorization": `Bearer ${token}`
-                }, 
+                headers : { 'Content-Type': 'application/json', "authorization": `Bearer ${token}`} 
             });
 
             const data = await res.json();
             if(!res.ok) throw new Error(data.message)
 
-            return {
-                succes : true,
-                data
-            }
+            return { succes : true, data }
 
         } catch (err) {
             return {
@@ -35,19 +29,13 @@ export class StaffAPI {
             const token = Cookies.get('token');
             const res = await fetch(`${baseURL}/idles/${property}`, { 
                 method : 'GET', credentials : 'include',
-                headers : {
-                    'Content-Type': 'application/json',
-                    "authorization": `Bearer ${token}`
-                }, 
+                headers : { 'Content-Type': 'application/json', "authorization": `Bearer ${token}`} 
             });
 
             const data = await res.json();
             if(!res.ok) throw new Error(data.message)
 
-            return {
-                succes : true,
-                data
-            }
+            return { succes : true, data }
 
         } catch (err) {
             return {
@@ -72,10 +60,7 @@ export class StaffAPI {
             const data = await res.json();
             if(!res.ok) throw new Error(data.message)
  
-            return {
-                succes : true,
-                data
-            }
+            return { succes : true, data }
 
         } catch (err) {
             return {
@@ -90,25 +75,34 @@ export class StaffAPI {
             const token = Cookies.get('token');
             const res = await fetch(`${baseURL}/idles?page=${page}&limit=${limit}`, { 
                 method : 'GET', credentials : 'include',
-                headers : {
-                    'Content-Type': 'application/json',
-                    "authorization": `Bearer ${token}`
-                }, 
+                headers : { 'Content-Type': 'application/json', "authorization": `Bearer ${token}`}
             });
 
             const data = await res.json();
             if(!res.ok) throw new Error(data.message)
  
-            return {
-                succes : true,
-                data
-            }
+            return { succes : true, data }
 
         } catch (err) {
-            return {
-                succes : false,
-                message : err.message || 'Internal Server Error'
-            }
+            return { succes : false, message : err.message || 'Internal Server Error'}
+        }
+    }
+
+    static async getUserWorkHistory(docNumber){
+        try {
+            const token = Cookies.get('token');
+            const res = await fetch(`${baseURL}/history/${docNumber}`, { 
+                method : 'GET', credentials : 'include',
+                headers : { 'Content-Type': 'application/json', "authorization": `Bearer ${token}` } 
+            });
+
+            const data = await res.json();
+            if(!res.ok) throw new Error(data.message)
+ 
+            return { succes : true, data }
+
+        } catch (err) {
+            return { succes : false, message : err.message || 'Internal Server Error' }
         }
     }
 
