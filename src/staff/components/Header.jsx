@@ -44,9 +44,9 @@ export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch
                 </p>
             </div>
 
-            <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60 p-5 mb-8 overflow-hidden">
+            <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60 p-5 mb-8 overflow-hidden">
                 {/* Subtle background pattern */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${isStaffIdlePage ? 'from-red-50/20 via-red-50/15 to-red-50/20' : 'from-emerald-50/20 via-teal-50/15 to-cyan-50/20'} pointer-events-none`}></div>
+                <div className={`absolute inset-0 bg-gradient-to-br ${isStaffIdlePage ? 'from-red-50/20 via-red-50/15 to-red-50/20' : 'from-emerald-50/20 via-teal-50/15 to-cyan-50/20'} pointer-events-none`}/>
                 <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl ${isStaffIdlePage ? 'from-red-200/15' : 'from-emerald-200/15'} to-transparent rounded-full blur-xl`}></div>
                 
                 <div className="relative flex flex-col lg:flex-row gap-5 items-center justify-between">

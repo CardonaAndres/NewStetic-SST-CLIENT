@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 import { ArrowLeft, Award, User, Folder } from 'lucide-react';
 import { LocalLoading } from './LocalLoading';
 import { WorkHistoryModal } from './WorkHistoryModal';
+import { Link } from 'react-router-dom';
+import { router } from '../../app/config/config';
 
 export const UserDetailComponent = ({ user, onClose }) => {
   const { loading, getUserFromBook, formatInfo } = useStaffHook();
@@ -96,18 +98,9 @@ export const UserDetailComponent = ({ user, onClose }) => {
               
               {/* Enhanced Quick Actions */}
               <div className="flex flex-wrap gap-3">
-                <button className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                  <span className="w-2 h-2 bg-white/50 rounded-full group-hover:animate-ping"></span>
-                  Acción Principal
-                </button>
-                <button className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                  <span className="w-2 h-2 bg-white/50 rounded-full group-hover:animate-ping"></span>
-                  Reportes
-                </button>
-                <button className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                  <span className="w-2 h-2 bg-white/50 rounded-full group-hover:animate-ping"></span>
-                  Configuración
-                </button>
+                <Link to={`${router.medicalStaffHistory}?cc=${user.f200_nit}`} className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
+                  Examenes
+                </Link>
               </div>
             </div>
           </div>

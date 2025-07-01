@@ -13,7 +13,7 @@ export const NavigationLayout = ({ children, title = '' }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { sidebarItems } = useNavigationHook(location.pathname);
+  const { sidebarItems } = useNavigationHook(location.pathname, location.search);
 
   // Responsive breakpoints
   useEffect(() => {

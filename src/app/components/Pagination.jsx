@@ -53,12 +53,10 @@ export const Pagination = ({ meta, currentPage, onPageChange, className = "" }) 
       {/* Números de página */}
       <div className="flex items-center gap-2">
         {pageNumbers.map((pageNum) => (
-          <button
-            key={pageNum}
-            onClick={() => onPageChange(pageNum)}
+          <button key={pageNum} onClick={() => onPageChange(pageNum)}
             className={`w-10 h-10 rounded-xl font-medium transition-all duration-300 ${
               pageNum === currentPage
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
+                ? 'bg-teal-600/60 text-white shadow-lg'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
             }`}
           >
@@ -68,10 +66,8 @@ export const Pagination = ({ meta, currentPage, onPageChange, className = "" }) 
       </div>
 
       {/* Botón Siguiente */}
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage >= meta.total_pages}
-        className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      <button onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage >= meta.total_pages} className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Siguiente
         <ChevronRight className="w-4 h-4" />

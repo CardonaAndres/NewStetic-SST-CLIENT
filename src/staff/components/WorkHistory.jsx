@@ -152,19 +152,6 @@ export const WorkHistory = ({ user, onClose }) => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Estadísticas rápidas */}
-                    <div className="p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-                            <div className="text-center p-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl border border-teal-200">
-                                <div className="flex items-center justify-center mb-2">
-                                    <Briefcase className="h-6 w-6 text-teal-600" />
-                                </div>
-                                <div className="text-2xl font-bold text-teal-700">{careerData.length}</div>
-                                <div className="text-sm text-teal-600 font-medium">Posiciones</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 {/* Timeline mejorado */}

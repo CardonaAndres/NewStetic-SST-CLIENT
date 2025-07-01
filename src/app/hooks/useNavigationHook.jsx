@@ -1,23 +1,29 @@
 import { Activity, BarChart3, FileText, Shield, Users } from "lucide-react";
 import { router } from "../config/config";
 
-export const useNavigationHook = (path = '/') => {
+export const useNavigationHook = (path = '/', search = '') => {
 
   const defineStaffPath = () => {
-    switch (path) {
-      case router.staffIdle:
-        return router.staffIdle;
-      default:
-        return router.staff;
-    }
+    if (path === router.staffIdle) return router.staffIdle
+    if (path === router.medicalStaffHistory) return router.medicalStaffHistory + search
+    
+    return router.staff;
   };
 
   const sidebarItems = [
     { 
         label: 'Gestión de Personal', 
         icon: Users, 
-        color: `${router.staff === path ? 'from-green-500 to-emerald-500' : 'from-red-500 to-red-500'}`,
-        isActive : (router.staff === path || router.staffIdle === path),
+        color: `${ 
+          router.staff === path 
+          ? 'from-green-500 to-emerald-500' 
+          : router.medicalStaffHistory === path
+          ? 'from-blue-500 to-cyan-300' 
+          : 'from-red-500 to-red-500'
+        }`,
+        isActive : ( 
+          router.staff === path || router.staffIdle === path || router.medicalStaffHistory === path
+        ),
         path : defineStaffPath()
     },
     { 

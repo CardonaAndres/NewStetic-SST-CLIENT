@@ -67,6 +67,7 @@ Para que el frontend se conecte correctamente con los microservicios, se deben c
 ### 📄 Ejemplo de `.env`:
 
 ```env
+VITE_APP_NAME=
 VITE_AUTH_SERVICE=http://localhost:3001/API/v1/auth
 VITE_STAFF_SERVICE=http://localhost:3002/API/v1/staff
 

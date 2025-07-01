@@ -5,5 +5,6 @@ export const router = {
     ppe : '/epp',
     safety : '/seguridad',
     hygiene : '/higiene',
-    staffIdle : '/personal/inactivo'
+    staffIdle : '/personal/inactivo',
+    medicalStaffHistory : '/historial-medico'
 }
