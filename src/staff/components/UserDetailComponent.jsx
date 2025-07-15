@@ -17,7 +17,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
   useEffect(() => {
     getUserFromBook(user)
     .then(result => setPictureURL(result))
-    .catch(() => toast.error(err.message || 'Error al buscar la img'));
+    .catch((err) => toast.error(err.message || 'Error al buscar la img'));
   }, []);
   
   if(loading) return <LocalLoading />
