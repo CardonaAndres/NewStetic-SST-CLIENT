@@ -1,11 +1,12 @@
 import Logo from '../assets/imgs/LOGO_NS_SINFONDO.png';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Bell, User, ChevronDown, LogOut } from 'lucide-react';
+import { Menu, X, Bell, User, ChevronDown, LogOut, Settings } from 'lucide-react';
 import { useNavigationHook } from '../hooks/useNavigationHook';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../auth/context/AuthContext';
 import { LoadingScreen } from '../components/LoadingScreen';
+import { router } from '../config/config';
 
 export const NavigationLayout = ({ children, title = '' }) => {
   const location = useLocation();
@@ -108,7 +109,7 @@ export const NavigationLayout = ({ children, title = '' }) => {
         <motion.div 
           className={`sidebar bg-white/95 backdrop-blur-sm border-r border-white/30 shadow-xl overflow-hidden
             ${isMobile 
-              ? 'fixed left-0 top-0 h-full z-50 w-80 max-w-[85vw]' 
+              ? 'fixed left-0 top-0 h-full z-40 w-80 max-w-[85vw]' 
               : `relative ${sidebarOpen ? 'w-72' : 'w-20'}`
             }`}
           variants={sidebarVariants}
@@ -244,10 +245,10 @@ export const NavigationLayout = ({ children, title = '' }) => {
         </motion.div>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 relative">
           {/* Navbar */}
           <motion.header
-            className="bg-white/95 backdrop-blur-sm border-b border-white/30 shadow-lg px-4 py-4 lg:px-6"
+            className="bg-white/95 backdrop-blur-sm border-b border-white/30 shadow-lg px-4 py-4 lg:px-6 relative z-50"
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -261,7 +262,7 @@ export const NavigationLayout = ({ children, title = '' }) => {
               <div className="flex items-center space-x-4 min-w-0 flex-1">
                 <motion.button
                   onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="sidebar-toggle p-2 rounded-xl bg-gray-100/50 hover:bg-gray-200/50 transition-colors duration-200 flex-shrink-0"
+                  className="sidebar-toggle p-2 rounded-xl bg-gray-100/50 hover:bg-gray-200/50 transition-colors duration-200 flex-shrink-0 relative z-10"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -279,7 +280,16 @@ export const NavigationLayout = ({ children, title = '' }) => {
               </div>
 
               {/* Right Side */}
-              <div className="flex items-center space-x-3 flex-shrink-0">
+              <div className="flex items-center space-x-3 flex-shrink-0 relative z-50">
+                {/* Botón Administración */}
+                <Link to={router.administration} className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-600 text-white hover:from-indigo-600 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"   
+                >
+                  <Settings className="w-4 h-4" />
+                  <span className="font-medium text-sm hidden sm:inline">
+                    Administración
+                  </span>
+                </Link>
+
                 {/* Notifications */}
                 <motion.button className="p-2 rounded-xl bg-gray-100/50 hover:bg-gray-200/50 transition-colors duration-200 relative"
                   whileHover={{ scale: 1.05 }}
@@ -290,10 +300,10 @@ export const NavigationLayout = ({ children, title = '' }) => {
                 </motion.button>
 
                 {/* User Menu */}
-                <div className="relative user-menu ">
+                <div className="relative user-menu">
                   <motion.button
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center space-x-2 p-2 rounded-xl bg-gray-100/50 hover:bg-gray-200/50 transition-colors duration-200"
+                    className="flex items-center space-x-2 p-2 rounded-xl bg-gray-100/50 hover:bg-gray-200/50 transition-colors duration-200 relative z-10"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -305,26 +315,61 @@ export const NavigationLayout = ({ children, title = '' }) => {
 
                   <AnimatePresence>
                     {userMenuOpen && (
-                      <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        className="absolute right-0 mt-5 w-48 bg-white backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 py-2 z-[999]"
-                      >
-                        <div className="px-4 py-2 border-b border-gray-100/50">
-                          <p className="font-medium text-gray-900 text-sm truncate">
-                            {user?.displayName || 'Usuario Anónimo'}
-                          </p>
-                          <p className="text-xs text-gray-500 truncate">
-                            {user?.mail || 'No disponible'}
-                          </p>
-                        </div>
-                        <div className="py-1" onClick={logout}>
-                          <hr className="my-1 border-gray-100/50" />
-                          <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/50 flex items-center space-x-2 transition-colors">
-                            <LogOut className="w-4 h-4 flex-shrink-0" />
-                            <span className="truncate">Cerrar Sesión</span>
-                          </button>
-                        </div>
-                      </motion.div>
+                      <>
+                        {/* Backdrop overlay para cerrar el menú */}
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 z-[998]"
+                          onClick={() => setUserMenuOpen(false)}
+                        />
+                        
+                        {/* User Menu Dropdown */}
+                        <motion.div 
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }} 
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          className="absolute right-0 mt-3 w-64 bg-white/98 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/30 py-2 z-[999] overflow-hidden"
+                          style={{
+                            filter: 'drop-shadow(0 25px 25px rgb(0 0 0 / 0.15))',
+                            backdropFilter: 'blur(20px) saturate(180%)',
+                          }}
+                        >
+                          {/* User Info Header */}
+                          <div className="px-4 py-3 border-b border-gray-100/50 bg-gradient-to-r from-gray-50/50 to-white/50">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-teal-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <User className="w-5 h-5 text-white" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className="font-semibold text-gray-900 text-sm truncate">
+                                  {user?.displayName || 'Usuario Anónimo'}
+                                </p>
+                                <p className="text-xs text-gray-500 truncate">
+                                  {user?.mail || 'Software SST - New Stetic'}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Menu Items */}
+                          <div className="py-1">
+                            <button 
+                              onClick={logout}
+                              className="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50/70 flex items-center space-x-3 transition-all duration-200 group"
+                            >
+                              <div className="w-8 h-8 bg-red-100/80 group-hover:bg-red-200/80 rounded-lg flex items-center justify-center transition-colors duration-200">
+                                <LogOut className="w-4 h-4 flex-shrink-0" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <span className="font-medium truncate block">Cerrar Sesión</span>
+                                <span className="text-xs text-red-500/70 truncate block">Salir del sistema</span>
+                              </div>
+                            </button>
+                          </div>
+                        </motion.div>
+                      </>
                     )}
                   </AnimatePresence>
                 </div>
@@ -333,7 +378,7 @@ export const NavigationLayout = ({ children, title = '' }) => {
           </motion.header>
 
           {/* Main Content */}
-          <main className="flex-1 p-4 overflow-auto lg:p-6 overscroll-contain">
+          <main className="flex-1 p-2 overflow-auto lg:p-4 overscroll-contain relative">
             <div className="h-full">
               {children}
             </div>
