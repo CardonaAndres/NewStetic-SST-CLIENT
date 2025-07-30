@@ -6,7 +6,7 @@ export class StaffAPI {
     static async getUserByProperties(property){
         try {
             const token = Cookies.get('token');
-            const res = await fetch(`${baseURL}/${property}`, { 
+            const res = await fetch(`${baseURL}/staff/${property}`, { 
                 method : 'GET', credentials : 'include',
                 headers : { 'Content-Type': 'application/json', "authorization": `Bearer ${token}`} 
             });
@@ -27,7 +27,7 @@ export class StaffAPI {
     static async getUserIdlesByProperties(property){
         try {
             const token = Cookies.get('token');
-            const res = await fetch(`${baseURL}/idles/${property}`, { 
+            const res = await fetch(`${baseURL}/staff/idles/${property}`, { 
                 method : 'GET', credentials : 'include',
                 headers : { 'Content-Type': 'application/json', "authorization": `Bearer ${token}`} 
             });
@@ -49,7 +49,7 @@ export class StaffAPI {
         try {
             const token = Cookies.get('token');
 
-            const res = await fetch(`${baseURL}/?page=${page}&limit=${limit}`, { 
+            const res = await fetch(`${baseURL}/staff/?page=${page}&limit=${limit}`, { 
                 method : 'GET', credentials : 'include',
                 headers : {
                     'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ export class StaffAPI {
     static async getUsersIdles(page = 1, limit = 30){
         try {
             const token = Cookies.get('token');
-            const res = await fetch(`${baseURL}/idles?page=${page}&limit=${limit}`, { 
+            const res = await fetch(`${baseURL}/staff/idles?page=${page}&limit=${limit}`, { 
                 method : 'GET', credentials : 'include',
                 headers : { 'Content-Type': 'application/json', "authorization": `Bearer ${token}`}
             });
@@ -91,7 +91,7 @@ export class StaffAPI {
     static async getUserWorkHistory(docNumber){
         try {
             const token = Cookies.get('token');
-            const res = await fetch(`${baseURL}/history/${docNumber}`, { 
+            const res = await fetch(`${baseURL}/staff/history/${docNumber}`, { 
                 method : 'GET', credentials : 'include',
                 headers : { 'Content-Type': 'application/json', "authorization": `Bearer ${token}` } 
             });

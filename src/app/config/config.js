@@ -10,3 +10,20 @@ export const router = {
     administration : '/administracion/software-sst',
     examTypesManager : '/admadministracionin/tipos-examenes',
 }
+
+export const CheckListStates = [
+  'Pendiente', 
+  'Procesando', 
+  'Reprogramado', 
+  'Cancelado', 
+  'Completado', 
+  'Observado', 
+  'Aprobado', 
+  'Rechazado',
+  'En revisión',
+  'Expirado',
+  'Programado',
+  'No requerido',
+  'Duplicado',
+  'En espera'
+];
