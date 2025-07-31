@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ExamTypeFormModal } from './ExamTypeFormModal';
 import { motion } from 'framer-motion';
-import { Edit3, FileText, CheckCircle, XCircle  } from 'lucide-react';
+import { Edit3, FileText, CheckCircle, XCircle, Eye  } from 'lucide-react';
 
 export const ExamTypeCard = ({ examType, cardVariants }) => {
   const [modal, setModal] = useState(false);
@@ -45,13 +45,21 @@ export const ExamTypeCard = ({ examType, cardVariants }) => {
             {/* Card Actions */}
             <div className="px-6 pb-6">
                 <div className="flex items-center space-x-2">
+                    <motion.button 
+                        className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-gray-100/80 hover:bg-gray-200/80 text-gray-700 rounded-lg transition-all duration-200 text-sm font-medium"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        >
+                        <Eye className="w-4 h-4" />
+                        <span>Frecuencias</span>
+                    </motion.button>
                     <motion.button onClick={handleModal}
-                    className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-700 rounded-lg transition-all duration-200 text-sm font-medium"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    >
-                    <Edit3 className="w-4 h-4" />
-                    <span>Editar</span>
+                        className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-700 rounded-lg transition-all duration-200 text-sm font-medium"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        >
+                        <Edit3 className="w-4 h-4" />
+                        <span>Editar</span>
                     </motion.button>
                 </div>
             </div>

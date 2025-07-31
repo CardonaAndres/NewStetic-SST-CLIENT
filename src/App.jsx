@@ -15,6 +15,7 @@ import { StaffIdleManager } from './staff/pages/StaffIdleManager';
 import { ExamManager } from './staff/components/ExamManager';
 import { AdminCenter } from './admin/pages/AdminCenter';
 import { ExamTypesManager } from './admin/pages/ExamTypesManager';
+import { AreasManager } from './admin/pages/AreasManager';
 
 export const App = () => {
   return (
@@ -46,6 +47,7 @@ export const App = () => {
             <Route path={router.medicalStaffHistory} element={<ExamManager />} />
             <Route path={router.administration} element={<AdminCenter />} />
             <Route path={router.examTypesManager} element={<ExamTypesManager />} />
+            <Route path={router.areasManager} element={<AreasManager />} />
           </Route>
 
           {/* Catch-all route for undefined paths */}

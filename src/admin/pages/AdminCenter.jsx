@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FileText, Settings } from 'lucide-react';
+import { Building, FileText, Settings } from 'lucide-react';
 import { NavigationLayout } from "../../app/layouts/NavigationLayout";
 import { router } from '../../app/config/config';
 
@@ -13,6 +13,16 @@ const adminOptions = [
         hoverColor: 'from-blue-600 to-blue-700',
         bgGradient: 'from-blue-50 to-blue-100',
         path: router.examTypesManager
+    },
+    {
+        id: 'ares',
+        title: 'Areas',
+        description: 'Administrar y personalizar las áreas responsables de los procesos internos',
+        icon: Building,
+        color: 'from-teal-500 to-teal-600',
+        hoverColor: 'from-teal-600 to-teal-700',
+        bgGradient: 'from-teal-50 to-teal-100',
+        path: router.areasManager
     }
 ];
 

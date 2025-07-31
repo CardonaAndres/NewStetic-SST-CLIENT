@@ -8,7 +8,9 @@ export const router = {
     staffIdle : '/personal/inactivo',
     medicalStaffHistory : '/historial-medico',
     administration : '/administracion/software-sst',
-    examTypesManager : '/admadministracionin/tipos-examenes',
+    examTypesManager : '/administracion/tipos-examenes',
+    examFrecuency : '/administracion/frecuencias-examen',
+    areasManager : '/administracion/areas'
 }
 
 export const CheckListStates = [

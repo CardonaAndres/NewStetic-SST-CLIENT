@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion'
-import { CheckCircle, Edit3, XCircle, FileText } from "lucide-react"
+import { CheckCircle, Edit3, XCircle, FileText, Eye } from "lucide-react"
 import { ExamTypeFormModal } from './ExamTypeFormModal';
 
 export const ExamTypeItemTable = ({ examType, index }) => {
@@ -43,6 +43,13 @@ export const ExamTypeItemTable = ({ examType, index }) => {
       </td>
       <td className="px-6 py-4">
         <div className="flex items-center justify-center space-x-2">
+          <motion.button
+            className="p-2 bg-gray-100/80 hover:bg-gray-200/80 text-gray-600 rounded-lg transition-all duration-200"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Eye className="w-4 h-4" />
+          </motion.button>
           <motion.button onClick={handleModal}
             className="p-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-600 rounded-lg transition-all duration-200"
             whileHover={{ scale: 1.05 }}
