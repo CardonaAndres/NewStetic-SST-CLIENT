@@ -2,19 +2,10 @@ import { useState } from "react";
 import { toast } from 'react-toastify';
 import { ExamCheckListAPI } from "../API/examCheckList";
 import { 
-  FileText, 
-  User, 
   CheckCircle, 
   XCircle, 
   AlertCircle,
-  Search,
-  Filter,
-  Eye,
-  Edit3,
-  Plus,
   Clock,
-  Activity,
-  Shield,
   AlertTriangle,
   RefreshCw,
   Ban,
@@ -34,6 +25,33 @@ export const useExamCheckListHook = () => {
             setExamChekList(res.data.examsCheckList)
 
         } catch (err) {
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const associateOrUpdateExamType = async (isEditing, checkListItemData, onClose) => {
+        try {
+            setLoading(true);
+            const res = isEditing ? 
+             await ExamCheckListAPI.updateExamType(checkListItemData) : 
+             await ExamCheckListAPI.associateExamType(checkListItemData);
+
+            if(!res.success) throw new Error(res.message);
+
+            onClose();
+            toast.success('Todo listo, proceso exitoso', {
+                position: "top-left",
+                autoClose: 5000,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+
+        } catch (err) {
+            onClose();
             toast.error(err.message);
         } finally {
             setLoading(false);
@@ -130,7 +148,8 @@ export const useExamCheckListHook = () => {
         loading,
         examChekList,
         getCheckLiist,
-        getStatusConfig
+        getStatusConfig,
+        associateOrUpdateExamType
     }
 }
 

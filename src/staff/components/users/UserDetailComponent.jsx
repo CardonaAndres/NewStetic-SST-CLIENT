@@ -97,12 +97,11 @@ export const UserDetailComponent = ({ user, onClose }) => {
                 </div>
               </div>
               
-              {/* Enhanced Quick Actions */}
               <div className="flex flex-wrap gap-3">
                 {getStatusText(user["Estado Empleado"]) === 'Activo' && (
                   <>
                     <Link to={`${router.medicalStaffHistory}?cc=${user.f200_nit}`} className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                      Examenes Periodicos
+                      Periodicos
                     </Link>
                     <Link to={`${router.medicalStaffHistory}?cc=${user.f200_nit}`} className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
                       Ingreso

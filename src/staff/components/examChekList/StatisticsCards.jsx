@@ -23,7 +23,7 @@ export const StatisticsCards = ({ stats }) => {
               <FileText className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total</p>
+              <p className="text-sm text-gray-600">Total asignados</p>
               <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             </div>
           </div>

@@ -1,7 +1,12 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, Edit3, Eye, FileText, Shield, XCircle } from "lucide-react";
+import { ExamCheckListModalForm } from "./ExamCheckListModalForm";
 
 export const ItemListCard = ({ statusConfig, StatusIcon, cardVariants, exam, index }) => {
+  const [modal, setModal] = useState(false);
+  const handleModal = () => setModal(!modal);
+
   return (
     <motion.div
         variants={cardVariants}
@@ -11,7 +16,7 @@ export const ItemListCard = ({ statusConfig, StatusIcon, cardVariants, exam, ind
             <div className="bg-white/95 backdrop-blur-sm rounded-2xl border border-white/30 shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-full">
                 {/* Card Header */}
                 <div className="p-6 pb-4">
-                <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-start justify-between mb-4">
                     <div className={`w-12 h-12 bg-gradient-to-r ${statusConfig.gradient} rounded-xl flex items-center justify-center`}>
                     <FileText className="w-6 h-6 text-white" />
                     </div>
@@ -39,56 +44,58 @@ export const ItemListCard = ({ statusConfig, StatusIcon, cardVariants, exam, ind
                     {statusConfig.description}
                 </p>
                 
-                <div className="space-y-3">
-                    <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500">Estado del Tipo:</span>
-                    <div className={`flex items-center space-x-1 ${exam.estado_tipo_examen === 'Activo' ? 'text-green-600' : 'text-gray-600'}`}>
-                        {exam.estado_tipo_examen === 'Activo' ? (
-                        <CheckCircle className="w-3 h-3" />
-                        ) : (
-                        <XCircle className="w-3 h-3" />
-                        )}
-                        <span className="font-medium">{exam.estado_tipo_examen}</span>
+                    <div className="space-y-3">
+                        <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-500">Estado:</span>
+                        <div className={`flex items-center space-x-1 ${exam.esta_activo === 'Activo' ? 'text-green-600' : 'text-gray-600'}`}>
+                            {exam.esta_activo === 'Activo' ? (
+                            <CheckCircle className="w-3 h-3" />
+                            ) : (
+                            <XCircle className="w-3 h-3" />
+                            )}
+                            <span className="font-medium">{exam.esta_activo}</span>
+                        </div>
+                        </div>
+                        
                     </div>
-                    </div>
-                    
-                </div>
                 </div>
 
                 {/* Card Actions */}
                 <div className="px-6 pb-6">
-                <div className="flex items-center space-x-2">
-                    <motion.button
-                    className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-gray-100/80 hover:bg-gray-200/80 text-gray-700 rounded-lg transition-all duration-200 text-sm font-medium"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    >
-                    <Eye className="w-4 h-4" />
-                    <span>Ver Detalles</span>
-                    </motion.button>
-                    
-                    <motion.button
-                    className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-700 rounded-lg transition-all duration-200 text-sm font-medium"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    >
-                    <Edit3 className="w-4 h-4" />
-                    <span>Gestionar</span>
-                    </motion.button>
-                </div>
+                    <div className="flex items-center space-x-2">
+                        <motion.button
+                        className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-gray-100/80 hover:bg-gray-200/80 text-gray-700 rounded-lg transition-all duration-200 text-sm font-medium"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        >
+                        <Eye className="w-4 h-4" />
+                        <span>Detalles</span>
+                        </motion.button>
+                        
+                        <motion.button onClick={handleModal}
+                            className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-700 rounded-lg transition-all duration-200 text-sm font-medium"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            >
+                            <Edit3 className="w-4 h-4" />
+                            <span>Gestionar</span>
+                        </motion.button>
+                    </div>
                 </div>
 
                 {/* Progress Indicator */}
                 <div className="h-2 bg-gray-100">
-                <motion.div 
-                    className={`h-full bg-gradient-to-r ${statusConfig.gradient} transition-all duration-500`}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${statusConfig.progress}%` }}
-                    transition={{ delay: index * 0.1, duration: 0.8 }}
-                />
+                    <motion.div 
+                        className={`h-full bg-gradient-to-r ${statusConfig.gradient} transition-all duration-500`}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${statusConfig.progress}%` }}
+                        transition={{ delay: index * 0.1, duration: 0.8 }}
+                    />
                 </div>
             </div>
-        </motion.div>   
+
+        <ExamCheckListModalForm open={modal} onClose={handleModal} examCheckListItemData={exam} />
+    </motion.div>   
   )
 }
 

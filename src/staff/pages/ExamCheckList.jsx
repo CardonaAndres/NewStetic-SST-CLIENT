@@ -146,13 +146,6 @@ export const ExamCheckList = () => {
             <p className="text-gray-600 mb-6">
               No hay exámenes que coincidan con tu búsqueda o filtros para este colaborador.
             </p>
-            <motion.button
-              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Asociar nuevo tipo de examen
-            </motion.button>
           </div>
         </motion.div>
       )}
