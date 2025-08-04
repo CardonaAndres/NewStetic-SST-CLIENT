@@ -12,9 +12,9 @@ import { SafetyPage } from './safety/pages/SafetyPage';
 import { HygienePage } from './hygiene/pages/HygienePage';
 import { ProtectedRoute } from './auth/components/ProtectedRoute';
 import { StaffIdleManager } from './staff/pages/StaffIdleManager';
-import { ExamManager } from './staff/components/ExamManager';
 import { AdminCenter } from './admin/pages/AdminCenter';
 import { ExamTypesManager } from './admin/pages/ExamTypesManager';
+import { ExamCheckList } from './staff/pages/ExamCheckList';
 
 export const App = () => {
   return (
@@ -43,7 +43,7 @@ export const App = () => {
             <Route path={router.hygiene} element={<HygienePage /> } />
 
             <Route path={router.staffIdle} element={<StaffIdleManager />} />
-            <Route path={router.medicalStaffHistory} element={<ExamManager />} />
+            <Route path={router.medicalStaffHistory} element={<ExamCheckList />} />
             <Route path={router.administration} element={<AdminCenter />} />
             <Route path={router.examTypesManager} element={<ExamTypesManager />} />
           </Route>

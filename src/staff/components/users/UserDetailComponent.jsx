@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useStaffHook } from '../hooks/useStaffHook';
-import { toast } from 'react-toastify';
+import { useStaffHook } from '../../hooks/useStaffHook';
 import { ArrowLeft, Award, User, Folder } from 'lucide-react';
 import { LocalLoading } from './LocalLoading';
 import { WorkHistoryModal } from './WorkHistoryModal';
 import { Link } from 'react-router-dom';
-import { router } from '../../app/config/config';
+import { router } from '../../../app/config/config';
 
 export const UserDetailComponent = ({ user, onClose }) => {
   const { loading, getUserFromBook, formatInfo } = useStaffHook();
@@ -17,7 +16,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
   useEffect(() => {
     getUserFromBook(user)
     .then(result => setPictureURL(result))
-    .catch((err) => toast.error(err.message || 'Error al buscar la img'));
+    .catch((err) => console.log(err.message || 'Error al buscar la img'));
   }, []);
   
   if(loading) return <LocalLoading />
@@ -83,10 +82,12 @@ export const UserDetailComponent = ({ user, onClose }) => {
                     {getStatusText(user["Estado Empleado"])}
                   </span>
                   {/* New Button Below Status */}
-                  <button onClick={handleModal} className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-600 to-slate-700 text-white text-sm font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5">
-                    <Folder className="w-4 h-4" />
-                    Trayectoria laboral
-                  </button>
+                  {getStatusText(user["Estado Empleado"]) === 'Activo' && (
+                    <button onClick={handleModal} className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-600 to-slate-700 text-white text-sm font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5">
+                      <Folder className="w-4 h-4" />
+                      Trayectoria laboral
+                    </button>
+                  )}
                 </div>
                 <div className="flex items-center gap-2 text-slate-500">
                   <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
@@ -98,9 +99,20 @@ export const UserDetailComponent = ({ user, onClose }) => {
               
               {/* Enhanced Quick Actions */}
               <div className="flex flex-wrap gap-3">
-                <Link to={`${router.medicalStaffHistory}?cc=${user.f200_nit}`} className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                  Examenes
-                </Link>
+                {getStatusText(user["Estado Empleado"]) === 'Activo' && (
+                  <>
+                    <Link to={`${router.medicalStaffHistory}?cc=${user.f200_nit}`} className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
+                      Examenes Periodicos
+                    </Link>
+                    <Link to={`${router.medicalStaffHistory}?cc=${user.f200_nit}`} className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
+                      Ingreso
+                    </Link>
+                    <Link to={`${router.medicalStaffHistory}?cc=${user.f200_nit}`} className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105">
+                      Egreso
+                    </Link>
+                  </>
+                )}
+
               </div>
             </div>
           </div>

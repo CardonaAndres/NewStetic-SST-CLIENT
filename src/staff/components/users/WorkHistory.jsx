@@ -1,5 +1,5 @@
 import { Calendar, MapPin, User, Briefcase, Building2, Clock, CheckCircle2, XCircle, ArrowLeft, Award } from 'lucide-react';
-import { useStaffHook } from '../hooks/useStaffHook';
+import { useStaffHook } from '../../hooks/useStaffHook';
 import { useEffect } from 'react';
 import { LocalLoading } from './LocalLoading';
 

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { NavigationLayout } from '../../app/layouts/NavigationLayout';
 import { useStaffHook } from '../hooks/useStaffHook';
 import { LoadingScreen } from '../../app/components/LoadingScreen';
-import { Header } from '../components/Header';
-import { UserCard } from '../components/UserCard';
+import { Header } from '../components/users/Header';
+import { UserCard } from '../components/users/UserCard';
 import { Pagination } from '../../app/components/Pagination';
 import { toast } from 'react-toastify';
 

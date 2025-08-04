@@ -1,8 +1,8 @@
 import { Modal, Box, Backdrop } from '@mui/material';
-import { modalStyles } from '../../app/assets/js/styles';
-import { WorkHistory } from './WorkHistory';
+import { modalStyles } from '../../../app/assets/js/styles';
+import { UserDetailComponent } from './UserDetailComponent';
 
-export const WorkHistoryModal = ({ open, onClose, user }) => {
+export const UserModal = ({ open, onClose, user }) => {
   const handleClose = (_, reason) => {
     if (reason && (reason === 'backdropClick' || reason === 'escapeKeyDown')) return;
     onClose();
@@ -17,7 +17,7 @@ export const WorkHistoryModal = ({ open, onClose, user }) => {
       }}
     >
       <Box sx={modalStyles} onClick={(e) => e.stopPropagation()}>
-        <WorkHistory onClose={onClose} user={user} />
+        <UserDetailComponent user={user} onClose={onClose} />
       </Box>
     </Modal>
   );

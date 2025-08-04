@@ -1,9 +1,9 @@
 import { Filter, Search, Sparkles, Loader2, X, UserX } from 'lucide-react';
-import { useStaffHook } from '../hooks/useStaffHook';
+import { useStaffHook } from '../../hooks/useStaffHook';
 import { useForm } from 'react-hook-form';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { router } from '../../app/config/config';
+import { router } from '../../../app/config/config';
 
 export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch, isSearchMode }) => {
     const location = useLocation();
@@ -63,7 +63,7 @@ export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch
                                     )}
                                 </div>
                                 <input 
-                                    type="text" 
+                                    type="text" autoComplete='off'
                                     placeholder="Buscar por cédula, nombre, correo o cargo ..." 
                                     className="flex-1 pl-10 pr-10 py-2.5 bg-transparent focus:outline-none text-slate-700 placeholder-slate-400" 
                                     {...register('property')}

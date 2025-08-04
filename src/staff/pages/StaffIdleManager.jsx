@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { NavigationLayout } from "../../app/layouts/NavigationLayout"
 import { useStaffHook } from '../hooks/useStaffHook';
 import { LoadingScreen } from '../../app/components/LoadingScreen';
-import { Header } from '../components/Header';
+import { Header } from '../components/users/Header';
 import { Pagination } from '../../app/components/Pagination';
-import { UserCard } from '../components/UserCard';
+import { UserCard } from '../components/users/UserCard';
 
 export const StaffIdleManager = () => {
   const { loading, getAllUsersIdle, getUserByProperty, users, meta } = useStaffHook();

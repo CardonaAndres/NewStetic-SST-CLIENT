@@ -1,4 +1,4 @@
-import LogoNS from '../../app/assets/imgs/LOGO_NS_SINFONDO.png';
+import LogoNS from '../../../app/assets/imgs/LOGO_NS_SINFONDO.png';
 
 export const LocalLoading = () => {
   return (

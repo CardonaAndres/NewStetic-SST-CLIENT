@@ -1,0 +1,54 @@
+import { motion } from 'framer-motion';
+import { User, Plus, Activity } from "lucide-react";
+
+export const Header = ({ cc }) => {
+  return (
+    <>
+    <motion.div 
+        className="mb-8" 
+        initial={{ opacity: 0, y: -20 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.6 }}
+      >
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/40 shadow-lg p-6">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="flex items-start space-x-4">
+              
+              <div>
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                    <Activity className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-bold text-gray-900">
+                      Exámenes del Colaborador
+                    </h1>
+                    <div className="flex items-center space-x-2 text-gray-600">
+                      <User className="w-4 h-4" />
+                      <span className="font-medium">CC: {cc}</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-gray-600">
+                  Gestiona los exámenes médicos asignados a este colaborador
+                </p>
+              </div>
+            </div>
+            
+            <motion.button
+              className="flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Plus className="w-5 h-5" />
+              <span className="hidden sm:inline">Agregar</span>
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
+    
+    </>
+  )
+}
+
+

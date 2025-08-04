@@ -379,7 +379,7 @@ export const NavigationLayout = ({ children, title = '' }) => {
 
           {/* Main Content */}
           <main className="flex-1 p-2 overflow-auto lg:p-4 overscroll-contain relative">
-            <div className="h-full">
+            <div className="h-full mb-10">
               {children}
             </div>
           </main>

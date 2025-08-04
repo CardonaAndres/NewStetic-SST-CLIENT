@@ -1,8 +1,8 @@
 import { User, MapPin, Calendar, Mail, Building } from 'lucide-react';
 import { useState } from 'react';
 import { UserModal } from './UserModal';
-import { formatDate } from '../../app/assets/js/styles';
-import { useStaffHook } from '../hooks/useStaffHook';
+import { formatDate } from '../../../app/assets/js/styles';
+import { useStaffHook } from '../../hooks/useStaffHook';
 
 export const UserCard = ({ user }) => {
   const [ modal, setModal ] = useState(false);

@@ -6,12 +6,15 @@ import { LoadingScreen } from "../../app/components/LoadingScreen";
 import { FileText } from "lucide-react";
 import { Header } from "../components/examTypes/Header";
 import { Content } from "../components/examTypes/Content";
+import { ExamTypeFormModal } from "../components/examTypes/ExamTypeFormModal";
 
 export const ExamTypesManager = () => {
   const { loading, getExamTypes, examTypes } = useExamTypesHook();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
+  const [modal, setModal] = useState(false);
+  const handleModal = () => setModal(!modal);
 
   useEffect(() => {
     getExamTypes()
@@ -97,7 +100,7 @@ export const ExamTypesManager = () => {
             <p className="text-gray-600 mb-6">
               No hay tipos de examen que coincidan con tu búsqueda o filtros.
             </p>
-            <motion.button
+            <motion.button onClick={handleModal}
               className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -107,6 +110,8 @@ export const ExamTypesManager = () => {
           </div>
         </motion.div>
       )}
+
+      <ExamTypeFormModal onClose={handleModal} open={modal} />
     </NavigationLayout>
   )
 }
