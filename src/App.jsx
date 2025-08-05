@@ -15,6 +15,7 @@ import { StaffIdleManager } from './staff/pages/StaffIdleManager';
 import { AdminCenter } from './admin/pages/AdminCenter';
 import { ExamTypesManager } from './admin/pages/ExamTypesManager';
 import { ExamCheckList } from './staff/pages/ExamCheckList';
+import { ExamHistory } from './staff/pages/ExamHistory';
 
 export const App = () => {
   return (
@@ -46,9 +47,9 @@ export const App = () => {
             <Route path={router.medicalStaffHistory} element={<ExamCheckList />} />
             <Route path={router.administration} element={<AdminCenter />} />
             <Route path={router.examTypesManager} element={<ExamTypesManager />} />
+            <Route path={router.examHistory} element={<ExamHistory />} />
           </Route>
 
-          {/* Catch-all route for undefined paths */}
           <Route path="*" element={<HomePage />} />
         </Routes>
       </Router>  

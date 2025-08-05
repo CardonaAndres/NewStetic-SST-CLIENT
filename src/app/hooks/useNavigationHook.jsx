@@ -6,7 +6,8 @@ export const useNavigationHook = (path = '/', search = '') => {
   const defineStaffPath = () => {
     if (path === router.staffIdle) return router.staffIdle
     if (path === router.medicalStaffHistory) return router.medicalStaffHistory + search
-    
+    if (path === router.examHistory) return router.examHistory + search
+
     return router.staff;
   };
 
@@ -17,12 +18,15 @@ export const useNavigationHook = (path = '/', search = '') => {
         color: `${ 
           router.staff === path 
           ? 'from-green-500 to-emerald-500' 
-          : router.medicalStaffHistory === path
+          : router.medicalStaffHistory || router.examHistory === path
           ? 'from-blue-500 to-cyan-300' 
           : 'from-red-500 to-red-500'
         }`,
         isActive : ( 
-          router.staff === path || router.staffIdle === path || router.medicalStaffHistory === path
+          router.staff === path || 
+          router.staffIdle === path || 
+          router.medicalStaffHistory === path ||
+          router.examHistory === path
         ),
         path : defineStaffPath()
     },
