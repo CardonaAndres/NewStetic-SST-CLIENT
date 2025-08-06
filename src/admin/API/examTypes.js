@@ -3,10 +3,10 @@ import Cookies from 'js-cookie';
 const baseURL = String(import.meta.env.VITE_STAFF_SERVICE);
 
 export class ExamTypesAPI {
-    static async getExamTypes() {
+    static async getExamTypes(condition = '') {
         try {
             const token = Cookies.get('token');
-            const res = await fetch(`${baseURL}/examtypes/`, {
+            const res = await fetch(`${baseURL}/examtypes/${condition}`, {
                 method : 'GET', headers : { 
                     'Content-Type': 'application/json', 
                     "authorization": `Bearer ${token}` 

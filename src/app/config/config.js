@@ -12,7 +12,7 @@ export const router = {
     examTypesManager : '/admadministracionin/tipos-examenes',
 }
 
-export const CheckListStates = [
+const CheckListAllStates = [
   'Pendiente', 
   'Procesando', 
   'Reprogramado', 
@@ -27,4 +27,8 @@ export const CheckListStates = [
   'No requerido',
   'En espera',
   'Eliminado'
-];
+]
+
+const excludedStates = ['Eliminado'];
+
+export const CheckListStates = CheckListAllStates.filter(s => !excludedStates.includes(s));

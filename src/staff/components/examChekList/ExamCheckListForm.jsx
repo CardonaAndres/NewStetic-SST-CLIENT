@@ -51,7 +51,7 @@ export const ExamCheckListForm = ({ onClose, initialData }) => {
   }, [searchParams]);
 
   useEffect(() => {
-    getExamTypes();
+    getExamTypes('?condition=actives');
   }, []);
 
   useEffect(() => {

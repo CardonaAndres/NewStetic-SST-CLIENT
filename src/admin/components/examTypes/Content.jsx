@@ -1,4 +1,3 @@
-import { FileText, Edit3, CheckCircle, XCircle } from "lucide-react";
 import { AnimatePresence, motion } from 'framer-motion'
 import { ExamTypeCard } from "./ExamTypeCard";
 import { ExamTypeItemTable } from "./ExamTypeItemTable";

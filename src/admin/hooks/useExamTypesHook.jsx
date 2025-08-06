@@ -6,11 +6,11 @@ export const useExamTypesHook = () => {
     const [examTypes, setExamTypes] = useState([]);
     const [loading, setLoading] = useState();
     
-    const getExamTypes = async () => {
+    const getExamTypes = async (condition = '') => {
         try {
             setLoading(true);
 
-            const res = await ExamTypesAPI.getExamTypes();
+            const res = await ExamTypesAPI.getExamTypes(condition);
             if(!res.success) throw new Error(res.message)
             setExamTypes(res.data.examTypes)
 
