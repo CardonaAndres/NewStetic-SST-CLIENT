@@ -39,7 +39,7 @@ export const Header = ({ cc }) => {
                   </div>
                   <div>
                     <h1 className="text-2xl font-bold text-gray-900">
-                      Exámenes del Colaborador
+                      Listado De Exámenes
                     </h1>
                     <div className="flex items-center space-x-2 text-gray-600">
                       <User className="w-4 h-4" />

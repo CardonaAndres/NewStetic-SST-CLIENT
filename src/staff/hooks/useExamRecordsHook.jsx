@@ -27,12 +27,36 @@ export const useExamRecordsHook = () => {
         }
     }
 
+    const registerOrUpdateExam = async (isEditing, onClose, recordData) => {
+        try {
+            setLoading(true);
+            const res = isEditing ? ''  : await ExamRecordsAPI.registerExam(recordData);
+
+            if(!res.success) throw new Error(res.message);
+ 
+            onClose();
+            toast.success('Todo listo, proceso exitoso', {
+                position: "top-left",
+                autoClose: 5000,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        } catch (err) {
+            onClose();
+            toast.error(err.message || 'Internal Server Error');
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return {
         loading,
         examRecords,
         exam,
         meta,
-        getExamRecords
+        getExamRecords,
+        registerOrUpdateExam
     }
 }
-

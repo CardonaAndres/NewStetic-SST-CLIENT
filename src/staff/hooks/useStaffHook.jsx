@@ -36,6 +36,7 @@ export const useStaffHook = () => {
             setMeta(res.data.meta)
            
         } catch (err) {
+            if(String(err?.message).toLocaleLowerCase() !== 'conection is close') return;
             toast.error(err.message || 'Internal Server Error');
         } finally {
             setLoading(false);
