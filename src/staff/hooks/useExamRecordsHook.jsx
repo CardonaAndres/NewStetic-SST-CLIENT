@@ -30,7 +30,9 @@ export const useExamRecordsHook = () => {
     const registerOrUpdateExam = async (isEditing, onClose, recordData) => {
         try {
             setLoading(true);
-            const res = isEditing ? ''  : await ExamRecordsAPI.registerExam(recordData);
+            const res = isEditing 
+             ? await ExamRecordsAPI.updateExam(recordData)
+             : await ExamRecordsAPI.registerExam(recordData);
 
             if(!res.success) throw new Error(res.message);
  

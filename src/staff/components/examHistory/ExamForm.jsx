@@ -18,6 +18,7 @@ import {
   FileCheck,
   Hash,
   ExternalLink,
+  Edit3,
 } from 'lucide-react';
 
 export const ExamForm = ({ initialData, onClose }) => {
@@ -39,7 +40,8 @@ export const ExamForm = ({ initialData, onClose }) => {
   } = useForm({
     defaultValues: {  
       ...initialData,
-      checkListItemID: searchParams.get("checklistID")
+      checkListItemID: searchParams.get("checklistID"),
+      updateReason: '' 
     }
   });
 
@@ -127,33 +129,11 @@ export const ExamForm = ({ initialData, onClose }) => {
   };
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      const formData = new FormData();
-      
-      Object.keys(data).forEach(key => {
-        if (key === 'document') {
-          if (selectedFile) {
-            formData.append('document', data[key]);
-          } 
-            
-          if (existingDocumentUrl) {
-            formData.append('existing_document_url', existingDocumentUrl);
-          }
-        } 
-          
-        if (key !== 'document') {
-          formData.append(key, data[key]);
-        }
-      });
-
+      const formData = new FormData(); 
+      Object.keys(data).forEach(key => formData.append(key, data[key]));
       await registerOrUpdateExam(isEditing, onClose, formData)
-      
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
   });
 
-  // Calculate days between dates
   const calculateDaysBetween = (startDate, endDate) => {
     if (!startDate || !endDate) return null;
     const start = new Date(startDate);
@@ -162,7 +142,6 @@ export const ExamForm = ({ initialData, onClose }) => {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
-  // Get file name from URL
   const getFileNameFromUrl = (url) => {
     if (!url) return '';
     const parts = url.split('/');
@@ -204,6 +183,44 @@ export const ExamForm = ({ initialData, onClose }) => {
 
         {/* Form */}
         <form onSubmit={onSubmit} className="p-6 space-y-6">
+          {/* Update Reason - Only shown when editing */}
+          {isEditing && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className="space-y-2"
+            >
+              <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+                <Edit3 className="w-4 h-4 text-amber-500" />
+                <span>Motivo de Actualización</span>
+                <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                {...register('updateReason', {
+                  required: isEditing ? 'Por favor, indica el motivo de la actualización' : false
+                })}
+                rows={3}
+                className={`w-full px-4 py-3 bg-amber-50/50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-300 transition-all duration-200 resize-none ${
+                  errors.updateReason ? 'border-red-300 bg-red-50/50' : 'border-amber-200/50'
+                }`}
+                placeholder="Describe por qué estás actualizando este registro..."
+              />
+              <AnimatePresence>
+                {errors.updateReason && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="text-sm text-red-600 flex items-center space-x-1"
+                  >
+                    <AlertCircle className="w-3 h-3" />
+                    <span>{errors.updateReason.message}</span>
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
+
           {/* Date Fields Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Date Made */}
@@ -389,6 +406,11 @@ export const ExamForm = ({ initialData, onClose }) => {
             <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
               <Upload className="w-4 h-4 text-indigo-500" />
               <span>Documento</span>
+              {isEditing && selectedFile && (
+                <span className="text-xs text-amber-600 bg-amber-100 px-2 py-1 rounded-full">
+                  Reemplazará el documento actual
+                </span>
+              )}
             </label>
             
             {/* Existing Document Display */}

@@ -42,4 +42,23 @@ export class ExamRecordsAPI {
             return { success: false, message: err.message || 'Internal Server Error' }
         }
     }
+
+    static async updateExam(recordData){
+        try {
+            const token = Cookies.get('token');
+            const res = await fetch(`${baseURL}/exam-records/${recordData.checklist_item_id}`, { 
+                method : 'PATCH', credentials : 'include',
+                headers : {
+                    "authorization": `Bearer ${token}`
+                }, body: recordData
+            });
+
+            const data = await res.json();
+            if(!res.ok) throw new Error(data?.message)
+            return { success: true, data }
+
+        } catch (err) {
+            return { success: false, message: err.message || 'Internal Server Error' }
+        }
+    }
 }
