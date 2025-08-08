@@ -58,12 +58,41 @@ export const useExamRecordsHook = () => {
         }
     }
 
+    const deleteExam = async (itemInfo, onClose, setIsDeleting, setShowFinalConfirmation) => {
+        try {
+            setIsDeleting(true);
+            setLoading(true);
+
+            const res = await ExamRecordsAPI.delete(itemInfo.itemID, itemInfo.deletionReason);
+            if(!res.success) throw new Error(res.message)
+
+            onClose();
+            toast.success('Todo listo, proceso exitoso', {
+                position: "top-left",
+                autoClose: 5000,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+
+        } catch (err) {
+            onClose();
+            toast.error(err.message || 'Internal Server Error');
+        } finally {
+            setIsDeleting(false);
+            setLoading(false);
+            setShowFinalConfirmation(false);
+        }
+    }
+
     return {
         loading,
         examRecords,
         exam,
         meta,
         getExamRecords,
-        registerOrUpdateExam
+        registerOrUpdateExam,
+        deleteExam
     }
 }

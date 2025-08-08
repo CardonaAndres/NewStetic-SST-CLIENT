@@ -204,6 +204,7 @@ export const ExamHistory = () => {
                 StatusIcon={StatusIcon}
                 daysRemaining={daysRemaining}
                 record={record}
+                cardVariants={cardVariants}
               />
           );
         })}

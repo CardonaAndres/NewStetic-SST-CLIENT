@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { ExamFormModal } from './ExamFormModal';
+import { PDFViewerModal } from './PDFViewerModal';
 import { 
     CalendarClock, 
     Clock, 
@@ -8,10 +11,10 @@ import {
     FileX, 
     MessageSquare,
     Calendar,  
-    Edit3
+    Edit3,
+    Trash2
 } from 'lucide-react';
-import { useState } from 'react';
-import { ExamFormModal } from './ExamFormModal';
+import { ExamDeleteFormModal } from './ExamDeleteFormModal';
 
 export const ExamHistoryCard = ({ 
     status, 
@@ -22,7 +25,12 @@ export const ExamHistoryCard = ({
     record
 }) => {
   const [modal, setModal] = useState(false);
+  const [PDFViewer, setPDFViewer] = useState(false);
+  const [deleteFormModal, setDeleteFormModal] = useState(false);
+
   const handleModal = () => setModal(!modal);
+  const handlePDFViewer = () => setPDFViewer(!PDFViewer);
+  const handleDeleteFormModal = () => setDeleteFormModal(!deleteFormModal);
 
   return (
     <motion.div
@@ -126,16 +134,9 @@ export const ExamHistoryCard = ({
                         className="p-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-600 rounded-lg transition-all duration-200"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => window.open(record.PDF_url, '_blank')}
+                        onClick={handlePDFViewer}
                     >
                         <Eye className="w-4 h-4" />
-                    </motion.button>
-                    <motion.button
-                        className="p-2 bg-green-100/80 hover:bg-green-200/80 text-green-600 rounded-lg transition-all duration-200"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <Download className="w-4 h-4" />
                     </motion.button>
                 </>
                 )}
@@ -147,10 +148,24 @@ export const ExamHistoryCard = ({
                     >
                         <Edit3 className="w-4 h-4" />
                 </motion.button>
+                <motion.button
+                        onClick={handleDeleteFormModal}
+                        className="p-2 bg-red-500 hover:bg-red-400/80 text-white rounded-lg transition-all duration-200"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <Trash2 className="w-4 h-4" />
+                </motion.button>
             </div>
             </div>
         </div>
+        <PDFViewerModal exam={record} onClose={handlePDFViewer} open={PDFViewer}  />
         <ExamFormModal open={modal} onClose={handleModal} recordData={record} />
+        <ExamDeleteFormModal 
+            itemID={record.checklist_item_id} 
+            open={deleteFormModal}
+            onClose={handleDeleteFormModal}
+        />
         </div>
     </motion.div>
   )
