@@ -50,7 +50,9 @@ export const ExamForm = ({ initialData, onClose }) => {
   const watchedFrequency = watch('frequencyInDays');
 
   useEffect(() => {
-    if (isEditing && initialData.document) setExistingDocumentUrl(initialData.document)
+    if (isEditing && initialData.document && initialData.document !== 'SIN PDF') 
+      setExistingDocumentUrl(initialData.document)
+
   }, [isEditing, initialData.document]);
 
   useEffect(() => {
@@ -95,14 +97,6 @@ export const ExamForm = ({ initialData, onClose }) => {
     }
   };
 
-  const handleRemoveFile = () => {
-    setSelectedFile(null);
-    setPreviewUrl(null);
-    setValue('document', null);
-    
-    if (isEditing && initialData.document) setExistingDocumentUrl(initialData.document)
-  };
-
   const handleRemoveExistingDocument = () => {
     setExistingDocumentUrl(null);
     setValue('document', null);
@@ -143,7 +137,7 @@ export const ExamForm = ({ initialData, onClose }) => {
   };
 
   const getFileNameFromUrl = (url) => {
-    if (!url) return '';
+    if (!url || url === 'SIN PDF') return '';
     const parts = url.split('/');
     return parts[parts.length - 1] || 'Documento existente';
   };
@@ -406,7 +400,7 @@ export const ExamForm = ({ initialData, onClose }) => {
             <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
               <Upload className="w-4 h-4 text-indigo-500" />
               <span>Documento</span>
-              {isEditing && selectedFile && (
+              {isEditing && selectedFile && initialData.document !== 'SIN PDF' && (
                 <span className="text-xs text-amber-600 bg-amber-100 px-2 py-1 rounded-full">
                   Reemplazará el documento actual
                 </span>
@@ -489,15 +483,6 @@ export const ExamForm = ({ initialData, onClose }) => {
                           {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                         </p>
                       </div>
-                      <motion.button
-                        type="button"
-                        onClick={handleRemoveFile}
-                        className="text-sm text-red-600 hover:text-red-800 transition-colors duration-200"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Eliminar archivo
-                      </motion.button>
                     </div>
                   ) : (
                     <div className="space-y-2">

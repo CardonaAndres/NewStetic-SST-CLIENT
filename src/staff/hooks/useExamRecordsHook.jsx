@@ -30,8 +30,12 @@ export const useExamRecordsHook = () => {
     const registerOrUpdateExam = async (isEditing, onClose, recordData) => {
         try {
             setLoading(true);
+            const checklistItemID = (recordData.has('checklist_item_id') && isEditing) 
+             ? recordData.get('checklist_item_id') 
+             : null
+
             const res = isEditing 
-             ? await ExamRecordsAPI.updateExam(recordData)
+             ? await ExamRecordsAPI.updateExam(recordData, checklistItemID)
              : await ExamRecordsAPI.registerExam(recordData);
 
             if(!res.success) throw new Error(res.message);
@@ -45,6 +49,7 @@ export const useExamRecordsHook = () => {
                 draggable: true,
                 theme: "light",
             });
+            
         } catch (err) {
             onClose();
             toast.error(err.message || 'Internal Server Error');

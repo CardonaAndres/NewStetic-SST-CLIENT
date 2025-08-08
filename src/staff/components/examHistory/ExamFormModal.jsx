@@ -4,17 +4,17 @@ import { ExamForm } from './ExamForm';
 
 export const ExamFormModal = ({ open, onClose, recordData = {} }) => {  
   const initialData = {
-    checklist_id: recordData?.checklist_id || null,
     checklist_item_id: recordData?.checklist_item_id || null,
     observations: recordData?.observaciones || '',
     document: recordData?.PDF_url || null,
     state: recordData?.estado || 'Pendiente',
     frequencyInDays: recordData?.frecuencia_dias || null,
-    expirationDate: recordData?.fecha_vencimiento ? 
-        new Date(recordData.fecha_vencimiento).toISOString().split('T')[0] : '',
-    dateMade: recordData?.fecha_realizado ? 
-        new Date(recordData.fecha_realizado).toISOString().split('T')[0] : 
-        new Date().toISOString().split('T')[0],
+    expirationDate: recordData?.fecha_vencimiento 
+       ? new Date(recordData.fecha_vencimiento).toISOString().split('T')[0] 
+       : '',
+    dateMade: recordData?.fecha_realizado 
+      ? new Date(recordData.fecha_realizado).toISOString().split('T')[0] 
+      : new Date().toISOString().split('T')[0],
   }
 
   return (

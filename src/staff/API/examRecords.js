@@ -43,10 +43,10 @@ export class ExamRecordsAPI {
         }
     }
 
-    static async updateExam(recordData){
+    static async updateExam(recordData, checklistItemID){
         try {
             const token = Cookies.get('token');
-            const res = await fetch(`${baseURL}/exam-records/${recordData.checklist_item_id}`, { 
+            const res = await fetch(`${baseURL}/exam-records/${checklistItemID}`, { 
                 method : 'PATCH', credentials : 'include',
                 headers : {
                     "authorization": `Bearer ${token}`
