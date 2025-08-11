@@ -188,8 +188,8 @@ export const useStaffHook = () => {
         const infoSections = [
             {
               title: 'Información Personal',
-              icon: <User className="w-5 h-5" />,
-              color: 'from-blue-500 to-indigo-600',
+              icon: <User className="w-5 h-5 text-blue-800" />,
+              color: 'from-blue-100 to-indigo-200',
               items: [
                 { label: 'Nombre Completo', value: user.Nombre, icon: <User className="w-4 h-4" /> },
                 { label: 'Tipo de Identificación', value: user["Tipo de identificacion"] === 'C' ? 'Cédula de Ciudadanía' : user["Tipo de indetificacion"], icon: <CreditCard className="w-4 h-4" /> },
@@ -203,8 +203,8 @@ export const useStaffHook = () => {
             },
             {
               title: 'Información Laboral',
-              icon: <Briefcase className="w-5 h-5" />,
-              color: 'from-emerald-500 to-teal-600',
+              icon: <Briefcase className="w-5 h-5 text-blue-800" />,
+              color: 'from-blue-100 to-indigo-200',
               items: [
                 { label: 'Cargo', value: user["Desc. Cargo"], icon: <Award className="w-4 h-4" /> },
                 { label: 'Gerencia', value: user.Gerencia, icon: <Building className="w-4 h-4" /> },
@@ -218,8 +218,8 @@ export const useStaffHook = () => {
             },
             {
               title: 'Información de Empleo',
-              icon: <Clock className="w-5 h-5" />,
-              color: 'from-purple-500 to-pink-600',
+              icon: <Clock className="w-5 h-5 text-blue-800" />,
+              color: 'from-blue-100 to-indigo-200',
               items: [
                 { label: 'Fecha de Ingreso', value: formatDate(user["Fecha de ingreso"]), icon: <Calendar className="w-4 h-4" /> },
                 { label: 'Período de Ingreso', value: user.PeriodoIngreso, icon: <Calendar className="w-4 h-4" /> },

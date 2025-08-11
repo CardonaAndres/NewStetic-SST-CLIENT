@@ -51,28 +51,6 @@ export const WorkHistory = ({ user, onClose }) => {
         return `${months} mes${months !== 1 ? 'es' : ''}`;
     };
 
-    // Calcular experiencia total
-    const calculateTotalExperience = () => {
-        if (!careerData || careerData.length === 0) return 0;
-        
-        let totalMonths = 0;
-        careerData.forEach(job => {
-            const start = job["Fecha de ingreso"].includes('T') ? new Date(job["Fecha de ingreso"]) : 
-                new Date(`${job["Fecha de ingreso"].substring(0, 4)}-${job["Fecha de ingreso"].substring(4, 6)}-${job["Fecha de ingreso"].substring(6, 8)}`);
-            
-            const end = job["Fecha de Retiro"] ? 
-                (job["Fecha de Retiro"].includes('T') ? new Date(job["Fecha de Retiro"]) : 
-                new Date(`${job["Fecha de Retiro"].substring(0, 4)}-${job["Fecha de Retiro"].substring(4, 6)}-${job["Fecha de Retiro"].substring(6, 8)}`)) : 
-                new Date();
-            
-            const months = Math.floor((end - start) / (1000 * 60 * 60 * 24 * 30.44));
-            totalMonths += months;
-        });
-        
-        const years = Math.floor(totalMonths / 12);
-        return years;
-    };
-
     // Ordenar por fecha de ingreso (más reciente primero)
     const sortedData = careerData ? [...careerData].sort((a, b) => {
         const dateA = a["Fecha de ingreso"];

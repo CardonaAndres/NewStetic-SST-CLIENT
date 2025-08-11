@@ -5,16 +5,17 @@ import { PDFViewerModal } from './PDFViewerModal';
 import { 
     CalendarClock, 
     Clock, 
-    Download, 
     Eye, 
     FileText, 
     FileX, 
     MessageSquare,
     Calendar,  
     Edit3,
-    Trash2
+    Trash2,
+    List
 } from 'lucide-react';
 import { ExamDeleteFormModal } from './ExamDeleteFormModal';
+import { ExamLogsModal } from './ExamLogsModal';
 
 export const ExamHistoryCard = ({ 
     status, 
@@ -25,10 +26,12 @@ export const ExamHistoryCard = ({
     record
 }) => {
   const [modal, setModal] = useState(false);
+  const [logsModal, setLogsModal] = useState(false);
   const [PDFViewer, setPDFViewer] = useState(false);
   const [deleteFormModal, setDeleteFormModal] = useState(false);
 
   const handleModal = () => setModal(!modal);
+  const handleLogsModal = () => setLogsModal(!logsModal);
   const handlePDFViewer = () => setPDFViewer(!PDFViewer);
   const handleDeleteFormModal = () => setDeleteFormModal(!deleteFormModal);
 
@@ -149,6 +152,14 @@ export const ExamHistoryCard = ({
                         <Edit3 className="w-4 h-4" />
                 </motion.button>
                 <motion.button
+                        onClick={handleLogsModal}
+                        className="p-2 bg-yellow-200 hover:bg-yellow-300/80 text-yellow-600 rounded-lg transition-all duration-200"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <List className="w-4 h-4" />
+                </motion.button>
+                <motion.button
                         onClick={handleDeleteFormModal}
                         className="p-2 bg-red-500 hover:bg-red-400/80 text-white rounded-lg transition-all duration-200"
                         whileHover={{ scale: 1.05 }}
@@ -159,13 +170,23 @@ export const ExamHistoryCard = ({
             </div>
             </div>
         </div>
+
+        
         <PDFViewerModal exam={record} onClose={handlePDFViewer} open={PDFViewer}  />
         <ExamFormModal open={modal} onClose={handleModal} recordData={record} />
+        
+        <ExamLogsModal  
+            open={logsModal} 
+            onClose={handleLogsModal} 
+            checkListItemID={record.checklist_item_id} 
+        />
+
         <ExamDeleteFormModal 
             itemID={record.checklist_item_id} 
             open={deleteFormModal}
             onClose={handleDeleteFormModal}
         />
+
         </div>
     </motion.div>
   )

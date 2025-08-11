@@ -9,7 +9,9 @@ export const router = {
     medicalStaffHistory : '/historial-medico',
     examHistory : '/historial-examen',
     administration : '/administracion/software-sst',
-    examTypesManager : '/admadministracionin/tipos-examenes',
+    examTypesManager : '/administracion/tipos-examenes',
+    incomeExam: '/examen-ingreso',
+    egressExam: '/examen-egreso'
 }
 
 const CheckListAllStates = [

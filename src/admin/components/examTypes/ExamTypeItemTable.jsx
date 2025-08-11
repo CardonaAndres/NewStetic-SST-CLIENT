@@ -42,15 +42,17 @@ export const ExamTypeItemTable = ({ examType, index }) => {
         </div>
       </td>
       <td className="px-6 py-4">
-        <div className="flex items-center justify-center space-x-2">
-          <motion.button onClick={handleModal}
-            className="p-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-600 rounded-lg transition-all duration-200"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Edit3 className="w-4 h-4" />
-          </motion.button>
-        </div>
+        {!['Ingreso', 'Egreso'].includes(examType.nombre) && (
+          <div className="flex items-center justify-center space-x-2">
+            <motion.button onClick={handleModal}
+              className="p-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-600 rounded-lg transition-all duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Edit3 className="w-4 h-4" />
+            </motion.button>
+          </div>
+        )}
       </td>
 
       <ExamTypeFormModal open={modal} onClose={handleModal} examTypeData={examType} />
