@@ -14,7 +14,7 @@ export const NavigationLayout = ({ children, title = '' }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { sidebarItems } = useNavigationHook(location.pathname, location.search);
+  const { sidebarItems, navItems } = useNavigationHook(location.pathname, location.search);
 
   // Responsive breakpoints
   useEffect(() => {
@@ -282,13 +282,19 @@ export const NavigationLayout = ({ children, title = '' }) => {
               {/* Right Side */}
               <div className="flex items-center space-x-3 flex-shrink-0 relative z-50">
                 {/* Botón Administración */}
-                <Link to={router.administration} className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-600 text-white hover:from-indigo-600 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"   
-                >
-                  <Settings className="w-4 h-4" />
-                  <span className="font-medium text-sm hidden sm:inline">
-                    Administración
-                  </span>
-                </Link>
+                {navItems.map((item, index) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <Link to={item.to} key={index} className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:gray-indigo-600 hover:to-teal-700 transition-all duration-200 shadow-md hover:shadow-lg"   
+                    >
+                      <Icon className="w-4 h-4" />
+                      <span className="font-medium text-sm hidden sm:inline">
+                        {item.label}
+                      </span>
+                    </Link>
+                  )
+                })}
 
                 {/* Notifications */}
                 <motion.button className="p-2 rounded-xl bg-gray-100/50 hover:bg-gray-200/50 transition-colors duration-200 relative"

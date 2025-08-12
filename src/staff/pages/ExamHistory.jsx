@@ -1,30 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useExamRecordsHook } from '../hooks/useExamRecordsHook';
 import { NavigationLayout } from '../../app/layouts/NavigationLayout';
 import { LoadingScreen } from '../../app/components/LoadingScreen';
-import { 
-  FileText, 
-  Calendar, 
-  Clock, 
-  Download, 
-  Eye, 
-  AlertCircle, 
-  CheckCircle, 
-  XCircle,
-  ChevronLeft,
-  ChevronRight,
-  Filter,
-  Search,
-  FileX,
-  CalendarClock,
-  MessageSquare,
-  RefreshCw,
-  ArrowLeft,
-  Plus,
-  UserPlus
-} from 'lucide-react';
+import {FileText, Clock, AlertCircle, CheckCircle, XCircle,ChevronLeft, ChevronRight} from 'lucide-react';
 import { Header } from '../components/examHistory/Header';
 import { FiltersAndSearch } from '../components/examHistory/FiltersAndSearch';
 import { ExamHistoryCard } from '../components/examHistory/ExamHistoryCard';
@@ -39,7 +19,6 @@ export const ExamHistory = () => {
   });
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [viewMode, setViewMode] = useState('cards');
 
   const handlePageChange = (newPage) => {
     if (newPage < 1 || (meta && newPage > meta.totalPages)) return;

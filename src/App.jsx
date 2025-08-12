@@ -16,6 +16,7 @@ import { AdminCenter } from './admin/pages/AdminCenter';
 import { ExamTypesManager } from './admin/pages/ExamTypesManager';
 import { ExamCheckList } from './staff/pages/ExamCheckList';
 import { ExamHistory } from './staff/pages/ExamHistory';
+import { ReportsPage } from './admin/pages/ReportsPage';
 
 export const App = () => {
   return (
@@ -48,6 +49,7 @@ export const App = () => {
             <Route path={router.administration} element={<AdminCenter />} />
             <Route path={router.examTypesManager} element={<ExamTypesManager />} />
             <Route path={router.examHistory} element={<ExamHistory />} />
+            <Route  path={router.reportsPage} element={<ReportsPage />} />
           </Route>
 
           <Route path="*" element={<HomePage />} />

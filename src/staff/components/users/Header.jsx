@@ -13,9 +13,7 @@ export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch
     const limitOptions = [10, 30, 50, 100, meta.totalUsers];
     const timeoutRef = useRef(null);
     const searchValue = watch('property');
-    const onSubmited = handleSubmit(async data => {
-        if (data.property && data.property.trim()) onSearch(data.property.trim());
-    });
+    const onSubmited = handleSubmit(async data => {if (data.property) onSearch(data.property) });
 
     const handleClearSearch = () => { reset(); onClearSearch(); };
     
@@ -98,7 +96,9 @@ export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch
                                     className={`px-3 py-2.5 bg-white/70 border border-slate-200/70 rounded-xl focus:outline-none transition-all duration-300 text-slate-700 hover:shadow-md backdrop-blur-sm cursor-pointer ${isStaffIdlePage ? 'focus:ring-2 focus:ring-red-400/30 focus:border-red-400' : 'focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-400'}`}
                                 >
                                     {limitOptions.map((option, key) => (
-                                        <option key={key} value={option}>{option} por página</option>
+                                        <option key={key} value={option}>
+                                            {option === meta.totalUsers ? 'Todos' : option} resultados
+                                        </option>
                                     ))}
                                 </select> 
                             </div>

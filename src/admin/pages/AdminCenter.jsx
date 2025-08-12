@@ -13,6 +13,16 @@ const adminOptions = [
         hoverColor: 'from-blue-600 to-blue-700',
         bgGradient: 'from-blue-50 to-blue-100',
         path: router.examTypesManager
+    },
+    {
+        id: 'reportes',
+        title: 'Reportes ',
+        description: 'Visualizar y generar reportes personalizados',
+        icon: FileText,
+        color: 'from-green-500 to-green-600',
+        hoverColor: 'from-green-600 to-green-700',
+        bgGradient: 'from-green-50 to-green-100',
+        path: router.reportsPage
     }
 ];
 

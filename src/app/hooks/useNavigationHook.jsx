@@ -1,4 +1,4 @@
-import { Activity, BarChart3, FileText, Shield, Users } from "lucide-react";
+import { Activity, BarChart3, FileText, Settings, Shield, Users } from "lucide-react";
 import { router } from "../config/config";
 
 export const useNavigationHook = (path = '/', search = '') => {
@@ -61,7 +61,16 @@ export const useNavigationHook = (path = '/', search = '') => {
 
   ];
 
+  const navItems = [
+    {
+      label: 'Admin',
+      icon: Settings,
+      to: router.administration
+    }
+  ];
+
   return {
-    sidebarItems
+    sidebarItems, 
+    navItems
   }
 }
