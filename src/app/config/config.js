@@ -21,14 +21,8 @@ const CheckListAllStates = [
   'Reprogramado', 
   'Cancelado', 
   'Completado', 
-  'Observado', 
-  'Aprobado', 
   'Rechazado',
-  'En revisión',
-  'Expirado',
   'Programado',
-  'No requerido',
-  'En espera',
   'Eliminado'
 ]
 
