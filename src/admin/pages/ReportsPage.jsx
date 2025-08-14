@@ -1,25 +1,23 @@
+import { useEffect } from 'react';
+import { useExamTypesHook } from '../hooks/useExamTypesHook';
 import { CheckListStates } from "../../app/config/config";
 import { NavigationLayout } from "../../app/layouts/NavigationLayout";
 import { Header } from "../components/reports/Header";
-
-const contractTypes = [
-  { value: 'temporal', label: 'Temporal' },
-  { value: 'new-stetic', label: 'New Stetic' }
-];
-
-const examTypes = [
-  { value: 'ingreso', label: 'Examen de Ingreso' },
-  { value: 'periodico', label: 'Examen Periódico' },
-  { value: 'egreso', label: 'Examen de Egreso' },
-  { value: 'reintegro', label: 'Examen de Reintegro' },
-  { value: 'otros', label: 'Otros Exámenes' }
-];
+import { LoadingScreen } from '../../app/components/LoadingScreen';
 
 export const ReportsPage = () => {
+  const { examTypes, getExamTypes, loading: examTypesLoading } = useExamTypesHook();
+  const loading = examTypesLoading
+
+  useEffect(() => {
+    getExamTypes('/?condition=actives');
+  }, []);
+
+  if(loading) return <LoadingScreen />
+
   return (
     <NavigationLayout title="Reportes">
       <Header 
-        contractTypes={contractTypes}
         examStatuses={CheckListStates}
         examTypes={examTypes}
       />

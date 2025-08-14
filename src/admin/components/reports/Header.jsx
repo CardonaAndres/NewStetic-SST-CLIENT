@@ -7,54 +7,22 @@ import {
   Calendar, 
   FileText, 
   Users, 
-  Briefcase,
   X,
   Plus,
-  Download,
   RotateCcw
 } from 'lucide-react';
 
-// Datos de ejemplo para los selects
-const examTypes = [
-  { value: 'ingreso', label: 'Examen de Ingreso' },
-  { value: 'periodico', label: 'Examen Periódico' },
-  { value: 'egreso', label: 'Examen de Egreso' },
-  { value: 'reintegro', label: 'Examen de Reintegro' },
-  { value: 'otros', label: 'Otros Exámenes' }
-];
-
-const examStatuses = [
-  { value: 'pendiente', label: 'Pendiente' },
-  { value: 'programado', label: 'Programado' },
-  { value: 'realizado', label: 'Realizado' },
-  { value: 'cancelado', label: 'Cancelado' },
-  { value: 'reprogramado', label: 'Reprogramado' }
-];
-
-const contractTypes = [
-  { value: 'temporal', label: 'Temporal' },
-  { value: 'new-stetic', label: 'New Stetic' }
-];
-
-export const Header = () => {
+export const Header = ({ examTypes, examStatuses }) => {
   const [filtersExpanded, setFiltersExpanded] = useState(false);
   const [collaboratorInputs, setCollaboratorInputs] = useState(['']);
 
-  const { 
-    control, 
-    handleSubmit, 
-    reset, 
-    watch,
-    setValue,
-    formState: { errors } 
-  } = useForm({
+  const { control, handleSubmit, reset, watch, setValue, formState: { errors }} = useForm({
     defaultValues: {
       examType: '',
       startDate: '',
       endDate: '',
       examStatus: '',
-      collaborators: [''],
-      contractType: ''
+      collaborators: ['']
     }
   });
 
@@ -164,7 +132,7 @@ export const Header = () => {
             className="overflow-hidden"
           >
             <form onSubmit={handleSubmit(onSubmit)} className="p-6 bg-gradient-to-br from-gray-50/50 to-white/50">
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6">
                 
                 {/* Tipo de Examen */}
                 <div className="space-y-2">
@@ -173,7 +141,7 @@ export const Header = () => {
                     <span>Tipo de Examen</span>
                   </label>
                   <Controller
-                    name="examType"
+                    name="examTypeID"
                     control={control}
                     render={({ field }) => (
                       <select
@@ -182,8 +150,8 @@ export const Header = () => {
                       >
                         <option value="">Todos los tipos</option>
                         {examTypes.map(type => (
-                          <option key={type.value} value={type.value}>
-                            {type.label}
+                          <option key={type.tipo_examen_id} value={type.tipo_examen_id}>
+                            {type.nombre}
                           </option>
                         ))}
                       </select>
@@ -207,33 +175,8 @@ export const Header = () => {
                       >
                         <option value="">Todos los estados</option>
                         {examStatuses.map(status => (
-                          <option key={status.value} value={status.value}>
-                            {status.label}
-                          </option>
-                        ))}
-                      </select>
-                    )}
-                  />
-                </div>
-
-                {/* Tipo de Contrato */}
-                <div className="space-y-2">
-                  <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-                    <Briefcase className="w-4 h-4 text-gray-500" />
-                    <span>Tipo de Contrato</span>
-                  </label>
-                  <Controller
-                    name="contractType"
-                    control={control}
-                    render={({ field }) => (
-                      <select
-                        {...field}
-                        className="w-full px-4 py-2.5 bg-white/80 border border-gray-200/80 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-sm"
-                      >
-                        <option value="">Todos los contratos</option>
-                        {contractTypes.map(contract => (
-                          <option key={contract.value} value={contract.value}>
-                            {contract.label}
+                          <option key={status} value={status}>
+                            {status}
                           </option>
                         ))}
                       </select>
