@@ -2,12 +2,12 @@ import Cookies from 'js-cookie';
 
 const baseURL = String(import.meta.env.VITE_REPORTS_SERVICE);
 
-export class Reports {
-     static async generateReport(page = 1, limit = 20, complement = '') {
+export class ReportsAPI {
+     static async generateReport(page = 1, limit = 20, complementUrl = '') {
         try {
             const token = Cookies.get('token');
             const res = await fetch(
-                `${baseURL}/checklist-exams/?page=${page}&limit=${limit}${complement}`, {
+                `${baseURL}/checklist-exams/?page=${page}&limit=${limit}${complementUrl}`, {
                 method : 'GET', headers : { 
                     'Content-Type': 'application/json', 
                     "authorization": `Bearer ${token}` 

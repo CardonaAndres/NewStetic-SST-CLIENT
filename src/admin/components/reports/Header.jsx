@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm, Controller } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { 
   Filter, 
   Search, 
@@ -9,33 +10,117 @@ import {
   Users, 
   X,
   Plus,
-  RotateCcw
+  RotateCcw,
+  Hash
 } from 'lucide-react';
 
-export const Header = ({ examTypes, examStatuses }) => {
+export const Header = ({ examTypes, examStatuses, generateReport, loading, page = 1 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filtersExpanded, setFiltersExpanded] = useState(false);
   const [collaboratorInputs, setCollaboratorInputs] = useState(['']);
-
-  const { control, handleSubmit, reset, watch, setValue, formState: { errors }} = useForm({
-    defaultValues: {
-      examType: '',
-      startDate: '',
-      endDate: '',
-      examStatus: '',
-      collaborators: ['']
-    }
+  const [limit, setLimit] = useState(() => {
+    return sessionStorage.getItem('reportLimit') ||  searchParams.get('limit') || '10';
   });
-
+  
+  const { control, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const watchedValues = watch();
 
-  // Función para agregar campo de colaborador
+  // Cargar datos desde URL o sessionStorage al montar el componente
+  useEffect(() => {
+    const loadInitialData = () => {
+      // Cargar desde URL parameters
+      const urlData = {
+        examTypeID: searchParams.get('examTypeID') || '',
+        examStatus: searchParams.get('examStatus') || '',
+        startDate: searchParams.get('startDate') || '',
+        endDate: searchParams.get('endDate') || '',
+      };
+
+      // Cargar colaboradores desde URL o sessionStorage
+      const urlCollaborators = searchParams.get('collaborators');
+      let collaborators = [''];
+      
+      if (urlCollaborators) {
+        try {
+          collaborators = JSON.parse(decodeURIComponent(urlCollaborators));
+        } catch (e) {
+          console.warn('Error parsing collaborators from URL:', e);
+        }
+      } else {
+        const sessionCollaborators = sessionStorage.getItem('reportCollaborators');
+        if (sessionCollaborators) {
+          try {
+            collaborators = JSON.parse(sessionCollaborators);
+          } catch (e) {
+            console.warn('Error parsing collaborators from sessionStorage:', e);
+          }
+        }
+      }
+
+      // Establecer valores en el formulario
+      Object.keys(urlData).forEach(key => {
+        if (urlData[key]) {
+          setValue(key, urlData[key]);
+        }
+      });
+
+      if (collaborators.length > 0 && collaborators[0] !== '') {
+        setCollaboratorInputs(collaborators);
+        setValue('collaborators', collaborators);
+      }
+
+      // Establecer límite
+      const urlLimit = searchParams.get('limit');
+      const sessionLimit = sessionStorage.getItem('reportLimit');
+      const finalLimit = urlLimit || sessionLimit || '10';
+      setLimit(finalLimit);
+    };
+
+    loadInitialData();
+  }, [searchParams, setValue]);
+
+  // Sincronizar datos con sessionStorage y URL
+  const syncDataToStorage = (data, limitValue) => {
+    try {
+      // Guardar en sessionStorage
+      if (data.collaborators && data.collaborators.length > 0) {
+        sessionStorage.setItem('reportCollaborators', JSON.stringify(data.collaborators));
+      }
+      sessionStorage.setItem('reportLimit', limitValue);
+
+      // Actualizar URL parameters
+      const params = new URLSearchParams();
+      
+      Object.keys(data).forEach(key => {
+        if (data[key] && key !== 'collaborators') {
+          if (typeof data[key] === 'string' && data[key].trim()) {
+            params.set(key, data[key]);
+          }
+        }
+      });
+
+      if (data.collaborators && data.collaborators.length > 0) {
+        const filteredCollaborators = data.collaborators.filter(c => c && c.trim());
+        if (filteredCollaborators.length > 0) {
+          params.set('collaborators', encodeURIComponent(JSON.stringify(filteredCollaborators)));
+        }
+      }
+
+      if (limitValue && limitValue !== '10') params.set('limit', limitValue);
+
+      // Actualizar URL sin recargar la página
+      setSearchParams(params, { replace: true });
+    } catch (error) {
+      console.error('Error syncing data to storage:', error);
+    }
+  };
+
   const addCollaboratorField = () => {
     const newCollaborators = [...collaboratorInputs, ''];
     setCollaboratorInputs(newCollaborators);
     setValue('collaborators', newCollaborators);
   };
 
-  // Función para remover campo de colaborador
   const removeCollaboratorField = (index) => {
     if (collaboratorInputs.length > 1) {
       const newCollaborators = collaboratorInputs.filter((_, i) => i !== index);
@@ -44,7 +129,6 @@ export const Header = ({ examTypes, examStatuses }) => {
     }
   };
 
-  // Función para actualizar valor de colaborador
   const updateCollaborator = (index, value) => {
     const newCollaborators = [...collaboratorInputs];
     newCollaborators[index] = value;
@@ -52,28 +136,58 @@ export const Header = ({ examTypes, examStatuses }) => {
     setValue('collaborators', newCollaborators);
   };
 
-  const onSubmit = (data) => {
-    // Filtrar colaboradores vacíos
-    const filteredCollaborators = data.collaborators.filter(c => c.trim() !== '');
-    const formData = {
-      ...data,
-      collaborators: filteredCollaborators
-    };
-    console.log('Datos del formulario:', formData);
+  const handleLimitChange = (newLimit) => {
+    setLimit(newLimit);
+    sessionStorage.setItem('reportLimit', newLimit);
+    
+    // Actualizar URL con el nuevo límite
+    const params = new URLSearchParams(searchParams);
+    if (newLimit && newLimit !== '10') {
+      params.set('limit', newLimit);
+    } else {
+      params.delete('limit');
+    }
+    setSearchParams(params, { replace: true });
   };
+
+  const onSubmitted = handleSubmit(async (data) => {
+    const filteredData = {
+      ...data,
+      collaborators: data.collaborators?.filter(c => c && c.trim()) || [],
+      limit: parseInt(limit) || 10
+    };
+  
+    syncDataToStorage(filteredData, limit);
+    await generateReport(filteredData, page, filteredData.limit);
+  });
 
   const resetFilters = () => {
     reset();
     setCollaboratorInputs(['']);
+    setLimit('10');
+    
+    // Limpiar sessionStorage
+    sessionStorage.removeItem('reportCollaborators');
+    sessionStorage.removeItem('reportLimit');
+    
+    // Limpiar URL parameters
+    setSearchParams({}, { replace: true });
   };
 
-  // Verificar si hay filtros activos
   const hasActiveFilters = Object.values(watchedValues).some(value => {
-    if (Array.isArray(value)) {
-      return value.some(v => v && v.trim() !== '');
-    }
+    if (Array.isArray(value)) return value.some(v => v && v.trim() !== '');
     return value && value.trim() !== '';
-  });
+  }) || limit !== '10';
+
+  const limitOptions = [
+    { value: '5', label: '5 resultados' },
+    { value: '10', label: '10 resultados' },
+    { value: '25', label: '25 resultados' },
+    { value: '50', label: '50 resultados' },
+    { value: '100', label: '100 resultados' },
+    { value: '250', label: '250 resultados' },
+    { value: '500', label: '500 resultados' }
+  ];
 
   return (
     <motion.div
@@ -97,12 +211,36 @@ export const Header = ({ examTypes, examStatuses }) => {
               <p className="text-gray-600 text-sm leading-relaxed">
                 Genera reportes detallados aplicando filtros específicos para obtener la información exacta que necesitas.
               </p>
+              {hasActiveFilters && (
+                <div className="mt-2 flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span className="text-xs text-blue-600 font-medium">Filtros activos aplicados</span>
+                </div>
+              )}
             </div>
           </div>
 
           {/* Botones de acción */}
           <div className="flex items-center space-x-3 flex-shrink-0">
+            {/* Selector de límite rápido */}
+            <div className="flex items-center space-x-2">
+              <Hash className="w-4 h-4 text-gray-500" />
+              <select
+                value={limit}
+                onChange={(e) => handleLimitChange(e.target.value)}
+                className="px-3 py-2 text-sm bg-white/80 border border-gray-200/80 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+              >
+                {limitOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <motion.button
+              type="button"
+              disabled={loading}
               onClick={() => setFiltersExpanded(!filtersExpanded)}
               className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg ${
                 filtersExpanded || hasActiveFilters
@@ -116,6 +254,9 @@ export const Header = ({ examTypes, examStatuses }) => {
               <span className="font-medium text-sm">
                 Filtros
               </span>
+              {hasActiveFilters && !filtersExpanded && (
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+              )}
             </motion.button>
           </div>
         </div>
@@ -131,8 +272,8 @@ export const Header = ({ examTypes, examStatuses }) => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <form onSubmit={handleSubmit(onSubmit)} className="p-6 bg-gradient-to-br from-gray-50/50 to-white/50">
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6">
+            <form onSubmit={onSubmitted} className="p-6 bg-gradient-to-br from-gray-50/50 to-white/50">
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                 
                 {/* Tipo de Examen */}
                 <div className="space-y-2">
@@ -182,6 +323,25 @@ export const Header = ({ examTypes, examStatuses }) => {
                       </select>
                     )}
                   />
+                </div>
+
+                {/* Límite de Resultados */}
+                <div className="space-y-2">
+                  <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+                    <Hash className="w-4 h-4 text-gray-500" />
+                    <span>Límite de Resultados</span>
+                  </label>
+                  <select
+                    value={limit}
+                    onChange={(e) => handleLimitChange(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-white/80 border border-gray-200/80 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-sm"
+                  >
+                    {limitOptions.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Fecha Inicio */}
@@ -288,6 +448,7 @@ export const Header = ({ examTypes, examStatuses }) => {
                 <div className="flex items-center space-x-3">
                   <motion.button
                     type="button"
+                    disabled={loading}
                     onClick={() => setFiltersExpanded(false)}
                     className="px-4 py-2 text-sm font-medium text-gray-600 bg-white/80 hover:bg-gray-100/80 rounded-xl transition-colors duration-200 border border-gray-200/80"
                     whileHover={{ scale: 1.02 }}
@@ -298,17 +459,17 @@ export const Header = ({ examTypes, examStatuses }) => {
                   
                   <motion.button
                     type="submit"
-                    disabled={!hasActiveFilters}
+                    disabled={loading}
                     className={`flex items-center space-x-2 px-6 py-2 rounded-xl transition-all duration-200 shadow-md text-sm font-medium ${
-                      hasActiveFilters
+                      !loading
                         ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 hover:shadow-lg'
                         : 'bg-gray-200/80 text-gray-400 cursor-not-allowed'
                     }`}
-                    whileHover={hasActiveFilters ? { scale: 1.02 } : {}}
-                    whileTap={hasActiveFilters ? { scale: 0.98 } : {}}
+                    whileHover={!loading ? { scale: 1.02 } : {}}
+                    whileTap={!loading ? { scale: 0.98 } : {}}
                   >
                     <Search className="w-4 h-4" />
-                    <span>Aplicar Filtros</span>
+                    <span>{loading ? 'Generando...' : 'Generar'}</span>
                   </motion.button>
                 </div>
               </div>
