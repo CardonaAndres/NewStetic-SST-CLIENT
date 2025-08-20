@@ -51,7 +51,7 @@ export const App = () => {
             <Route path={router.administration} element={<AdminCenter />} />
             <Route path={router.examTypesManager} element={<ExamTypesManager />} />
             <Route path={router.examHistory} element={<ExamHistory />} />
-            <Route  path={router.reportsPage} element={<ReportsPage />} />
+            <Route path={router.reportsPage} element={<ReportsPage />} />
             <Route path={router.incomeExam} element={<IncomesExams />} />
           </Route>
 

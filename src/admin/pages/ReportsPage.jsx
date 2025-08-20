@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-
 import { useExamTypesHook } from '../hooks/useExamTypesHook';
 import { CheckListStates } from "../../app/config/config";
 import { NavigationLayout } from "../../app/layouts/NavigationLayout";
 import { Header } from "../components/reports/Header";
 import { LoadingScreen } from '../../app/components/LoadingScreen';
 import { useReportsHook } from '../hooks/useReportsHook';
-
-// Componentes separados
 import { EmptyState } from '../components/reports/EmptyState';
 import { ResultsHeader } from '../components/reports/ResultsHeader';
 import { ExamTable } from '../components/reports/ExamTable';
@@ -35,7 +32,7 @@ export const ReportsPage = () => {
   const loading = examTypesLoading || loadingReports;
 
   useEffect(() => {
-    getExamTypes('/?condition=actives');
+    getExamTypes();
   }, []);
 
   // Efecto para ejecutar búsqueda automática si hay filtros en URL
