@@ -19,6 +19,7 @@ import { ExamHistory } from './staff/pages/ExamHistory';
 import { ReportsPage } from './admin/pages/ReportsPage';
 import { IncomesExams } from './staff/pages/IncomesExams';
 import { Error404Page } from './app/pages/Error404Page';
+import { EgressExams } from './staff/pages/EgressExams';
 
 export const App = () => {
   return (
@@ -53,6 +54,7 @@ export const App = () => {
             <Route path={router.examHistory} element={<ExamHistory />} />
             <Route path={router.reportsPage} element={<ReportsPage />} />
             <Route path={router.incomeExam} element={<IncomesExams />} />
+            <Route path={router.egressExam} element={<EgressExams />} />
           </Route>
 
           <Route path="*" element={<Error404Page />} />

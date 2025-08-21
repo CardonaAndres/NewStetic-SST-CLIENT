@@ -129,9 +129,6 @@ export const ExamForm = ({ initialData, onClose }) => {
                 <h2 className="text-xl font-bold text-gray-900">
                   {isEditing ? 'Editar Examen' : 'Nuevo Examen'}
                 </h2>
-                <p className="text-sm text-gray-600">
-                  {isEditing ? 'Actualiza los datos del examen' : 'Registra un nuevo examen de ingreso'}
-                </p>
               </div>
             </div>
             

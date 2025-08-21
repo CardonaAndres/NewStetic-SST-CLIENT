@@ -25,7 +25,7 @@ export const Header = ({ total = 0 }) => {
             {/* Left Side - Title and Description */}
             <div className="flex-1">
               <div className="flex items-center mb-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center mr-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl flex items-center justify-center mr-3">
                   <FileText className="w-5 h-5 text-white" />
                 </div>
                 <h1 className="text-xl lg:text-2xl font-bold text-gray-900">
@@ -47,7 +47,7 @@ export const Header = ({ total = 0 }) => {
 
               {/* Add Button */}
               <motion.button onClick={handleModal}
-                className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl group min-w-fit"
+                className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl group min-w-fit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

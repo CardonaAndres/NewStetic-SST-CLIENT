@@ -10,7 +10,7 @@ import { ExamCard } from '../components/incomeOrEgressExams/ExamCard';
 import { Calendar, AlertCircle, CheckCircle, Clock, RefreshCw, X as XIcon } from 'lucide-react';
 import { router } from '../../app/config/config';
 
-export const IncomesExams = () => {
+export const EgressExams = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const { loading, exams, getExams } = useIncomeEgressHook();
@@ -77,7 +77,7 @@ export const IncomesExams = () => {
   if(loading) return <LoadingScreen />
 
   return (
-    <NavigationLayout title='Exámenes de Ingreso'>
+    <NavigationLayout title='Exámenes de Egreso'>
       <Header total={exams.length || 0} />
       <motion.div 
         className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/40 shadow-lg overflow-hidden"
@@ -114,5 +114,5 @@ export const IncomesExams = () => {
         )}
       </motion.div>
     </NavigationLayout>
-  );
-};
+  )
+}

@@ -15,7 +15,8 @@ import {
   Building, 
   Clock, 
   MapPin, 
-  FileText 
+  FileText, 
+  List
 } from 'lucide-react';
 
 const containerVariants = {
@@ -49,12 +50,17 @@ const itemVariants = {
 
 export const UserDetailComponent = ({ user, onClose }) => {
   const { loading, getUserFromBook, formatInfo } = useStaffHook();
-  const [pictureURL, setPictureURL] = useState(null);
+  const [ pictureURL, setPictureURL ] = useState(null);
   const { infoSections, formatDate, getStatusColor, getStatusText, calculateAge } = formatInfo(user); 
-  const [modal, setModal] = useState(false);
+  const [ modal, setModal ] = useState(false);
   const handleModal = () => setModal(!modal);
 
   const isActive = getStatusText(user["Estado Empleado"]) === 'Activo';
+
+  const toReportsPage = () => {
+    const doubleEncoded = encodeURIComponent(encodeURIComponent(JSON.stringify([user.f200_nit])));
+    window.location.href = `${router.reportsPage}?collaborators=${doubleEncoded}`;
+  }
 
   useEffect(() => {
     getUserFromBook(user)
@@ -201,6 +207,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
                     </motion.span>
                     
                     {isActive && (
+                      <>
                       <motion.button 
                         onClick={handleModal} 
                         className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
@@ -214,6 +221,20 @@ export const UserDetailComponent = ({ user, onClose }) => {
                         <Folder className="w-4 h-4" />
                         Trayectoria laboral
                       </motion.button>
+                      <motion.button 
+                        onClick={toReportsPage} 
+                        className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                        whileHover={{ 
+                          scale: 1.05,
+                          y: -2,
+                          backgroundImage: "linear-gradient(to right, rgb(71 85 105), rgb(51 65 85))"
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <List className="w-4 h-4" />
+                        Ir a reportes
+                      </motion.button>
+                      </>
                     )}
                   </div>
                   
@@ -225,10 +246,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
                     </span>
                   </div>
                 </motion.div>
-                
-                {/* Enhanced Action Buttons */}
-                {isActive && (
-                  <motion.div 
+                <motion.div 
                     className="flex flex-wrap gap-3"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -247,28 +265,30 @@ export const UserDetailComponent = ({ user, onClose }) => {
                         gradient: 'from-blue-400 to-blue-500',
                         hoverGradient: 'from-blue-600 to-blue-700',
                         icon: <Clock className="w-4 h-4" />,
-                        to: `${router.incomeExam}?cc=${user.f200_nit}`
+                        to: `${router.incomeExam}?cc=${user.f200_nit}&isUserActive=${isActive}`
                       },
                       { 
                         label: 'Examen de Egreso', 
                         gradient: 'from-blue-400 to-blue-500',
                         hoverGradient: 'from-blue-600 to-blue-700',
                         icon: <MapPin className="w-4 h-4" />,
-                        to: `${router.egressExam}?cc=${user.f200_nit}`
+                        to: `${router.egressExam}?cc=${user.f200_nit}&isUserActive=${isActive}`
                       }
                     ].map((button, index) => (
                       <motion.div key={index}>
-                        <Link 
-                          to={button.to} 
-                          className={`group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${button.gradient} text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300`}
-                        >
-                          {button.icon}
-                          {button.label}
-                        </Link>
+                        {isActive && (
+                          <Link 
+                            to={button.to} 
+                            className={`group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${button.gradient} text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300`}
+                          >
+                            {button.icon}
+                            {button.label}
+                          </Link>
+                        )}
+
                       </motion.div>
                     ))}
-                  </motion.div>
-                )}
+                </motion.div>
               </div>
             </div>
           </motion.div>

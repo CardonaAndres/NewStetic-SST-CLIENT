@@ -59,9 +59,7 @@ export const Header = ({ examTypes, examStatuses, generateReport, loading, page 
 
       // Establecer valores en el formulario
       Object.keys(urlData).forEach(key => {
-        if (urlData[key]) {
-          setValue(key, urlData[key]);
-        }
+        if (urlData[key]) setValue(key, urlData[key]);
       });
 
       if (collaborators.length > 0 && collaborators[0] !== '') {
@@ -83,20 +81,18 @@ export const Header = ({ examTypes, examStatuses, generateReport, loading, page 
   const syncDataToStorage = (data, limitValue) => {
     try {
       // Guardar en sessionStorage
-      if (data.collaborators && data.collaborators.length > 0) {
+      if (data.collaborators && data.collaborators.length > 0) 
         sessionStorage.setItem('reportCollaborators', JSON.stringify(data.collaborators));
-      }
+      
       sessionStorage.setItem('reportLimit', limitValue);
 
       // Actualizar URL parameters
       const params = new URLSearchParams();
       
       Object.keys(data).forEach(key => {
-        if (data[key] && key !== 'collaborators') {
-          if (typeof data[key] === 'string' && data[key].trim()) {
-            params.set(key, data[key]);
-          }
-        }
+        if (data[key] && key !== 'collaborators') 
+          if (typeof data[key] === 'string' && data[key].trim()) params.set(key, data[key]);
+        
       });
 
       if (data.collaborators && data.collaborators.length > 0) {
