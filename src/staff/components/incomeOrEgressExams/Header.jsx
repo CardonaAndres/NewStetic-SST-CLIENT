@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, FileText } from 'lucide-react';
+import { FormModal } from './FormModal';
+import { useSearchParams, useLocation } from 'react-router-dom';
+import { router } from '../../../app/config/config';
 
-export const Header = ({ title = '', total = 0 }) => {
+export const Header = ({ total = 0 }) => {
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal(!modal);
 
+  const title = location.pathname === router.incomeExam ? 'Ingreso' : 'Egreso';
+  
   return (
     <motion.div 
         className="mb-8" 
@@ -56,6 +63,8 @@ export const Header = ({ title = '', total = 0 }) => {
             </div>
           </div>
         </div>
+
+        <FormModal open={modal} onClose={handleModal} cc={searchParams.get("cc")} />
     </motion.div>
   )
 }

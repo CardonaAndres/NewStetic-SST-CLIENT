@@ -3,7 +3,6 @@ import { modalStyles } from '../../../app/assets/js/styles';
 import { ExamCheckListForm } from './ExamCheckListForm';
 
 export const ExamCheckListModalForm = ({ open, onClose, examCheckListItemData = {} }) => {
-  
   const itemDataFormat = {
     checklist_id: examCheckListItemData?.checklist_id || null,
     userDocument: examCheckListItemData?.cc_empleado || null,
@@ -11,6 +10,8 @@ export const ExamCheckListModalForm = ({ open, onClose, examCheckListItemData = 
     isRequired: examCheckListItemData?.es_requerido || 'SI',
     state: examCheckListItemData?.esta_activo || 'Activo',
   }  
+
+  if (!open) return null;
 
   return (
     <Modal open={open} onClose={onClose}>

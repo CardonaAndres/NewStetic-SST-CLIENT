@@ -3,6 +3,8 @@ import { modalStyles } from '../../../app/assets/js/styles';
 import { ExamDeleteForm } from './ExamDeleteForm';
 
 export const ExamDeleteFormModal = ({ itemID, open, onClose }) => {
+  if (!open) return null;
+  
   return (
     <Modal open={open} onClose={onClose}>
         <Box sx={{ 

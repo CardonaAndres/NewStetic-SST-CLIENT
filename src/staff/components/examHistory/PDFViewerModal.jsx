@@ -2,6 +2,8 @@ import { Modal, Box } from '@mui/material';
 import { PDFViewer } from './PDFViewer';
 
 export const PDFViewerModal = ({ exam, open, onClose }) => {
+  if (!open) return null;
+  
   return (
     <Modal 
       open={open} 

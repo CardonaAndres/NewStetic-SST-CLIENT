@@ -4,6 +4,7 @@ import { PDFViewerModal } from '../examHistory/PDFViewerModal';
 import { ExamDeleteFormModal } from '../examHistory/ExamDeleteFormModal';
 import { FileText, Calendar, User, ChevronDown, ChevronUp, Eye, Edit, Trash2, List } from 'lucide-react';
 import { ExamLogsModal } from "../examHistory/ExamLogsModal";
+import { FormModal } from "./FormModal";
 
 export const ExamCard = ({ 
     index, 
@@ -15,10 +16,12 @@ export const ExamCard = ({
     examId,
     toggleCardExpansion
 }) => {
+  const [formModal, setFormModal] = useState(false);
   const [PDFViewer, setPDFViewer] = useState(false); 
   const [logsModal, setLogsModal] = useState(false);
   const [modalOnDelete, setModalOnDelete] = useState(false);
 
+  const handleFormModal = () => setFormModal(!formModal);
   const handleLogsClick = () => setLogsModal(!logsModal);
   const handleDelete = () => setModalOnDelete(!modalOnDelete); 
   const handlePDFClick = () => setPDFViewer(!PDFViewer);
@@ -83,7 +86,7 @@ export const ExamCard = ({
                 </span>
                 )}
 
-                <motion.button
+                <motion.button onClick={handleFormModal}
                     className="flex items-center space-x-1 px-3 py-2 bg-amber-100 text-amber-700 rounded-xl text-sm font-medium hover:bg-amber-200 transition-colors"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -228,6 +231,8 @@ export const ExamCard = ({
             )}
             </AnimatePresence>
         </div>
+
+        <FormModal onClose={handleFormModal} open={formModal} exam={exam} />
 
         <PDFViewerModal exam={exam} open={PDFViewer} onClose={handlePDFClick} />
 

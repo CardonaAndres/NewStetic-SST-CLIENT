@@ -3,6 +3,8 @@ import { Modal, Box } from '@mui/material';
 import { modalStyles } from '../../../app/assets/js/styles';
 
 export const ExamLogsModal = ({ open, onClose, checkListItemID }) => {
+  if (!open) return null;
+  
   return (
     <Modal open={open} onClose={onClose}>
         <Box sx={{ 

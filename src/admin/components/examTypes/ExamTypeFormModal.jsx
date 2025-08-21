@@ -9,6 +9,8 @@ export const ExamTypeFormModal = ({ open, onClose, examTypeData = {} }) => {
         state: examTypeData.estado || 'Activo',
     }
 
+    if (!open) return null;
+
     return (
     <Modal open={open} onClose={onClose}>
         <Box sx={{ 

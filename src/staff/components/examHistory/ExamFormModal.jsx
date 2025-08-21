@@ -17,6 +17,8 @@ export const ExamFormModal = ({ open, onClose, recordData = {} }) => {
       : new Date().toISOString().split('T')[0],
   }
 
+  if (!open) return null;
+
   return (
     <Modal open={open} onClose={onClose}>
         <Box sx={{ 

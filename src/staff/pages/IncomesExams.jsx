@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavigationLayout } from '../../app/layouts/NavigationLayout';
 import { Header } from '../components/incomeOrEgressExams/Header';
@@ -8,11 +8,14 @@ import { LoadingScreen } from '../../app/components/LoadingScreen';
 import { EmptyState } from '../components/incomeOrEgressExams/EmptyState';
 import { ExamCard } from '../components/incomeOrEgressExams/ExamCard';
 import { Calendar, AlertCircle, CheckCircle, Clock, RefreshCw, X as XIcon } from 'lucide-react';
+import { router } from '../../app/config/config';
 
 export const IncomesExams = () => {
+  const location = useLocation();
   const [searchParams] = useSearchParams();
-  const { loading, examType, exams, getExams } = useIncomeEgressHook();
+  const { loading, exams, getExams } = useIncomeEgressHook();
   const [expandedCards, setExpandedCards] = useState(new Set());
+  const examType = location.pathname === router.incomeExam ? 'income' : 'egress';
 
   const toggleCardExpansion = (examId) => {
     const newExpanded = new Set(expandedCards);
@@ -68,18 +71,14 @@ export const IncomesExams = () => {
   };
 
   useEffect(() => {
-    getExams(searchParams.get("cc"), 'income');
+    getExams(searchParams.get("cc"), examType);
   }, []);
 
   if(loading) return <LoadingScreen />
 
   return (
     <NavigationLayout title='Exámenes de Ingreso'>
-      {console.log(exams)}
-      <Header
-        title={examType}
-        total={exams.length || 0}
-      />
+      <Header total={exams.length || 0} />
 
       {/* Exams List */}
       <motion.div 
