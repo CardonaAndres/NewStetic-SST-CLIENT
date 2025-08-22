@@ -46,20 +46,24 @@ export const Header = ({ total = 0 }) => {
               </div>
 
               {/* Add Button */}
-              <motion.button onClick={handleModal}
-                className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl group min-w-fit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <motion.div
-                  className="w-5 h-5"
-                  whileHover={{ rotate: 90 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Plus className="w-5 h-5" />
-                </motion.div>
-                <span className="whitespace-nowrap">Nuevo Examen</span>
-              </motion.button>
+              {searchParams.get("isUserActive") == 'true' && (
+                <>
+                  <motion.button onClick={handleModal}
+                    className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl group min-w-fit"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <motion.div
+                      className="w-5 h-5"
+                      whileHover={{ rotate: 90 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Plus className="w-5 h-5" />
+                    </motion.div>
+                    <span className="whitespace-nowrap">Nuevo Examen</span>
+                  </motion.button>
+                </>
+              )}
             </div>
           </div>
         </div>

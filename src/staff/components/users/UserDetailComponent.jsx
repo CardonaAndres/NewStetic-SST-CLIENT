@@ -221,6 +221,8 @@ export const UserDetailComponent = ({ user, onClose }) => {
                         <Folder className="w-4 h-4" />
                         Trayectoria laboral
                       </motion.button>
+                      </>
+                    )}
                       <motion.button 
                         onClick={toReportsPage} 
                         className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
@@ -234,8 +236,6 @@ export const UserDetailComponent = ({ user, onClose }) => {
                         <List className="w-4 h-4" />
                         Ir a reportes
                       </motion.button>
-                      </>
-                    )}
                   </div>
                   
                   <div className="flex items-center gap-3 text-slate-600">
@@ -254,6 +254,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
                   >
                     {[
                       { 
+                        id: 1,
                         label: 'Exámenes Periódicos', 
                         gradient: 'from-blue-400 to-blue-500',
                         hoverGradient: 'from-blue-600 to-blue-700',
@@ -261,6 +262,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
                         to: `${router.medicalStaffHistory}?cc=${user.f200_nit}`
                       },
                       { 
+                        id: 2,
                         label: 'Examen de Ingreso', 
                         gradient: 'from-blue-400 to-blue-500',
                         hoverGradient: 'from-blue-600 to-blue-700',
@@ -268,26 +270,29 @@ export const UserDetailComponent = ({ user, onClose }) => {
                         to: `${router.incomeExam}?cc=${user.f200_nit}&isUserActive=${isActive}`
                       },
                       { 
+                        id: 3,
                         label: 'Examen de Egreso', 
                         gradient: 'from-blue-400 to-blue-500',
                         hoverGradient: 'from-blue-600 to-blue-700',
                         icon: <MapPin className="w-4 h-4" />,
                         to: `${router.egressExam}?cc=${user.f200_nit}&isUserActive=${isActive}`
                       }
-                    ].map((button, index) => (
-                      <motion.div key={index}>
-                        {isActive && (
-                          <Link 
-                            to={button.to} 
-                            className={`group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${button.gradient} text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300`}
-                          >
-                            {button.icon}
-                            {button.label}
-                          </Link>
-                        )}
-
-                      </motion.div>
-                    ))}
+                    ].map((button, index) => {
+                        const buttonsIDToView = isActive ? [1, 2, 3] : [2, 3]
+                        if(buttonsIDToView.includes(button.id)){
+                          return (
+                            <motion.div key={index}>
+                              <Link 
+                                to={button.to} 
+                                className={`group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${button.gradient} text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300`}
+                              >
+                                {button.icon}
+                                {button.label}
+                              </Link>
+                            </motion.div>
+                          )
+                        }
+                      })}
                 </motion.div>
               </div>
             </div>
