@@ -27,9 +27,6 @@ export const ReportsPage = () => {
     return parseInt(urlPage || sessionPage || '1');
   });
 
-  const hasCollaboratorFilters = 
-   searchParams.get('collaboratorsStatus') || searchParams.get('collaboratorType');
-
   useEffect(() => {
     getExamTypes();
   }, []);
@@ -202,14 +199,12 @@ export const ReportsPage = () => {
                 onExamClick={openExamModal}
               />
 
-              {!hasCollaboratorFilters && (
-                <Pagination 
-                  meta={meta}
-                  currentPage={currentPage}
-                  onPageChange={handlePageChange}
-                />
-              )}
-            </div>
+              <Pagination 
+                meta={meta}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
+          </div>
           )}
         </AnimatePresence>
 

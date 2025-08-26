@@ -229,12 +229,10 @@ const  collaboratorTypeOptions = [
               <p className="text-gray-600 text-sm leading-relaxed">
                 Genera reportes detallados aplicando filtros específicos para obtener la información exacta que necesitas.
               </p>
-              {hasActiveFilters && (
-                <div className="mt-2 flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                  <span className="text-xs text-blue-600 font-medium">Filtros activos aplicados</span>
-                </div>
-              )}
+              <div className="mt-2 flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <span className="text-xs text-blue-600 font-medium">Filtros activos aplicados</span>
+              </div>
             </div>
           </div>
 
