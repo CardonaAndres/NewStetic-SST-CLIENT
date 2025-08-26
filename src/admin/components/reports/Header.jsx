@@ -34,6 +34,9 @@ export const Header = ({
   const { control, handleSubmit, reset, watch, setValue } = useForm();
   const watchedValues = watch();
 
+  const hasCollaboratorFilters = 
+   searchParams.get('collaboratorsStatus') || searchParams.get('collaboratorType');
+
   // Cargar datos desde URL o sessionStorage al montar el componente
   useEffect(() => {
     const loadInitialData = () => {
@@ -148,11 +151,7 @@ export const Header = ({
     
     // Actualizar URL con el nuevo límite
     const params = new URLSearchParams(searchParams);
-    if (newLimit && newLimit !== '10') {
-      params.set('limit', newLimit);
-    } else {
-      params.delete('limit');
-    }
+    newPage > 1 ? params.set('page', newPage.toString()) : params.delete('page');
     setSearchParams(params, { replace: true });
   };
 
@@ -162,7 +161,6 @@ export const Header = ({
       collaborators: data.collaborators?.filter(c => c && c.trim()) || [],
       limit: parseInt(limit) || 10
     };
-    console.log(filteredData)
   
     handlePageChange(1)
     syncDataToStorage(filteredData, limit);
@@ -199,14 +197,14 @@ const limitOptions = [
 
 const collaboratorsStatusOptions = [
   { value: '', label: 'Todos los estados' },
-  { value: 'Activos', label: 'Activos' },
-  { value: 'Inactivos', label: 'Inactivos' }
+  { value: 'ACTIVO', label: 'Activos' },
+  { value: 'INACTIVO', label: 'Inactivos' }
 ];
 
 const  collaboratorTypeOptions = [
   { value: '', label: 'Todos los tipos' },
-  { value: 'Temporal', label: 'Temporales' },
-  { value: 'New Stetic', label: 'New Stetic' }
+  { value: 'TEMPORAL', label: 'Temporales' },
+  { value: 'NEW STETIC', label: 'New Stetic' }
 ];
 
   return (
@@ -243,20 +241,22 @@ const  collaboratorTypeOptions = [
           {/* Botones de acción */}
           <div className="flex items-center space-x-3 flex-shrink-0">
             {/* Selector de límite rápido */}
-            <div className="flex items-center space-x-2">
-              <Hash className="w-4 h-4 text-gray-500" />
-              <select
-                value={limit}
-                onChange={(e) => handleLimitChange(e.target.value)}
-                className="px-3 py-2 text-sm bg-white/80 border border-gray-200/80 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
-              >
-                {limitOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {!hasCollaboratorFilters && (
+              <div className="flex items-center space-x-2">
+                <Hash className="w-4 h-4 text-gray-500" />
+                <select
+                  value={limit}
+                  onChange={(e) => handleLimitChange(e.target.value)}
+                  className="px-3 py-2 text-sm bg-white/80 border border-gray-200/80 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+                >
+                  {limitOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <motion.button
               type="button"

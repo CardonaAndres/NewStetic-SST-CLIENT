@@ -14,7 +14,7 @@ import { Pagination } from '../components/reports/Pagination';
 import { ExamModal } from '../components/reports/ExamModal';
 
 export const ReportsPage = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { examTypes, getExamTypes, loading: examTypesLoading } = useExamTypesHook();
   const { loading: loadingReports, generateReport, results, meta } = useReportsHook();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -27,9 +27,8 @@ export const ReportsPage = () => {
     return parseInt(urlPage || sessionPage || '1');
   });
 
-
-
-  const loading = examTypesLoading || loadingReports;
+  const hasCollaboratorFilters = 
+   searchParams.get('collaboratorsStatus') || searchParams.get('collaboratorType');
 
   useEffect(() => {
     getExamTypes();
@@ -38,13 +37,24 @@ export const ReportsPage = () => {
   // Efecto para ejecutar búsqueda automática si hay filtros en URL
   useEffect(() => {
     const hasUrlFilters = Array.from(searchParams.entries()).some(([key, value]) => 
-      ['examTypeID', 'examStatus', 'startDate', 'endDate', 'collaborators', 'limit'].includes(key) && value
+      [
+        'examTypeID', 
+        'examStatus', 
+        'startDate', 
+        'endDate', 
+        'collaborators', 
+        'limit',
+        'collaboratorsStatus',
+        'collaboratorType'
+      ].includes(key) && value
     );
 
     if (hasUrlFilters && examTypes.length > 0) {
       const urlData = {
         examTypeID: searchParams.get('examTypeID') || '',
         examStatus: searchParams.get('examStatus') || '',
+        collaboratorsStatus: searchParams.get('collaboratorsStatus') || '',
+        collaboratorType: searchParams.get('collaboratorType') || '',
         startDate: searchParams.get('startDate') || '',
         endDate: searchParams.get('endDate') || '',
         limit: parseInt(searchParams.get('limit') || '10'),
@@ -83,11 +93,18 @@ export const ReportsPage = () => {
       setCurrentPage(newPage);
       sessionStorage.setItem('reportsCurrentPage', newPage.toString());
       
+      // Actualizar URL con nueva página
+      const params = new URLSearchParams(searchParams);
+      newPage > 1 ? params.set('page', newPage.toString()) : params.delete('page');
+      setSearchParams(params, { replace: true });
+      
       // Si hay filtros activos, generar reporte con nueva página
       if (results && results.length > 0) {
         const currentFilters = {
           examTypeID: searchParams.get('examTypeID') || '',
           examStatus: searchParams.get('examStatus') || '',
+          collaboratorsStatus: searchParams.get('collaboratorsStatus') || '',
+          collaboratorType: searchParams.get('collaboratorType') || '',
           startDate: searchParams.get('startDate') || '',
           endDate: searchParams.get('endDate') || '',
           limit: parseInt(searchParams.get('limit') || '10'),
@@ -103,9 +120,25 @@ export const ReportsPage = () => {
           }
         }
 
-        generateReport(currentFilters);
+        generateReport(currentFilters, newPage);
       }
     }
+  };
+
+  // Función mejorada para el manejo del reporte desde Header
+  const handleGenerateReport = async (data, page = 1, limit = 10) => {
+      if (currentPage !== 1) {
+        setCurrentPage(1);
+        sessionStorage.setItem('reportsCurrentPage', '1');
+      }
+
+      const reportData = {
+        ...data,
+        page: page,
+        limit: limit || parseInt(searchParams.get('limit') || '10')
+      };
+
+      await generateReport(reportData, page, limit);
   };
 
   // Función para obtener datos ordenados
@@ -138,10 +171,10 @@ export const ReportsPage = () => {
     });
   };
 
-  // Estado de carga
-  if (loading && !results) return <LoadingScreen />;
-
   const sortedResults = getSortedResults();
+
+  // Estado de carga
+  if (examTypesLoading || loadingReports && !results) return <LoadingScreen />;
 
   return (
     <NavigationLayout title="Reportes">
@@ -149,8 +182,9 @@ export const ReportsPage = () => {
         <Header 
           examStatuses={CheckListStates}
           examTypes={examTypes}
-          generateReport={(data) => generateReport({ ...data, page: 1 })}
-          loading={loading}
+          generateReport={handleGenerateReport}
+          loading={examTypesLoading || loadingReports}
+          page={currentPage}
           handlePageChange={handlePageChange}
         />
         
@@ -168,11 +202,13 @@ export const ReportsPage = () => {
                 onExamClick={openExamModal}
               />
 
-              <Pagination 
-                meta={meta}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
+              {!hasCollaboratorFilters && (
+                <Pagination 
+                  meta={meta}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
+                />
+              )}
             </div>
           )}
         </AnimatePresence>
