@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { toast } from 'react-toastify';
-import { ReportsAPI } from '../API/reports'
+import { ReportsAPI } from '../API/reports';
 
 export const useReportsHook = () => {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [meta, setMeta] = useState({});
 
-    const generateReport = async (filtersInfo, page = 1, limit = 20) => {
+    const generateReport = async (filtersInfo, page = 1) => {
         try {
             setLoading(true);
             let complementUrl = '';
-            const filteredCollaborators = filtersInfo.collaborators.filter(c => c.trim() !== '');
+            const filteredCollaborators = filtersInfo.collaborators?.filter(c => c.trim() !== '');
             const formData = {
                 ...filtersInfo,
                 collaborators: filteredCollaborators
@@ -34,7 +34,12 @@ export const useReportsHook = () => {
 
             if(formData.endDate) complementUrl += `&endDate=${formData.endDate}`;
 
-            const res = await ReportsAPI.generateReport(page, limit, complementUrl);
+            if(formData.collaboratorType) complementUrl += `&collaboratorType=${formData.collaboratorType}`;
+
+            if(formData.collaboratorsStatus) 
+                complementUrl += `&collaboratorsStatus=${formData.collaboratorsStatus}`;
+
+            const res = await ReportsAPI.generateReport(page, filtersInfo.limit, complementUrl);
 
             if(!res.success) throw new Error(res.message || 'Error al generar el reporte');
 

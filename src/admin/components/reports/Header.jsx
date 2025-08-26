@@ -11,10 +11,19 @@ import {
   X,
   Plus,
   RotateCcw,
-  Hash
+  Hash,
+  UserCheck,
+  Building
 } from 'lucide-react';
 
-export const Header = ({ examTypes, examStatuses, generateReport, loading, page = 1 }) => {
+export const Header = ({ 
+  examTypes, 
+  examStatuses, 
+  generateReport, 
+  loading, 
+  page = 1, 
+  handlePageChange 
+}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filtersExpanded, setFiltersExpanded] = useState(false);
   const [collaboratorInputs, setCollaboratorInputs] = useState(['']);
@@ -22,16 +31,17 @@ export const Header = ({ examTypes, examStatuses, generateReport, loading, page 
     return sessionStorage.getItem('reportLimit') ||  searchParams.get('limit') || '10';
   });
   
-  const { control, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
+  const { control, handleSubmit, reset, watch, setValue } = useForm();
   const watchedValues = watch();
 
   // Cargar datos desde URL o sessionStorage al montar el componente
   useEffect(() => {
     const loadInitialData = () => {
-      // Cargar desde URL parameters
       const urlData = {
         examTypeID: searchParams.get('examTypeID') || '',
         examStatus: searchParams.get('examStatus') || '',
+        collaboratorsStatus: searchParams.get('collaboratorsStatus') || '',
+        collaboratorType: searchParams.get('collaboratorType') || '',
         startDate: searchParams.get('startDate') || '',
         endDate: searchParams.get('endDate') || '',
       };
@@ -97,17 +107,17 @@ export const Header = ({ examTypes, examStatuses, generateReport, loading, page 
 
       if (data.collaborators && data.collaborators.length > 0) {
         const filteredCollaborators = data.collaborators.filter(c => c && c.trim());
-        if (filteredCollaborators.length > 0) {
+        if (filteredCollaborators.length > 0) 
           params.set('collaborators', encodeURIComponent(JSON.stringify(filteredCollaborators)));
-        }
+
       }
 
       if (limitValue && limitValue !== '10') params.set('limit', limitValue);
 
       // Actualizar URL sin recargar la página
       setSearchParams(params, { replace: true });
-    } catch (error) {
-      console.error('Error syncing data to storage:', error);
+    } catch (err) {
+      console.error('Error syncing data to storage:', err);
     }
   };
 
@@ -152,7 +162,9 @@ export const Header = ({ examTypes, examStatuses, generateReport, loading, page 
       collaborators: data.collaborators?.filter(c => c && c.trim()) || [],
       limit: parseInt(limit) || 10
     };
+    console.log(filteredData)
   
+    handlePageChange(1)
     syncDataToStorage(filteredData, limit);
     await generateReport(filteredData, page, filteredData.limit);
   });
@@ -175,15 +187,27 @@ export const Header = ({ examTypes, examStatuses, generateReport, loading, page 
     return value && value.trim() !== '';
   }) || limit !== '10';
 
-  const limitOptions = [
-    { value: '5', label: '5 resultados' },
-    { value: '10', label: '10 resultados' },
-    { value: '25', label: '25 resultados' },
-    { value: '50', label: '50 resultados' },
-    { value: '100', label: '100 resultados' },
-    { value: '250', label: '250 resultados' },
-    { value: '500', label: '500 resultados' }
-  ];
+const limitOptions = [
+  { value: '5', label: '5 resultados' },
+  { value: '10', label: '10 resultados' },
+  { value: '25', label: '25 resultados' },
+  { value: '50', label: '50 resultados' },
+  { value: '100', label: '100 resultados' },
+  { value: '250', label: '250 resultados' },
+  { value: '500', label: '500 resultados' }
+];
+
+const collaboratorsStatusOptions = [
+  { value: '', label: 'Todos los estados' },
+  { value: 'Activos', label: 'Activos' },
+  { value: 'Inactivos', label: 'Inactivos' }
+];
+
+const  collaboratorTypeOptions = [
+  { value: '', label: 'Todos los tipos' },
+  { value: 'Temporal', label: 'Temporales' },
+  { value: 'New Stetic', label: 'New Stetic' }
+];
 
   return (
     <motion.div
@@ -321,23 +345,52 @@ export const Header = ({ examTypes, examStatuses, generateReport, loading, page 
                   />
                 </div>
 
-                {/* Límite de Resultados */}
+                {/* Estado del Colaborador */}
                 <div className="space-y-2">
                   <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-                    <Hash className="w-4 h-4 text-gray-500" />
-                    <span>Límite de Resultados</span>
+                    <UserCheck className="w-4 h-4 text-gray-500" />
+                    <span>Estado del Colaborador</span>
                   </label>
-                  <select
-                    value={limit}
-                    onChange={(e) => handleLimitChange(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/80 border border-gray-200/80 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-sm"
-                  >
-                    {limitOptions.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
+                  <Controller
+                    name="collaboratorsStatus"
+                    control={control}
+                    render={({ field }) => (
+                      <select
+                        {...field}
+                        className="w-full px-4 py-2.5 bg-white/80 border border-gray-200/80 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-sm"
+                      >
+                        {collaboratorsStatusOptions.map(option => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  />
+                </div>
+
+                {/* Tipo de Usuario */}
+                <div className="space-y-2">
+                  <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+                    <Building className="w-4 h-4 text-gray-500" />
+                    <span>Tipo de colaboradores </span>
+                  </label>
+                  <Controller
+                    name="collaboratorType"
+                    control={control}
+                    render={({ field }) => (
+                      <select
+                        {...field}
+                        className="w-full px-4 py-2.5 bg-white/80 border border-gray-200/80 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-sm"
+                      >
+                        {collaboratorTypeOptions.map(option => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  />
                 </div>
 
                 {/* Fecha Inicio */}

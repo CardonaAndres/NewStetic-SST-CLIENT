@@ -17,17 +17,17 @@ export const ReportsPage = () => {
   const [searchParams] = useSearchParams();
   const { examTypes, getExamTypes, loading: examTypesLoading } = useExamTypesHook();
   const { loading: loadingReports, generateReport, results, meta } = useReportsHook();
-  
-  // Estados para paginación, ordenamiento y modal
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [selectedExam, setSelectedExam] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(() => {
     const sessionPage = sessionStorage.getItem('reportsCurrentPage');
     const urlPage = searchParams.get('page');
     return parseInt(urlPage || sessionPage || '1');
   });
 
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  const [selectedExam, setSelectedExam] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const loading = examTypesLoading || loadingReports;
 
@@ -61,7 +61,7 @@ export const ReportsPage = () => {
         }
       }
 
-      generateReport(urlData);
+      generateReport(urlData, currentPage);
     }
   }, [searchParams, examTypes.length, currentPage]);
 
@@ -151,6 +151,7 @@ export const ReportsPage = () => {
           examTypes={examTypes}
           generateReport={(data) => generateReport({ ...data, page: 1 })}
           loading={loading}
+          handlePageChange={handlePageChange}
         />
         
         <AnimatePresence mode="wait">

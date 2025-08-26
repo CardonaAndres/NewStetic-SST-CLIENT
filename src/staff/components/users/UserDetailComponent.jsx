@@ -15,8 +15,8 @@ import {
   Building, 
   Clock, 
   MapPin, 
-  FileText, 
-  List
+  FileText,
+  BarChart3
 } from 'lucide-react';
 
 const containerVariants = {
@@ -60,7 +60,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
   const toReportsPage = () => {
     const doubleEncoded = encodeURIComponent(encodeURIComponent(JSON.stringify([user.f200_nit])));
     window.location.href = `${router.reportsPage}?collaborators=${doubleEncoded}`;
-  }
+  };
 
   useEffect(() => {
     getUserFromBook(user)
@@ -112,19 +112,36 @@ export const UserDetailComponent = ({ user, onClose }) => {
         <div className="max-w-7xl mx-auto">
           {/* Enhanced Header Navigation */}
           <motion.div className="mb-8" variants={itemVariants}>
-            <motion.button
-              onClick={onClose}
-              className="group inline-flex items-center gap-3 px-6 py-3 bg-white/90 backdrop-blur-xl border border-white/40 rounded-2xl text-blue-700 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-              whileHover={{ 
-                scale: 1.02,
-                y: -2,
-                boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)"
-              }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-200" />
-              Volver al Buscador
-            </motion.button>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <motion.button
+                onClick={onClose}
+                className="group inline-flex items-center gap-3 px-6 py-3 bg-white/90 backdrop-blur-xl border border-white/40 rounded-2xl text-blue-700 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                whileHover={{ 
+                  scale: 1.02,
+                  y: -2,
+                  boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)"
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-200" />
+                Volver al Buscador
+              </motion.button>
+
+              {/* Reports Button */}
+              <motion.button
+                onClick={toReportsPage}
+                className="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                whileHover={{ 
+                  scale: 1.02,
+                  y: -2,
+                  boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)"
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <BarChart3 className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                Ir a Reportes
+              </motion.button>
+            </div>
           </motion.div>
           
           {/* Enhanced Main Profile Card */}
@@ -207,7 +224,6 @@ export const UserDetailComponent = ({ user, onClose }) => {
                     </motion.span>
                     
                     {isActive && (
-                      <>
                       <motion.button 
                         onClick={handleModal} 
                         className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
@@ -221,21 +237,7 @@ export const UserDetailComponent = ({ user, onClose }) => {
                         <Folder className="w-4 h-4" />
                         Trayectoria laboral
                       </motion.button>
-                      </>
                     )}
-                      <motion.button 
-                        onClick={toReportsPage} 
-                        className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-                        whileHover={{ 
-                          scale: 1.05,
-                          y: -2,
-                          backgroundImage: "linear-gradient(to right, rgb(71 85 105), rgb(51 65 85))"
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <List className="w-4 h-4" />
-                        Ir a reportes
-                      </motion.button>
                   </div>
                   
                   <div className="flex items-center gap-3 text-slate-600">
@@ -254,45 +256,42 @@ export const UserDetailComponent = ({ user, onClose }) => {
                   >
                     {[
                       { 
-                        id: 1,
                         label: 'Exámenes Periódicos', 
                         gradient: 'from-blue-400 to-blue-500',
                         hoverGradient: 'from-blue-600 to-blue-700',
                         icon: <TrendingUp className="w-4 h-4" />,
-                        to: `${router.medicalStaffHistory}?cc=${user.f200_nit}`
+                        to: `${router.medicalStaffHistory}?cc=${user.f200_nit}`,
+                        requiresActive: true
                       },
                       { 
-                        id: 2,
                         label: 'Examen de Ingreso', 
                         gradient: 'from-blue-400 to-blue-500',
                         hoverGradient: 'from-blue-600 to-blue-700',
                         icon: <Clock className="w-4 h-4" />,
-                        to: `${router.incomeExam}?cc=${user.f200_nit}&isUserActive=${isActive}`
+                        to: `${router.incomeExam}?cc=${user.f200_nit}&isUserActive=${isActive}`,
+                        requiresActive: true
                       },
                       { 
-                        id: 3,
                         label: 'Examen de Egreso', 
                         gradient: 'from-blue-400 to-blue-500',
                         hoverGradient: 'from-blue-600 to-blue-700',
                         icon: <MapPin className="w-4 h-4" />,
-                        to: `${router.egressExam}?cc=${user.f200_nit}&isUserActive=${isActive}`
+                        to: `${router.egressExam}?cc=${user.f200_nit}&isUserActive=${isActive}`,
+                        requiresActive: true
                       }
-                    ].map((button, index) => {
-                        const buttonsIDToView = isActive ? [1, 2, 3] : [2, 3]
-                        if(buttonsIDToView.includes(button.id)){
-                          return (
-                            <motion.div key={index}>
-                              <Link 
-                                to={button.to} 
-                                className={`group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${button.gradient} text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300`}
-                              >
-                                {button.icon}
-                                {button.label}
-                              </Link>
-                            </motion.div>
-                          )
-                        }
-                      })}
+                    ].map((button, index) => (
+                      <motion.div key={index}>
+                        {(button.requiresActive ? isActive : true) && (
+                          <Link 
+                            to={button.to} 
+                            className={`group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${button.gradient} hover:bg-gradient-to-r hover:${button.hoverGradient} text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300`}
+                          >
+                            {button.icon}
+                            {button.label}
+                          </Link>
+                        )}
+                      </motion.div>
+                    ))}
                 </motion.div>
               </div>
             </div>
