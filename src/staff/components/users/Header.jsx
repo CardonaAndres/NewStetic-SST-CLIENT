@@ -113,7 +113,7 @@ export const Header = ({ meta, limit, handleLimitChange, onSearch, onClearSearch
                                     <UserX className="w-3 h-3 text-white" />
                                 </div>
                                 <span className="text-sm font-medium text-slate-600 group-hover:text-slate-700 transition-colors duration-200">
-                                    { isStaffIdlePage ? 'Mostrar Activos' : 'Mostrar Inactivos' }
+                                    { isStaffIdlePage ? 'Activos' : 'Inactivos' }
                                 </span>
                             </Link>
                             </div> 

@@ -34,9 +34,6 @@ export const Header = ({
   const { control, handleSubmit, reset, watch, setValue } = useForm();
   const watchedValues = watch();
 
-  const hasCollaboratorFilters = 
-   searchParams.get('collaboratorsStatus') || searchParams.get('collaboratorType');
-
   // Cargar datos desde URL o sessionStorage al montar el componente
   useEffect(() => {
     const loadInitialData = () => {
@@ -238,8 +235,6 @@ const  collaboratorTypeOptions = [
 
           {/* Botones de acción */}
           <div className="flex items-center space-x-3 flex-shrink-0">
-            {/* Selector de límite rápido */}
-            {!hasCollaboratorFilters && (
               <div className="flex items-center space-x-2">
                 <Hash className="w-4 h-4 text-gray-500" />
                 <select
@@ -254,7 +249,6 @@ const  collaboratorTypeOptions = [
                   ))}
                 </select>
               </div>
-            )}
 
             <motion.button
               type="button"

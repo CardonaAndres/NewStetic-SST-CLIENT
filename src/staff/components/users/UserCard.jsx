@@ -1,17 +1,22 @@
-import { User, MapPin, Calendar, Mail, Building } from 'lucide-react';
 import { useState } from 'react';
 import { UserModal } from './UserModal';
 import { formatDate } from '../../../app/assets/js/styles';
-import { useStaffHook } from '../../hooks/useStaffHook';
+import { User, MapPin, Calendar, Mail, Building } from 'lucide-react';
 
 export const UserCard = ({ user }) => {
   const [ modal, setModal ] = useState(false);
   const handleModal = () => setModal(!modal);
-  const { formatInfo } = useStaffHook();
-  const { getStatusText, getStatusColor } = formatInfo(user);
+
+  const getBorderStyle = (status) => {
+    if (status === 'ACTIVO') return 'border border-green-400 shadow-green-50';
+    return 'border border-red-400 shadow-red-50';
+  };
 
   return (
-    <div onClick={handleModal} className="group relative bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl rounded-3xl shadow-xl border border-white/50 p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden cursor-pointer">
+    <div 
+      onClick={handleModal} 
+      className={`group relative bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl rounded-3xl shadow-xl ${getBorderStyle(user.ESTADO)} p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden cursor-pointer`}
+    >
       {/* Background Decoration */}
       <div className="absolute -top-10 -right-10 w-20 h-20 rounded-full bg-gradient-to-br from-blue-400/10 to-indigo-600/10 blur-2xl transition-all duration-500 group-hover:scale-150" />
       
@@ -27,11 +32,6 @@ export const UserCard = ({ user }) => {
             </p>
           </div>
         </div>
-        
-        {/* Status Badge */}
-        <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(user["Estado Empleado"])}`}>
-          {getStatusText(user["Estado Empleado"])}
-        </span>
       </div>
 
       {/* Position & Department */}

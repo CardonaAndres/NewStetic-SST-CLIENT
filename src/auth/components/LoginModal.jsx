@@ -4,6 +4,8 @@ import { LoginForm } from '../pages/LoginForm';
 
 export const LoginModal = ({ open, onClose }) => {
 
+  if(!open) return null
+
   const modalVariants = {
     hidden: { 
       opacity: 0,

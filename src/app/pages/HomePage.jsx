@@ -1,7 +1,7 @@
 import Logo from '../assets/imgs/LOGO_NS_SINFONDO.png';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Users, Lock, ChevronRight, Star, Eye } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Shield, Users, Lock, ChevronRight, Star, Eye, Menu, X, Home, AlertTriangle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { LoginModal } from '../../auth/components/LoginModal';
 import { useAuth } from '../../auth/context/AuthContext';
 
@@ -71,12 +71,81 @@ const backgroundVariants = {
   }
 };
 
+// Variantes para el menú navbar
+const navbarVariants = {
+  hidden: {
+    opacity: 0,
+    height: 0,
+    y: -20
+  },
+  visible: {
+    opacity: 1,
+    height: "auto",
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut",
+      staggerChildren: 0.1
+    }
+  },
+  exit: {
+    opacity: 0,
+    height: 0,
+    y: -20,
+    transition: {
+      duration: 0.3,
+      ease: "easeIn"
+    }
+  }
+};
+
+const menuItemVariants = {
+  hidden: {
+    opacity: 0,
+    x: -20
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.3,
+      ease: "easeOut"
+    }
+  }
+};
+
+const menuItems = [
+  { icon: AlertTriangle, label: 'Reportar Incidentes', href: '' }
+];
+
 export const HomePage = () => {
   const { isAuth } = useAuth();
   const [modal, setModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   
   const handleModal = () => setModal(!modal);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  // Hook para cerrar el menú cuando se hace clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) setIsMenuOpen(false);
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') setIsMenuOpen(false);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, []);
 
   // Hook para el carrusel automático
   useEffect(() => {
@@ -106,7 +175,6 @@ export const HomePage = () => {
             exit="exit"
           />
         </AnimatePresence>
-    
       </div>
 
       {/* Animated Background Elements */}
@@ -185,53 +253,116 @@ export const HomePage = () => {
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-6 py-8">
         {/* Header */}
-        <motion.header
-          className="flex justify-between items-center mb-16"
+        <motion.div
+          className="mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex items-center space-x-3">
-            <motion.div 
-              className="w-15 h-15 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-2"
-              whileHover={{ scale: 1.05, rotate: 5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
-                <img src={Logo} alt="" />
+          {/* Top Header */}
+          <header className="flex justify-between items-center mb-4">
+            <div className="flex items-center space-x-3">
+              <motion.div 
+                className="w-15 h-15 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-2"
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+                  <img src={Logo} alt="" />
+                </div>
+              </motion.div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">New Stetic</h1>
+                <p className="text-sm text-gray-600 font-medium">Sistema SST</p>
               </div>
-            </motion.div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">New Stetic</h1>
-              <p className="text-sm text-gray-600 font-medium">Sistema SST</p>
             </div>
-          </div>
-          <motion.button onClick={handleModal}
-            className="flex bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white items-center space-x-2 px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {isAuth ? 
-              <>
-                <Eye className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  Bienvenido
-                </span>
-              </> :
-              <>
-                <Lock className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  Iniciar Sesión
-                </span>
-              </>
-            }
-            <ChevronRight className="w-4 h-4" />
-          </motion.button>
-        </motion.header>
+
+            {/* Menu y Login Buttons */}
+            <div className="flex items-center space-x-4">
+              {/* Menu Toggle Button */}
+              <motion.button
+                onClick={toggleMenu}
+                className="flex bg-white/80 backdrop-blur-sm hover:bg-white/90 text-gray-700 items-center space-x-2 px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/40"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {isMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
+                <span className="text-sm font-medium">Menú</span>
+              </motion.button>
+
+              {/* Login Button */}
+              <motion.button 
+                onClick={handleModal}
+                className="flex bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white items-center space-x-2 px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {isAuth ? 
+                  <>
+                    <Eye className="w-4 h-4" />
+                    <span className="text-sm font-medium">
+                      Bienvenido
+                    </span>
+                  </> :
+                  <>
+                    <Lock className="w-4 h-4" />
+                    <span className="text-sm font-medium">
+                      Iniciar Sesión
+                    </span>
+                  </>
+                }
+                <ChevronRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </header>
+
+          {/* Horizontal Navbar Menu */}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.nav
+                className="w-full bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/50 overflow-hidden"
+                variants={navbarVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {/* Menu Items Container */}
+                <div className="flex flex-wrap items-center justify-center gap-2 p-4">
+                  {menuItems.map((item, index) => (
+                    <motion.button
+                      key={item.label}
+                      onClick={() => handleMenuItemClick(item.href)}
+                      className="flex items-center space-x-3 px-6 py-3 rounded-xl hover:bg-gray-100/80 transition-all duration-200 group min-w-fit"
+                      variants={menuItemVariants}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-teal-600/20 flex items-center justify-center group-hover:from-cyan-500/30 group-hover:to-teal-600/30 transition-all duration-200">
+                        <item.icon className="w-4 h-4 text-gray-600" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 whitespace-nowrap">
+                        {item.label}
+                      </span>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* Decorative bottom gradient */}
+                <div className="h-1 bg-gradient-to-r from-cyan-500 via-yellow-400 to-teal-600" />
+              </motion.nav>
+            )}
+          </AnimatePresence>
+        </motion.div>
 
         {/* Hero Content */}
         <motion.div
-          className="flex flex-col lg:flex-row items-center justify-between gap-12 min-h-[70vh]"
+          className={`flex flex-col lg:flex-row items-center justify-between gap-12 transition-all duration-500 ${
+            isMenuOpen ? 'min-h-[60vh]' : 'min-h-[70vh]'
+          }`}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -270,7 +401,6 @@ export const HomePage = () => {
               Plataforma integral para la gestión de Seguridad y Salud en el Trabajo.
               Optimiza procesos, reduce riesgos y garantiza el cumplimiento normativo con tecnología de vanguardia.
             </motion.p>
-
           </div>
 
           {/* Right Content - Enhanced Floating Cards */}
@@ -294,7 +424,6 @@ export const HomePage = () => {
                     <p className="text-l text-gray-600">Seguridad y Salud en el Trabajo</p>
                   </div>
                 </div>
-                
               </motion.div>
 
               {/* Enhanced Floating Card 1 */}
@@ -332,7 +461,6 @@ export const HomePage = () => {
                 <Shield className="w-7 h-7 text-gray-400" />
                 <div className="text-gray-600 text-xs font-medium mt-2">Security</div>
               </motion.div>
-
             </motion.div>
           </div>
         </motion.div>
