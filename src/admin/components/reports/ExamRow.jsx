@@ -3,7 +3,9 @@ import { FileText, User, Calendar } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
 
 export const ExamRow = ({ result, index, onExamClick }) => {
-  const isOverdue = result.estado_item === 'Vencido';
+  // Corregir la lógica - usar result en lugar de onExamClick para los datos
+  const isOverdue = result.fecha_vencimiento && new Date(result.fecha_vencimiento) < new Date();
+  const isIngresoOrEgreso = ['Ingreso', 'Egreso'].includes(result.tipo_examen);
 
   // Función para formatear fechas
   const formatDate = (dateString) => {
@@ -21,7 +23,7 @@ export const ExamRow = ({ result, index, onExamClick }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.02 }}
       className={`hover:bg-gray-50/80 transition-all duration-200 cursor-pointer ${
-        isOverdue ? 'bg-red-50/30' : ''
+        isOverdue && !isIngresoOrEgreso ? 'bg-red-50/30' : ''
       }`}
       onClick={() => onExamClick(result)}
     >
@@ -29,7 +31,7 @@ export const ExamRow = ({ result, index, onExamClick }) => {
       <td className="px-4 py-4">
         <div className="flex items-center space-x-3">
           <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${
-            isOverdue ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-blue-500 to-blue-600'
+            isOverdue && !isIngresoOrEgreso ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-blue-500 to-blue-600'
           }`}>
             <FileText className="w-4 h-4 text-white" />
           </div>
@@ -59,15 +61,29 @@ export const ExamRow = ({ result, index, onExamClick }) => {
         </div>
       </td>
 
-      {/* Fecha Vencimiento */}
-      <td className="px-4 py-4">
-        <div className="flex items-center space-x-2">
-          <Calendar className={`w-4 h-4 flex-shrink-0 ${isOverdue ? 'text-red-500' : 'text-blue-500'}`} />
-          <span className={`text-sm truncate ${isOverdue ? 'text-red-600 font-medium' : 'text-gray-900'}`}>
-            {formatDate(result.fecha_vencimiento)}
-          </span>
-        </div>
-      </td>
+      {/* Fecha Vencimiento - Solo mostrar si NO es Ingreso o Egreso */}
+      {!isIngresoOrEgreso && (
+        <td className="px-4 py-4">
+          <div className="flex items-center space-x-2">
+            <Calendar className={`w-4 h-4 flex-shrink-0 ${isOverdue ? 'text-red-500' : 'text-blue-500'}`} />
+            <span className={`text-sm truncate ${isOverdue ? 'text-red-600 font-medium' : 'text-gray-900'}`}>
+              {formatDate(result.fecha_vencimiento)}
+            </span>
+          </div>
+        </td>
+      )}
+
+      {isIngresoOrEgreso && (
+        <td className="px-4 py-4">
+          <div className="flex items-center space-x-2">
+            <Calendar className="w-4 h-4 flex-shrink-0 text-green-500" />
+            <span className="text-sm text-gray-900 truncate">
+              N / A
+            </span>
+          </div>
+        </td>
+      )}
+
     </motion.tr>
   );
 };
