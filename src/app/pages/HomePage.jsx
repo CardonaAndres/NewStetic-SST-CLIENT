@@ -1,9 +1,10 @@
 import Logo from '../assets/imgs/LOGO_NS_SINFONDO.png';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Users, Lock, ChevronRight, Star, Eye, Menu, X, Home, AlertTriangle } from 'lucide-react';
+import { Shield, Users, Lock, ChevronRight, Star, Eye, Menu, X, AlertTriangle } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { LoginModal } from '../../auth/components/LoginModal';
 import { useAuth } from '../../auth/context/AuthContext';
+import { Link } from 'react-router-dom';
 
 // Array de imágenes de fondo para el carrusel
 const backgroundImages = [
@@ -83,7 +84,7 @@ const navbarVariants = {
     height: "auto",
     y: 0,
     transition: {
-      duration: 0.4,
+      duration: 0.2,
       ease: "easeOut",
       staggerChildren: 0.1
     }
@@ -128,7 +129,6 @@ export const HomePage = () => {
   const handleModal = () => setModal(!modal);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  // Hook para cerrar el menú cuando se hace clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) setIsMenuOpen(false);
@@ -147,13 +147,12 @@ export const HomePage = () => {
     };
   }, []);
 
-  // Hook para el carrusel automático
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => 
         (prevIndex + 1) % backgroundImages.length
       );
-    }, 5000); // Cambia cada 5 segundos
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -291,7 +290,7 @@ export const HomePage = () => {
                 ) : (
                   <Menu className="w-5 h-5" />
                 )}
-                <span className="text-sm font-medium">Menú</span>
+                <span className="text-sm font-medium">Más opciones</span>
               </motion.button>
 
               {/* Login Button */}
@@ -332,10 +331,9 @@ export const HomePage = () => {
               >
                 {/* Menu Items Container */}
                 <div className="flex flex-wrap items-center justify-center gap-2 p-4">
-                  {menuItems.map((item, index) => (
-                    <motion.button
+                  {menuItems.map((item) => (
+                    <Link
                       key={item.label}
-                      onClick={() => handleMenuItemClick(item.href)}
                       className="flex items-center space-x-3 px-6 py-3 rounded-xl hover:bg-gray-100/80 transition-all duration-200 group min-w-fit"
                       variants={menuItemVariants}
                       whileHover={{ scale: 1.05, y: -2 }}
@@ -347,7 +345,7 @@ export const HomePage = () => {
                       <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 whitespace-nowrap">
                         {item.label}
                       </span>
-                    </motion.button>
+                    </Link>
                   ))}
                 </div>
 
