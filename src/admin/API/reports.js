@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const baseURL = String(import.meta.env.VITE_REPORTS_SERVICE);
+const baseURL = `${String(import.meta.env.VITE_BASE_APIGATEWAY)}/reports`;
 
 export class ReportsAPI {
      static async generateReport(page = 1, limit = 20, complementUrl = '') {

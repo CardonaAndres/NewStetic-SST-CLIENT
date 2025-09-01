@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const baseURL = String(import.meta.env.VITE_STAFF_SERVICE);
+const baseURL = String(import.meta.env.VITE_BASE_APIGATEWAY);
 
 export class ExamCheckListAPI {
     static async getCheckListByUserDoc(userDoc){
