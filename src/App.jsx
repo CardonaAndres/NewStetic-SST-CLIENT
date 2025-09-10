@@ -20,6 +20,7 @@ import { ReportsPage } from './admin/pages/ReportsPage';
 import { IncomesExams } from './staff/pages/IncomesExams';
 import { Error404Page } from './app/pages/Error404Page';
 import { EgressExams } from './staff/pages/EgressExams';
+import { UsersPage } from './admin/pages/UsersPage';
 
 export const App = () => {
   return (
@@ -55,6 +56,7 @@ export const App = () => {
             <Route path={router.reportsPage} element={<ReportsPage />} />
             <Route path={router.incomeExam} element={<IncomesExams />} />
             <Route path={router.egressExam} element={<EgressExams />} />
+            <Route path={router.adminUsers} element={<UsersPage />} />
           </Route>
 
           <Route path="*" element={<Error404Page />} />

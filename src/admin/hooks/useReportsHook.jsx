@@ -47,7 +47,6 @@ export const useReportsHook = () => {
             setResults(res.data.results);
 
         } catch (err) {
-            console.error(err);
             toast.error(err.message);
         } finally {
             setLoading(false)

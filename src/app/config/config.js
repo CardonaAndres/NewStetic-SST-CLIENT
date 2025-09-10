@@ -8,6 +8,7 @@ export const router = {
     staffIdle : '/personal/inactivo',
     medicalStaffHistory : '/historial-medico',
     examHistory : '/historial-examen',
+    adminUsers: '/administracion/usuarios',
     administration : '/administracion/software-sst',
     reportsPage : '/administracion/reportes',
     examTypesManager : '/administracion/tipos-examenes',

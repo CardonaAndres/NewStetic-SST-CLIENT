@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FileText, Settings } from 'lucide-react';
+import { FileText, Settings, Users2 } from 'lucide-react';
 import { NavigationLayout } from "../../app/layouts/NavigationLayout";
 import { router } from '../../app/config/config';
 
@@ -23,6 +23,16 @@ const adminOptions = [
         hoverColor: 'from-green-600 to-green-700',
         bgGradient: 'from-green-50 to-green-100',
         path: router.reportsPage
+    },
+    {
+        id: 'allowed-users',
+        title: 'Usuarios',
+        description: 'Visualiza todos los usuarios con acceso al sistema',
+        icon: Users2,
+        color: 'from-gray-500 to-gray-600',
+        hoverColor: 'from-gray-600 to-gray-700',
+        bgGradient: 'from-gray-50 to-gray-100',
+        path: router.adminUsers
     }
 ];
 
