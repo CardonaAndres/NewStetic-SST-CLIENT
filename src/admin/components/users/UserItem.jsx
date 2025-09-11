@@ -1,6 +1,11 @@
-import { Edit2, Eye, Trash2 } from "lucide-react"
+import { useState } from "react";
+import { Edit2 } from "lucide-react";
+import { ModalForm } from "./ModalForm";
 
 export const UserItem = ({ user }) => {
+  const [ modalForm, setModalForm ] = useState(false);  
+  const handleModalForm = () => setModalForm(!modalForm);
+
   return (
     <div className="p-6 hover:bg-gray-50 transition-colors">
         <div className="flex items-center justify-between">
@@ -30,28 +35,13 @@ export const UserItem = ({ user }) => {
             </div>
             
             <div className="flex items-center space-x-2">
-            <button
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Ver detalles"
-            >
-                <Eye className="h-4 w-4" />
-            </button>
-            
-            <button
-                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                title="Editar usuario"
-            >
-                <Edit2 className="h-4 w-4" />
-            </button>
-            
-            <button
-                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                title="Eliminar usuario"
-            >
-                <Trash2 className="h-4 w-4" />
-            </button>
+                <button onClick={handleModalForm} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Editar usuario">
+                    <Edit2 className="h-4 w-4" />
+                </button>
             </div>
         </div>
+
+        <ModalForm open={modalForm} onClose={handleModalForm} userInfo={user} />
     </div>
   )
 }

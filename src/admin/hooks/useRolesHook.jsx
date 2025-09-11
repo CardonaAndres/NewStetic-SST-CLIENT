@@ -13,7 +13,6 @@ export const useRolesHook = () => {
             const res = await RolesAPI.getRoles();
             if(!res.success) throw new Error(res.message);
 
-            console.log(res.data.roles)
             setRoles(res.data.roles)
 
         } catch (err) {

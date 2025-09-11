@@ -1,8 +1,17 @@
 import { modalStyles } from '../../../app/assets/js/styles.js';
 import { Modal, Box } from '@mui/material';
-import { UserForm } from './UserForm.jsx';
+import { UserFormModal } from './UserFormModal.jsx';
 
 export const ModalForm = ({ open, onClose, userInfo = {} }) => {
+
+    const initialData = {
+        userID: userInfo?.usuario_id || null,
+        username: userInfo?.username || null,
+        documentNumber: userInfo?.numero_documento || null,
+        email: userInfo?.email || null,
+        state: userInfo?.estado || 'Activo',
+        roleID: userInfo?.rol_id || null,
+    }
 
     if (!open) return null;
 
@@ -14,7 +23,7 @@ export const ModalForm = ({ open, onClose, userInfo = {} }) => {
                 boxShadow: 0,
                 borderRadius: 0 , 
             }}>
-                <UserForm onClose={onClose} />
+                <UserFormModal onClose={onClose} initialData={initialData} />
             </Box>
         </Modal>
     )

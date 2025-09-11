@@ -1,6 +1,11 @@
-import { Plus, UserCheck } from "lucide-react"
+import { useState } from "react";
+import { ModalForm } from "./ModalForm";
+import { Plus, UserCheck } from "lucide-react";
 
 export const Header = () => {
+  const [ modalForm, setModalForm ] = useState(false);
+  const handleModalForm = () => setModalForm(!modalForm)
+
   return (
     <div className="bg-white border rounded-2xl border-gray-200 mb-6">
         <div className="px-4 sm:px-6 lg:px-8 py-6">
@@ -17,7 +22,7 @@ export const Header = () => {
                 </div>
             </div>
             </div>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors font-medium"
+            <button onClick={handleModalForm} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors font-medium"
             >
             <Plus className="h-4 w-4" />
             <span>Agregar</span>
@@ -25,6 +30,8 @@ export const Header = () => {
         </div>
 
         </div>
+
+        <ModalForm open={modalForm} onClose={handleModalForm} />
     </div>
   )
 }

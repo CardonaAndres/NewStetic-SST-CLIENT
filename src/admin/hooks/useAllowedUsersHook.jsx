@@ -22,9 +22,39 @@ export const useAllowedUsersHook = () => {
         }
     }
 
+    const giveOrUpdateAcces  = async (isEditMode, userInfo, onClose) => {
+        try {
+            setLoading(true);
+
+            const res = isEditMode 
+            ? await AllowedUsersAPI.updateAccess(userInfo)
+            : await AllowedUsersAPI.giveAccess(userInfo)
+
+            if(!res.success) 
+                throw new Error(res.message)
+
+            onClose();
+            toast.success(res.data.message, {
+                position: "top-left",
+                autoClose: 5000,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+
+        } catch (err) {
+            toast.error(err.message);
+            onClose();
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return {
         users,
         loading,
-        getUsers
+        getUsers,
+        giveOrUpdateAcces
     }
 }
