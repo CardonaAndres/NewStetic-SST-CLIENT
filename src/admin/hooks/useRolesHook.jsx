@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RolesAPI } from '../API/rolesAPI';
+import { RolesAPI } from '../API/roles';
 import { toast } from 'react-toastify';
 
 export const useRolesHook = () => {

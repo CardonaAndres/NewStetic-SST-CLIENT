@@ -1,20 +1,26 @@
 export const router = {
-    home : '/',
-    staff : '/personal',
-    surveillance : '/vigilancia',
-    ppe : '/epp',
-    safety : '/seguridad',
-    hygiene : '/higiene',
-    staffIdle : '/personal/inactivo',
-    medicalStaffHistory : '/historial-medico',
-    examHistory : '/historial-examen',
-    adminUsers: '/administracion/usuarios',
-    administration : '/administracion/software-sst',
-    reportsPage : '/administracion/reportes',
-    examTypesManager : '/administracion/tipos-examenes',
-    incomeExam: '/examen-ingreso',
-    egressExam: '/examen-egreso'
-}
+  home: '/',
+
+  staff: '/personal',
+  staffIdle: '/personal/inactivo',
+  medicalStaffHistory: '/historial-medico',
+
+  surveillance: '/vigilancia',
+  ppe: '/epp',
+  safety: '/seguridad',
+  hygiene: '/higiene',
+
+  incomeExam: '/examen-ingreso',
+  egressExam: '/examen-egreso',
+  examHistory: '/historial-examen',
+
+  administration: '/administracion/software-sst',
+  adminUsers: '/administracion/usuarios',
+  reportsPage: '/administracion/reportes',
+  examTypesManager: '/administracion/tipos-examenes',
+  rolesAndPermissions: '/administracion/roles-y-permisos',
+};
+
 
 const CheckListAllStates = [
   'Pendiente', 

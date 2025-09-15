@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { User, X, Mail, CreditCard, Shield, UserCheck } from 'lucide-react';
 import { useRolesHook } from "../../hooks/useRolesHook";
 import { useAllowedUsersHook } from "../../hooks/useAllowedUsersHook";
-import { LoadingScreen } from "../../../app/components/LoadingScreen";
+import { LocalLoading } from "../../../staff/components/users/LocalLoading";
 
 export const UserFormModal = ({ initialData = {}, onClose }) => {
   const isEditMode = initialData.userID !== null;
@@ -35,7 +35,7 @@ export const UserFormModal = ({ initialData = {}, onClose }) => {
     }
   }, [watchedUsername, setValue, isEditMode]);
 
-  if(loadingRoles || loadingUserHook) return <LoadingScreen />
+  if(loadingRoles || loadingUserHook) return <LocalLoading />
 
   return (
     <div className="flex items-center justify-center p-4 z-50">

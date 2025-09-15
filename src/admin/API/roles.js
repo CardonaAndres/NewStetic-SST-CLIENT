@@ -17,7 +17,6 @@ export class RolesAPI {
             const data = await res.json();
             if(!res.ok) throw new Error(data.message || 'Internal Server Error')
             return { success : true, data }
-            
 
         } catch (err) {
             return { success: false, message: err.message  }
