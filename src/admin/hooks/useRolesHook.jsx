@@ -22,9 +22,36 @@ export const useRolesHook = () => {
         }
     }
 
+    const createOrUpdateRole = async (isEditMode, onClose, roleInfo) => {
+        try {   
+            setLoading(true);
+
+            const res = isEditMode 
+             ?  await RolesAPI.updateRole(roleInfo)
+             :  await RolesAPI.createRole(roleInfo)
+
+            onClose();
+            toast.success(res.data.message, {
+                position: "top-left",
+                autoClose: 5000,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+
+        } catch (err) {
+            onClose();
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return {
         loading,
         getRoles,
-        roles
+        roles,
+        createOrUpdateRole
     }
 }

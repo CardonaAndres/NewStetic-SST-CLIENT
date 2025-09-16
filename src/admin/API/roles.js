@@ -22,4 +22,46 @@ export class RolesAPI {
             return { success: false, message: err.message  }
         }
     }
+
+    static async createRole(roleInfo){
+        try {
+            const token = Cookies.get('token');
+            const res = await fetch(`${baseURL}/roles/`, {
+                method : 'POST', headers : { 
+                    'Content-Type': 'application/json', 
+                    "authorization": `Bearer ${token}` 
+                }, 
+                credentials : 'include',
+                body: JSON.stringify(roleInfo)
+            });
+
+            const data = await res.json();
+            if(!res.ok) throw new Error(data.message || 'Internal Server Error')
+            return { success : true, data }
+
+        } catch (err) {
+            return { success: false, message: err.message  }
+        }
+    }
+
+    static async updateRole(roleInfo){
+        try {
+            const token = Cookies.get('token');
+            const res = await fetch(`${baseURL}/roles/${roleInfo.roleID}`, {
+                method : 'PATCH', headers : { 
+                    'Content-Type': 'application/json', 
+                    "authorization": `Bearer ${token}` 
+                },
+                credentials : 'include',
+                body: JSON.stringify(roleInfo)
+            });
+
+            const data = await res.json();
+            if(!res.ok) throw new Error(data.message || 'Internal Server Error')
+            return { success : true, data }
+
+        } catch (err) {
+            return { success: false, message: err.message  }
+        }
+    }
 }

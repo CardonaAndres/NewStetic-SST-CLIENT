@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRolesHook } from "../../hooks/useRolesHook";
 import { usePermissionsHook } from '../../hooks/usePermissionsHook';
 import { LocalLoading } from "../../../staff/components/users/LocalLoading";
-import { useEffect, useState } from "react";
 import { Shield, X, FileText, Key, Search, Check, User } from 'lucide-react';
 
 export const RoleAndPermissionsForm = ({ onClose, initialData = {} }) => {
@@ -16,6 +17,8 @@ export const RoleAndPermissionsForm = ({ onClose, initialData = {} }) => {
             ...initialData
         }
     });
+
+    const { createOrUpdateRole, loading: rolesLoading } = useRolesHook();
 
     const { loading: permissionLoading, getPermissions, permissions } = usePermissionsHook();
 
@@ -46,17 +49,14 @@ export const RoleAndPermissionsForm = ({ onClose, initialData = {} }) => {
         return selectedPermissionIds.includes(permissionId);
     };
 
-    const onSubmit = (data) => {
-        const roleData = {
+    const onSubmit = async (data) => {
+        await createOrUpdateRole(isEditMode, onClose, {
             ...data,
-            permissionIds: selectedPermissionIds // Solo los IDs
-        };
-        console.log('Datos del rol:', roleData);
-        console.log('IDs de permisos seleccionados:', selectedPermissionIds);
-        // Aquí iría la lógica para guardar/actualizar el rol
+            permissionIds: selectedPermissionIds 
+        });
     };
 
-    if(permissionLoading) return <LocalLoading />
+    if(permissionLoading || rolesLoading) return <LocalLoading />
 
     return (
         <div className="flex items-center justify-center z-50 overflow-y-auto">

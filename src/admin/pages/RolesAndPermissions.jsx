@@ -6,10 +6,8 @@ import { Shield, Plus, Search } from "lucide-react";
 import { RoleCard } from "../components/rolesAndPermissions/RoleCard";
 import { Header } from "../components/rolesAndPermissions/Header";
 import { ControlsSection } from "../components/rolesAndPermissions/ControlsSection";
-import { usePermissionsHook } from "../hooks/usePermissionsHook";
 
 export const RolesAndPermissions = () => {
-  const { getPermissions } = usePermissionsHook();
   const { roles, getRoles, loading: rolesLoading } = useRolesHook();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredRoles, setFilteredRoles] = useState([]);
@@ -44,7 +42,7 @@ export const RolesAndPermissions = () => {
         />
 
         {/* Roles Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-5">
           {filteredRoles.map((role) => (
             <RoleCard role={role} key={role.rol_id} />
           ))}
