@@ -3,6 +3,7 @@ import { AuthAPI } from '../API/auth';
 import { LogOut } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { createContext, useState, useContext, useEffect } from "react";
+import { usePermissionsHook } from '../../admin/hooks/usePermissionsHook';
 
 const isProduction = window.location.protocol === "https:";
 
@@ -15,6 +16,8 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }) => {
+    const { loading: loadingPermissions, getUserPermissions } = usePermissionsHook();
+    const [userPermissions, setUserPermissions] = useState([]);
     const [isAuth, setIsAuth] = useState(false);
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState({});
@@ -74,9 +77,19 @@ export const AuthProvider = ({ children }) => {
         if (user && token) {
             setUser(JSON.parse(user));
             setIsAuth(true);
+
+            getUserPermissions()
+             .then(res => {
+                setUserPermissions(res.permissions);
+                Cookie.set('roleID', res.user.rol_id, { path: '/' });
+             })
+             .catch(() => {
+                console.log('Error al solicitar los permisos del usuario al backend');
+                setUserPermissions([]);
+             });
         }
 
-        setLoading(false);
+        setLoading(false || loadingPermissions);
     }, []);
 
     return (
@@ -85,7 +98,8 @@ export const AuthProvider = ({ children }) => {
             isAuth,
             loading,
             user,
-            logout
+            logout,
+            userPermissions
          }}
         >
             {children}

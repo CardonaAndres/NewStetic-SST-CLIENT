@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ExamCheckListModalForm } from './ExamCheckListModalForm';
 import { router } from '../../../app/config/config';
 
-export const Header = ({ cc }) => {
+export const Header = ({ cc, loading, userPermissions, can }) => {
   const navigate = useNavigate();
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal(!modal);
@@ -52,15 +52,16 @@ export const Header = ({ cc }) => {
                 </p>
               </div>
             </div>
-            
-            <motion.button onClick={handleModal}
-              className="flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            > 
-              <Plus className="w-5 h-5" />
-              <span className="hidden sm:inline">Agregar</span>
-            </motion.button>
+            {!loading && can(userPermissions, "examChecklist.create") && (
+              <motion.button onClick={handleModal}
+                className="flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              > 
+                <Plus className="w-5 h-5" />
+                <span className="hidden sm:inline">Agregar</span>
+              </motion.button>
+            )}
           </div>
         </div>
       </motion.div>

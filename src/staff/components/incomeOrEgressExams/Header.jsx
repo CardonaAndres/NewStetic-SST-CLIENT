@@ -5,7 +5,7 @@ import { FormModal } from './FormModal';
 import { useSearchParams, useLocation } from 'react-router-dom';
 import { router } from '../../../app/config/config';
 
-export const Header = ({ total = 0 }) => {
+export const Header = ({ total = 0, can, loading, userPermissions }) => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [modal, setModal] = useState(false);
@@ -46,7 +46,8 @@ export const Header = ({ total = 0 }) => {
               </div>
 
               {/* Add Button */}
-              {searchParams.get("isUserActive") == 'true' && (
+              {searchParams.get("isUserActive") == 'true' 
+               && !loading && can(userPermissions, "examRecords.createIncomeOrEgress") && (
                 <>
                   <motion.button onClick={handleModal}
                     className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl group min-w-fit"

@@ -3,7 +3,15 @@ import { ArrowLeft, CheckCircle, FileText, UserPlus, XCircle } from "lucide-reac
 import { useState } from "react";
 import { ExamFormModal } from "./ExamFormModal";
 
-export const Header = ({ exam, meta, examRecords, getDaysRemaining }) => {
+export const Header = ({ 
+  exam, 
+  meta, 
+  examRecords, 
+  getDaysRemaining,
+  can,
+  loading,
+  userPermissions
+}) => {
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal(!modal)
 
@@ -27,15 +35,17 @@ export const Header = ({ exam, meta, examRecords, getDaysRemaining }) => {
               <span>Volver</span>
             </motion.button>
 
-            <motion.button onClick={handleModal}
-              className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <UserPlus className="w-5 h-5" />
-              <span className="hidden sm:inline">Registrar</span>
-              <span className="sm:hidden">Registrar</span>
-            </motion.button>
+            {!loading && can(userPermissions, "examRecords.create") && (
+              <motion.button onClick={handleModal}
+                className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <UserPlus className="w-5 h-5" />
+                <span className="hidden sm:inline">Registrar</span>
+                <span className="sm:hidden">Registrar</span>
+              </motion.button>
+            )}
           </div>
 
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">

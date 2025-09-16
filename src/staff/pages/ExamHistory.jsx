@@ -4,19 +4,34 @@ import { motion } from 'framer-motion';
 import { useExamRecordsHook } from '../hooks/useExamRecordsHook';
 import { NavigationLayout } from '../../app/layouts/NavigationLayout';
 import { LoadingScreen } from '../../app/components/LoadingScreen';
-import {FileText, Clock, AlertCircle, CheckCircle, XCircle,ChevronLeft, ChevronRight} from 'lucide-react';
 import { Header } from '../components/examHistory/Header';
 import { FiltersAndSearch } from '../components/examHistory/FiltersAndSearch';
 import { ExamHistoryCard } from '../components/examHistory/ExamHistoryCard';
+import { usePermissionsHook } from '../../admin/hooks/usePermissionsHook';
+import { useAuth } from '../../auth/context/AuthContext';
+import {
+  FileText, 
+  Clock, 
+  AlertCircle, 
+  CheckCircle, 
+  XCircle, 
+  ChevronLeft, 
+  ChevronRight
+} from 'lucide-react';
 
 export const ExamHistory = () => {
   const [ searchParams ] = useSearchParams();
+
+  const { userPermissions, loading: authLoading } = useAuth();
+  const { loading: loadingPermissions, can } = usePermissionsHook();
+  
   const { loading, getExamRecords, examRecords, exam, meta } = useExamRecordsHook();
   const [ currentPage, setCurrentPage ] = useState(1);
   const [ limit, setLimit ] = useState(() => {
     const storedLimit = sessionStorage.getItem('examRecords_limit');
     return storedLimit ? parseInt(storedLimit, 10) : 15;
   });
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
@@ -141,7 +156,7 @@ export const ExamHistory = () => {
     }
   };
 
-  if(loading) return <LoadingScreen />
+  if(loading || authLoading || loadingPermissions) return <LoadingScreen />
 
   return (
     <NavigationLayout title={`Historial del examen - ${exam?.nombre || 'Cargando...'}`}>
@@ -151,6 +166,9 @@ export const ExamHistory = () => {
         meta={meta} 
         examRecords={examRecords} 
         getDaysRemaining={getDaysRemaining}
+        userPermissions={userPermissions}
+        loadingPermission={authLoading || loadingPermissions}
+        can={can}
       />
 
       {/* Filters and Search */}
@@ -184,6 +202,9 @@ export const ExamHistory = () => {
                 daysRemaining={daysRemaining}
                 record={record}
                 cardVariants={cardVariants}
+                userPermissions={userPermissions}
+                loadingPermission={authLoading || loadingPermissions}
+                can={can}
               />
           );
         })}

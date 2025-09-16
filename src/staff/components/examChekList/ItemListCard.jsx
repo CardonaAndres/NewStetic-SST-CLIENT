@@ -16,9 +16,19 @@ import {
   Activity
 } from "lucide-react";
 
-export const ItemListCard = ({ statusConfig, StatusIcon, cardVariants, exam, index }) => {
+export const ItemListCard = ({ 
+  statusConfig, 
+  StatusIcon, 
+  cardVariants, 
+  exam, 
+  index,
+  loading,
+  userPermissions,
+  can
+}) => {
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal(!modal);
+
 
   const navigateToDetails = () => {
    window.location.href = `${router.examHistory}?cc=${exam.cc_empleado}&checklistID=${exam.checklist_id}`
@@ -214,16 +224,19 @@ export const ItemListCard = ({ statusConfig, StatusIcon, cardVariants, exam, ind
               <Eye className="w-4 h-4" />
               <span>Detalles</span>
             </motion.button>
-            
-            <motion.button 
-              onClick={handleModal}
-              className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-700 rounded-lg transition-all duration-200 text-sm font-medium"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Edit3 className="w-4 h-4" />
-              <span>Gestionar</span>
-            </motion.button>
+
+            {!loading && can(userPermissions, "examChecklist.update") && (
+              <motion.button 
+                onClick={handleModal}
+                className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-700 rounded-lg transition-all duration-200 text-sm font-medium"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Edit3 className="w-4 h-4" />
+                <span>Gestionar</span>
+              </motion.button>
+            )}
+
           </div>
         </div>
 

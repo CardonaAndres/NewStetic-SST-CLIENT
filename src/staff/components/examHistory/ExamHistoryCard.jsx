@@ -23,7 +23,10 @@ export const ExamHistoryCard = ({
     formatDate, 
     StatusIcon,
     daysRemaining,
-    record
+    record,
+    userPermissions,
+    loadingPermission,
+    can
 }) => {
   const [modal, setModal] = useState(false);
   const [logsModal, setLogsModal] = useState(false);
@@ -143,14 +146,27 @@ export const ExamHistoryCard = ({
                     </motion.button>
                 </>
                 )}
-                <motion.button
-                        onClick={handleModal}
-                        className="p-2 bg-green-400 hover:bg-green-400/80 text-white rounded-lg transition-all duration-200"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <Edit3 className="w-4 h-4" />
-                </motion.button>
+
+                {!loadingPermission && can(userPermissions, "examRecords.update") && (
+                    <motion.button onClick={handleModal} className="p-2 bg-green-400 hover:bg-green-400/80 text-white rounded-lg transition-all duration-200"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            <Edit3 className="w-4 h-4" />
+                    </motion.button>
+                )}
+
+                {!loadingPermission && can(userPermissions, "examRecords.delete") && (
+                    <motion.button
+                            onClick={handleDeleteFormModal}
+                            className="p-2 bg-red-500 hover:bg-red-400/80 text-white rounded-lg transition-all duration-200"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            <Trash2 className="w-4 h-4" />
+                    </motion.button>
+                )}
+
                 <motion.button
                         onClick={handleLogsModal}
                         className="p-2 bg-yellow-200 hover:bg-yellow-300/80 text-yellow-600 rounded-lg transition-all duration-200"
@@ -158,14 +174,6 @@ export const ExamHistoryCard = ({
                         whileTap={{ scale: 0.95 }}
                     >
                         <List className="w-4 h-4" />
-                </motion.button>
-                <motion.button
-                        onClick={handleDeleteFormModal}
-                        className="p-2 bg-red-500 hover:bg-red-400/80 text-white rounded-lg transition-all duration-200"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <Trash2 className="w-4 h-4" />
                 </motion.button>
             </div>
             </div>

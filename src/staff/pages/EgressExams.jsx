@@ -9,12 +9,19 @@ import { EmptyState } from '../components/incomeOrEgressExams/EmptyState';
 import { ExamCard } from '../components/incomeOrEgressExams/ExamCard';
 import { Calendar, AlertCircle, CheckCircle, Clock, RefreshCw, X as XIcon } from 'lucide-react';
 import { router } from '../../app/config/config';
+import { usePermissionsHook } from '../../admin/hooks/usePermissionsHook';
+import { useAuth } from '../../auth/context/AuthContext';
 
 export const EgressExams = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
+
+  const { userPermissions, loading: authLoading } = useAuth();
+  const { loading: loadingPermissions, can } = usePermissionsHook();
+
   const { loading, exams, getExams } = useIncomeEgressHook();
   const [expandedCards, setExpandedCards] = useState(new Set());
+
   const examType = location.pathname === router.incomeExam ? 'income' : 'egress';
 
   const toggleCardExpansion = (examId) => {
@@ -74,11 +81,17 @@ export const EgressExams = () => {
     getExams(searchParams.get("cc"), examType);
   }, []);
 
-  if(loading) return <LoadingScreen />
+  if(loading || authLoading || loadingPermissions) return <LoadingScreen />
 
   return (
     <NavigationLayout title='Exámenes de Egreso'>
-      <Header total={exams.length || 0} />
+      <Header 
+        total={exams.length || 0} 
+        userPermissions={userPermissions}
+        loadingPermission={authLoading || loadingPermissions}
+        can={can}
+      />
+
       <motion.div 
         className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/40 shadow-lg overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
@@ -106,6 +119,9 @@ export const EgressExams = () => {
                     isExpanded={isExpanded}
                     examId={examId}
                     toggleCardExpansion={toggleCardExpansion}
+                    userPermissions={userPermissions}
+                    loadingPermission={authLoading || loadingPermissions}
+                    can={can}
                   />
                 );
               })}
