@@ -1,51 +1,8 @@
 import { motion } from "framer-motion";
-import { FileText, LucideDoorClosedLocked, Settings, Users2 } from "lucide-react";
 import { NavigationLayout } from "../../app/layouts/NavigationLayout";
-import { router } from "../../app/config/config";
-
-const adminOptions = [
-  {
-    id: "tipos-examenes",
-    title: "Tipos de Exámenes",
-    description:
-      "Gestionar y configurar los diferentes tipos de exámenes médicos",
-    icon: FileText,
-    color: "from-blue-500 to-blue-600",
-    hoverColor: "from-blue-600 to-blue-700",
-    bgGradient: "from-blue-500 to-blue-300",
-    path: router.examTypesManager,
-  },
-  {
-    id: "reportes",
-    title: "Reportes ",
-    description: "Visualizar y generar reportes personalizados",
-    icon: FileText,
-    color: "from-green-500 to-green-600",
-    hoverColor: "from-green-600 to-green-700",
-    bgGradient: "from-green-500 to-green-300",
-    path: router.reportsPage,
-  },
-  {
-    id: "allowed-users",
-    title: "Usuarios",
-    description: "Visualiza todos los usuarios con acceso al sistema",
-    icon: Users2,
-    color: "from-gray-500 to-gray-600",
-    hoverColor: "from-gray-600 to-gray-700",
-    bgGradient: "from-gray-500 to-gray-300",
-    path: router.adminUsers,
-  },
-  {
-    id: "roles-and-permissions",
-    title: "Roles y Permisos",
-    description: "Gestiona los roles del sistema y asigna los permisos correspondientes a cada uno",
-    icon: LucideDoorClosedLocked,
-    color: "from-purple-500 to-purple-600",
-    hoverColor: "from-purple-500 to-purple-600",
-    bgGradient: "from-purple-500 to-purple-600",
-    path: router.rolesAndPermissions,
-  },
-];
+import { useAdminHook } from "../hooks/useAdminHook";
+import { Settings } from "lucide-react";
+import { LoadingScreen } from "../../app/components/LoadingScreen";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -79,6 +36,10 @@ const cardVariants = {
 const handleCardClick = (option) => (window.location.href = option.path);
 
 export const AdminCenter = () => {
+  const { adminOptions, loading } = useAdminHook();
+
+  if(loading) return <LoadingScreen />
+  
   return (
     <NavigationLayout title="Administración del Software SST - NewStetic">
       {/* Header */}

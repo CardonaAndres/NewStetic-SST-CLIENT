@@ -1,17 +1,10 @@
 import { motion } from "framer-motion"
-import { ArrowLeft, CheckCircle, FileText, UserPlus, XCircle } from "lucide-react";
 import { useState } from "react";
 import { ExamFormModal } from "./ExamFormModal";
+import { IfCan } from "../../../admin/middlewares/IfCan";
+import { ArrowLeft, CheckCircle, FileText, UserPlus, XCircle } from "lucide-react";
 
-export const Header = ({ 
-  exam, 
-  meta, 
-  examRecords, 
-  getDaysRemaining,
-  can,
-  loading,
-  userPermissions
-}) => {
+export const Header = ({ exam, meta, examRecords, getDaysRemaining }) => {
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal(!modal)
 
@@ -35,7 +28,7 @@ export const Header = ({
               <span>Volver</span>
             </motion.button>
 
-            {!loading && can(userPermissions, "examRecords.create") && (
+            <IfCan permission="examRecords.create">
               <motion.button onClick={handleModal}
                 className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
                 whileHover={{ scale: 1.02 }}
@@ -45,7 +38,8 @@ export const Header = ({
                 <span className="hidden sm:inline">Registrar</span>
                 <span className="sm:hidden">Registrar</span>
               </motion.button>
-            )}
+            </IfCan>
+
           </div>
 
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">

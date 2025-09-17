@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion'
-import { CheckCircle, Edit3, XCircle, FileText } from "lucide-react"
+import { motion } from 'framer-motion';
+import { IfCan } from "../../middlewares/IfCan";
 import { ExamTypeFormModal } from './ExamTypeFormModal';
+import { CheckCircle, Edit3, XCircle, FileText } from "lucide-react";
 
 export const ExamTypeItemTable = ({ examType, index }) => {
   const [modal, setModal] = useState(false);
@@ -44,13 +45,17 @@ export const ExamTypeItemTable = ({ examType, index }) => {
       <td className="px-6 py-4">
         {!['Ingreso', 'Egreso'].includes(examType.nombre) && (
           <div className="flex items-center justify-center space-x-2">
-            <motion.button onClick={handleModal}
-              className="p-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-600 rounded-lg transition-all duration-200"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Edit3 className="w-4 h-4" />
-            </motion.button>
+
+             <IfCan permission="examtypes.update" >
+                <motion.button onClick={handleModal}
+                  className="p-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-600 rounded-lg transition-all duration-200"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Edit3 className="w-4 h-4" />
+                </motion.button>
+              </IfCan> 
+
           </div>
         )}
       </td>

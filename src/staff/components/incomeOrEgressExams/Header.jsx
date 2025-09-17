@@ -4,8 +4,9 @@ import { Plus, FileText } from 'lucide-react';
 import { FormModal } from './FormModal';
 import { useSearchParams, useLocation } from 'react-router-dom';
 import { router } from '../../../app/config/config';
+import { IfCan } from "../../../admin/middlewares/IfCan";
 
-export const Header = ({ total = 0, can, loading, userPermissions }) => {
+export const Header = ({ total = 0 }) => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [modal, setModal] = useState(false);
@@ -46,9 +47,8 @@ export const Header = ({ total = 0, can, loading, userPermissions }) => {
               </div>
 
               {/* Add Button */}
-              {searchParams.get("isUserActive") == 'true' 
-               && !loading && can(userPermissions, "examRecords.createIncomeOrEgress") && (
-                <>
+              {searchParams.get("isUserActive") == 'true'  && (
+                <IfCan permission="examRecords.createIncomeOrEgress" >
                   <motion.button onClick={handleModal}
                     className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl group min-w-fit"
                     whileHover={{ scale: 1.02 }}
@@ -63,7 +63,7 @@ export const Header = ({ total = 0, can, loading, userPermissions }) => {
                     </motion.div>
                     <span className="whitespace-nowrap">Nuevo Examen</span>
                   </motion.button>
-                </>
+                </IfCan>
               )}
             </div>
           </div>

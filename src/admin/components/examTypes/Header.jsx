@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
-import { FileText, Filter, Plus, Search } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { ExamTypeFormModal } from "./ExamTypeFormModal";
+import { IfCan } from "../../middlewares/IfCan";
+import { FileText, Filter, Plus, Search } from "lucide-react";
 
 export const Header = ({
     filteredExamTypes, 
@@ -46,16 +47,20 @@ export const Header = ({
                         <p className="text-xl font-bold text-gray-900">{filteredExamTypes.length}</p>
                     </div>
                     </div>
-                    
-                    <motion.button
-                        onClick={handleModal}
-                        className="flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        <Plus className="w-5 h-5" />
-                        <span className="hidden sm:inline">Nuevo</span>
-                    </motion.button>
+
+                    <IfCan permission="examtypes.create">
+                        <motion.button
+                            onClick={handleModal}
+                            className="flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            <Plus className="w-5 h-5" />
+                            <span className="hidden sm:inline">Nuevo</span>
+                        </motion.button>
+
+                    </IfCan>
+                
                 </div>
                 </div>
             </div>

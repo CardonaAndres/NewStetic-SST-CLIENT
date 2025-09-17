@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { router } from './app/config/config';
 import { AuthProvider } from './auth/context/AuthContext';
 import { ProtectedRoute } from './auth/components/ProtectedRoute';
+import { AdminGuard } from "./admin/middlewares/AdminGuard";
 import { HomePage } from './app/pages/HomePage';
 import { Error404Page } from './app/pages/Error404Page';
 import { StaffManager } from './staff/pages/StaffManager';
@@ -22,6 +23,7 @@ import { ExamTypesManager } from './admin/pages/ExamTypesManager';
 import { ReportsPage } from './admin/pages/ReportsPage';
 import { UsersPage } from './admin/pages/UsersPage';
 import { RolesAndPermissions } from './admin/pages/RolesAndPermissions';
+import { PermissionGuard } from './admin/middlewares/PermissionGuard';
 
 export const App = () => {
   return (
@@ -56,10 +58,18 @@ export const App = () => {
             <Route path={router.hygiene} element={<HygienePage />} />
 
             <Route path={router.administration} element={<AdminCenter />} />
-            <Route path={router.adminUsers} element={<UsersPage />} />
+
+            <Route element={<AdminGuard />} >  
+              <Route path={router.adminUsers} element={<UsersPage />} />
+              <Route path={router.rolesAndPermissions} element={<RolesAndPermissions />} />
+            </Route>
+
+            <Route element={<PermissionGuard requiredPermission="examtypes.create" />}>
+              <Route path={router.examTypesManager} element={<ExamTypesManager />} />
+            </Route>
+
             <Route path={router.reportsPage} element={<ReportsPage />} />
-            <Route path={router.examTypesManager} element={<ExamTypesManager />} />
-            <Route path={router.rolesAndPermissions} element={<RolesAndPermissions />} />
+
           </Route>
 
           <Route path="*" element={<Error404Page />} />

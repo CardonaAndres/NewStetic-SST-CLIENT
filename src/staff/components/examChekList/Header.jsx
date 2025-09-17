@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Plus, Activity, ArrowLeft } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { ExamCheckListModalForm } from './ExamCheckListModalForm';
 import { router } from '../../../app/config/config';
+import { IfCan } from "../../../admin/middlewares/IfCan";
+import { User, Plus, Activity, ArrowLeft } from "lucide-react";
 
-export const Header = ({ cc, loading, userPermissions, can }) => {
+export const Header = ({ cc }) => {
   const navigate = useNavigate();
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal(!modal);
@@ -52,7 +53,8 @@ export const Header = ({ cc, loading, userPermissions, can }) => {
                 </p>
               </div>
             </div>
-            {!loading && can(userPermissions, "examChecklist.create") && (
+            
+            <IfCan permission="examChecklist.create" >
               <motion.button onClick={handleModal}
                 className="flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
                 whileHover={{ scale: 1.02 }}
@@ -61,7 +63,8 @@ export const Header = ({ cc, loading, userPermissions, can }) => {
                 <Plus className="w-5 h-5" />
                 <span className="hidden sm:inline">Agregar</span>
               </motion.button>
-            )}
+            </IfCan>
+
           </div>
         </div>
       </motion.div>

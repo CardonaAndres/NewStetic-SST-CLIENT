@@ -4,6 +4,7 @@ import { PDFViewerModal } from '../examHistory/PDFViewerModal';
 import { ExamDeleteFormModal } from '../examHistory/ExamDeleteFormModal';
 import { ExamLogsModal } from "../examHistory/ExamLogsModal";
 import { FormModal } from "./FormModal";
+import { IfCan } from "../../../admin/middlewares/IfCan";
 import { 
     FileText, 
     Calendar, 
@@ -25,9 +26,6 @@ export const ExamCard = ({
     isExpanded, 
     examId,
     toggleCardExpansion,
-    can, 
-    loading, 
-    userPermissions
 }) => {
   const [formModal, setFormModal] = useState(false);
   const [PDFViewer, setPDFViewer] = useState(false); 
@@ -100,7 +98,7 @@ export const ExamCard = ({
                 </span>
                 )}
 
-                {!loading && can(userPermissions, "examRecords.update") && (
+                <IfCan permission="examRecords.update">
                     <motion.button onClick={handleFormModal}
                         className="flex items-center space-x-1 px-3 py-2 bg-amber-100 text-amber-700 rounded-xl text-sm font-medium hover:bg-amber-200 transition-colors"
                         whileHover={{ scale: 1.02 }}
@@ -108,7 +106,7 @@ export const ExamCard = ({
                     >
                         <Edit className="w-4 h-4" />
                     </motion.button>
-                )}
+                </IfCan>
 
                 <motion.button onClick={handleLogsClick}
                     className="flex items-center space-x-1 px-3 py-2 bg-violet-100 text-violet-700 rounded-xl text-sm font-medium hover:bg-violet-200 transition-colors"
@@ -118,7 +116,7 @@ export const ExamCard = ({
                     <List className="w-4 h-4" />
                 </motion.button>
 
-                {!loading && can(userPermissions, "examRecords.delete") && (
+                <IfCan permission="examRecords.delete" >
                     <motion.button onClick={handleDelete}
                         className="flex items-center space-x-1 px-3 py-2 bg-red-100 text-red-700 rounded-xl text-sm font-medium hover:bg-red-200 transition-colors"
                         whileHover={{ scale: 1.02 }}
@@ -126,7 +124,8 @@ export const ExamCard = ({
                     >
                         <Trash2 className="w-4 h-4" />
                     </motion.button>
-                )}
+                </IfCan>
+
 
                 <motion.button
                     onClick={() => toggleCardExpansion(examId)}

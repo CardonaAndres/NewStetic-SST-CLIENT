@@ -10,12 +10,8 @@ import { Header } from "../components/examChekList/Header";
 import { StatisticsCards } from "../components/examChekList/StatisticsCards";
 import { FiltersAndSearch } from "../components/examChekList/FiltersAndSearch";
 import { ItemListCard } from "../components/examChekList/ItemListCard";
-import { useAuth } from "../../auth/context/AuthContext";
-import { usePermissionsHook } from "../../admin/hooks/usePermissionsHook";
 
 export const ExamCheckList = () => {
-  const { userPermissions, loading: authLoading } = useAuth();
-  const { loading: loadingPermissions, can } = usePermissionsHook();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -92,17 +88,12 @@ export const ExamCheckList = () => {
     }
   };
 
-  if(loading || authLoading || loadingPermissions) return <LoadingScreen />
+  if(loading) return <LoadingScreen />
 
   return (
     <NavigationLayout title='Gestión De Examenes'>
       {/* Header */}
-      <Header 
-        cc={searchParams.get("cc")} 
-        can={can}
-        loading={authLoading || loadingPermissions}
-        userPermissions={userPermissions}
-      />
+      <Header cc={searchParams.get("cc")} />
 
       <StatisticsCards stats={stats} />
 
@@ -135,9 +126,6 @@ export const ExamCheckList = () => {
                 statusConfig={statusConfig} 
                 StatusIcon={StatusIcon}
                 exam={exam}
-                can={can}
-                loading={authLoading || loadingPermissions}
-                userPermissions={userPermissions}
               />
             );
           })}

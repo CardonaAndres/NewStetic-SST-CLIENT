@@ -9,15 +9,10 @@ import { EmptyState } from '../components/incomeOrEgressExams/EmptyState';
 import { ExamCard } from '../components/incomeOrEgressExams/ExamCard';
 import { Calendar, AlertCircle, CheckCircle, Clock, RefreshCw, X as XIcon } from 'lucide-react';
 import { router } from '../../app/config/config';
-import { useAuth } from '../../auth/context/AuthContext';
-import { usePermissionsHook } from '../../admin/hooks/usePermissionsHook';
 
 export const IncomesExams = () => {
   const location = useLocation();
   const [ searchParams ] = useSearchParams();
-
-  const { userPermissions, loading: authLoading } = useAuth();
-  const { loading: loadingPermissions, can } = usePermissionsHook();
 
   const { loading, exams, getExams } = useIncomeEgressHook();
   const [ expandedCards, setExpandedCards ] = useState(new Set());
@@ -81,16 +76,11 @@ export const IncomesExams = () => {
     getExams(searchParams.get("cc"), examType);
   }, []);
 
-  if(loading || authLoading || loadingPermissions) return <LoadingScreen />
+  if(loading) return <LoadingScreen />
 
   return (
     <NavigationLayout title='Exámenes de Ingreso'>
-      <Header 
-        total={exams.length || 0} 
-        userPermissions={userPermissions}
-        loadingPermission={authLoading || loadingPermissions}
-        can={can}
-      />
+      <Header total={exams.length || 0} />
 
       <motion.div 
         className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/40 shadow-lg overflow-hidden"
@@ -119,9 +109,6 @@ export const IncomesExams = () => {
                     isExpanded={isExpanded}
                     examId={examId}
                     toggleCardExpansion={toggleCardExpansion}
-                    userPermissions={userPermissions}
-                    loadingPermission={authLoading || loadingPermissions}
-                    can={can}
                   />
                 );
               })}

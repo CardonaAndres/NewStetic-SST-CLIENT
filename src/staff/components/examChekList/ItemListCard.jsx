@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ExamCheckListModalForm } from "./ExamCheckListModalForm";
 import { router } from "../../../app/config/config";
+import { IfCan } from "../../../admin/middlewares/IfCan";
 import { 
   CheckCircle, 
   Edit3, 
@@ -21,10 +22,7 @@ export const ItemListCard = ({
   StatusIcon, 
   cardVariants, 
   exam, 
-  index,
-  loading,
-  userPermissions,
-  can
+  index
 }) => {
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal(!modal);
@@ -225,7 +223,7 @@ export const ItemListCard = ({
               <span>Detalles</span>
             </motion.button>
 
-            {!loading && can(userPermissions, "examChecklist.update") && (
+            <IfCan permission="examChecklist.update" >
               <motion.button 
                 onClick={handleModal}
                 className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 bg-blue-100/80 hover:bg-blue-200/80 text-blue-700 rounded-lg transition-all duration-200 text-sm font-medium"
@@ -235,7 +233,7 @@ export const ItemListCard = ({
                 <Edit3 className="w-4 h-4" />
                 <span>Gestionar</span>
               </motion.button>
-            )}
+            </IfCan>
 
           </div>
         </div>

@@ -16,7 +16,7 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }) => {
-    const { loading: loadingPermissions, getUserPermissions } = usePermissionsHook();
+    const { getUserPermissions } = usePermissionsHook();
     const [userPermissions, setUserPermissions] = useState([]);
     const [isAuth, setIsAuth] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -86,10 +86,12 @@ export const AuthProvider = ({ children }) => {
              .catch(() => {
                 console.log('Error al solicitar los permisos del usuario al backend');
                 setUserPermissions([]);
-             });
+             }).finally(() => setLoading(false));
+             
+        } else {
+            setLoading(false);
         }
 
-        setLoading(false || loadingPermissions);
     }, []);
 
     return (

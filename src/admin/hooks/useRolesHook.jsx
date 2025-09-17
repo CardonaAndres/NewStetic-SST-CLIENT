@@ -31,7 +31,7 @@ export const useRolesHook = () => {
              :  await RolesAPI.createRole(roleInfo)
 
             onClose();
-            toast.success(res.data.message, {
+            toast.success(`${res.data.message}, debes esperar 5 minutos para ver los cambios`, {
                 position: "top-left",
                 autoClose: 5000,
                 closeOnClick: true,

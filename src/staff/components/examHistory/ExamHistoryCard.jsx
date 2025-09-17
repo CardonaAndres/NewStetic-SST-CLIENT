@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ExamFormModal } from './ExamFormModal';
 import { PDFViewerModal } from './PDFViewerModal';
+import { ExamLogsModal } from './ExamLogsModal';
+import { ExamDeleteFormModal } from './ExamDeleteFormModal';
+import { IfCan } from "../../../admin/middlewares/IfCan";
 import { 
     CalendarClock, 
     Clock, 
@@ -14,8 +17,6 @@ import {
     Trash2,
     List
 } from 'lucide-react';
-import { ExamDeleteFormModal } from './ExamDeleteFormModal';
-import { ExamLogsModal } from './ExamLogsModal';
 
 export const ExamHistoryCard = ({ 
     status, 
@@ -23,10 +24,7 @@ export const ExamHistoryCard = ({
     formatDate, 
     StatusIcon,
     daysRemaining,
-    record,
-    userPermissions,
-    loadingPermission,
-    can
+    record
 }) => {
   const [modal, setModal] = useState(false);
   const [logsModal, setLogsModal] = useState(false);
@@ -147,25 +145,25 @@ export const ExamHistoryCard = ({
                 </>
                 )}
 
-                {!loadingPermission && can(userPermissions, "examRecords.update") && (
+                <IfCan permission="examRecords.update" >
                     <motion.button onClick={handleModal} className="p-2 bg-green-400 hover:bg-green-400/80 text-white rounded-lg transition-all duration-200"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <Edit3 className="w-4 h-4" />
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <Edit3 className="w-4 h-4" />
                     </motion.button>
-                )}
+                </IfCan>
 
-                {!loadingPermission && can(userPermissions, "examRecords.delete") && (
+                <IfCan permission="examRecords.delete" >
                     <motion.button
-                            onClick={handleDeleteFormModal}
-                            className="p-2 bg-red-500 hover:bg-red-400/80 text-white rounded-lg transition-all duration-200"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <Trash2 className="w-4 h-4" />
+                        onClick={handleDeleteFormModal}
+                        className="p-2 bg-red-500 hover:bg-red-400/80 text-white rounded-lg transition-all duration-200"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <Trash2 className="w-4 h-4" />
                     </motion.button>
-                )}
+                </IfCan>
 
                 <motion.button
                         onClick={handleLogsModal}
