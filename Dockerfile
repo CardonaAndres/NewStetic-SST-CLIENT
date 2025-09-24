@@ -14,8 +14,13 @@ FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
+RUN mkdir /etc/nginx/ssl
+
+COPY ssl/selfsigned.crt /etc/nginx/ssl/selfsigned.crt
+COPY ssl/selfsigned.key /etc/nginx/ssl/selfsigned.key
+
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 5001
+EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]

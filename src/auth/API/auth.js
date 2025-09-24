@@ -1,4 +1,4 @@
-const baseURL = String(import.meta.env.VITE_AUTH_SERVICE);
+const baseURL = String(import.meta.env.VITE_BASE_APIGATEWAY + '/auth');
 const appName = String(import.meta.env.VITE_APP_NAME);
 
 export class AuthAPI {
